@@ -1,0 +1,170 @@
+/* ecommerce/frontend/src/pages/MainPages/HomePage/Components/PopularCategories.css */
+
+.ecom-home-categories-section {
+  padding: 4rem 1rem;
+  background: #f8fafc;
+}
+
+.ecom-home-section-container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.ecom-home-section-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #0f172a;
+  text-align: center;
+  margin-bottom: 3rem;
+  background: linear-gradient(135deg, #0f172a, #334155);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Swiper slider container */
+.ecom-home-categories-slider {
+  padding: 1rem 0.5rem 2.5rem 0.5rem;
+}
+
+/* Category card */
+.ecom-home-category-card {
+  display: block;
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-decoration: none;
+  background: rgb(0, 0, 0);
+  height: 100%;
+}
+
+.ecom-home-category-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
+}
+
+/* Icon wrapper – takes full card area */
+.category-icon-wrapper {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  
+  justify-content: center;
+  transition: transform 0.4s ease;
+}
+
+.ecom-home-category-card:hover .category-icon-wrapper {
+  transform: scale(1.08);
+}
+
+/* Icon styling */
+.category-icon {
+  font-size: 5rem;
+  color: rgb(255, 255, 255);
+  /* filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.2)); */
+}
+
+/* Overlay with name and count */
+.ecom-home-category-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  color: white;
+  padding: 1.5rem 1rem 1rem;
+  text-align: center;
+}
+
+.ecom-home-category-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 0.25rem;
+  text-shadow: 0 2px 4px rgba(2, 2, 2, 0.3);
+}
+
+.ecom-home-category-count {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  margin: 0;
+}
+
+/* Swiper navigation buttons */
+.ecom-home-categories-slider .swiper-button-prev,
+.ecom-home-categories-slider .swiper-button-next {
+  color: white !important;
+  background: rgba(15, 23, 42, 0.6);
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50%;
+  backdrop-filter: blur(4px);
+  transition: all 0.2s ease;
+}
+
+.ecom-home-categories-slider .swiper-button-prev:hover,
+.ecom-home-categories-slider .swiper-button-next:hover {
+  background: rgba(15, 23, 42, 0.9);
+  transform: scale(1.1);
+}
+
+.ecom-home-categories-slider .swiper-button-prev::after,
+.ecom-home-categories-slider .swiper-button-next::after {
+  font-size: 1.2rem !important;
+  font-weight: 600;
+}
+
+/* Pagination bullets */
+.ecom-home-categories-slider .swiper-pagination-bullet {
+  background: #cbd5e1;
+  opacity: 0.7;
+}
+
+.ecom-home-categories-slider .swiper-pagination-bullet-active {
+  background: #2563eb;
+  opacity: 1;
+}
+
+/* Footer / View All button */
+.ecom-home-section-footer {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+.ecom-home-view-all-btn {
+  display: inline-block;
+  padding: 0.9rem 2.2rem;
+  background: white;
+  color: #2563eb;
+  border: 2px solid #2563eb;
+  border-radius: 40px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.ecom-home-view-all-btn:hover {
+  background: #2563eb;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .ecom-home-section-title {
+    font-size: 1.8rem;
+  }
+
+  .category-icon {
+    font-size: 4rem;
+  }
+
+  .ecom-home-categories-slider .swiper-button-prev,
+  .ecom-home-categories-slider .swiper-button-next {
+    display: none;
+  }
+}

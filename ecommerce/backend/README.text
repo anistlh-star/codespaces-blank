@@ -1,0 +1,77 @@
+run 
+server.js 
+chromadb
+docker (redis)
+if queues then run workers (queueworker ,orderworker....)
+
+
+
+
+CHROMA DB : 
+npx chromadb run
+
+
+
+Step 1 — Check Existing Containers
+
+Run:
+
+docker ps -a
+
+You’ll see something like:
+
+CONTAINER ID   IMAGE   NAME
+88d214823452   redis   redis-server
+///////////////////////////////////
+Step 2 — Start Existing Redis Container
+
+If container is stopped:
+
+docker start redis-server
+///////////////////////////////////////
+Step 3 — Verify Running
+docker ps
+
+You should see:
+
+redis-server
+
+running.
+//////////////////////////////////////////
+Step 4 — Open Redis CLI
+docker exec -it redis-server redis-cli
+Step 5 — Test Redis
+
+Inside CLI:
+
+PING
+
+Expected:
+
+PONG
+
+Redis is working correctly.
+
+///////////////
+If You Want Fresh Redis Container
+
+Remove old one:
+
+docker rm -f redis-server
+
+Then recreate:
+
+docker run -d \
+  --name redis-server \
+  -p 6379:6379 \
+  redis
+  //
+  
+  REDIS CACHE StrategIES
+  
+| Strategy           | Meaning               |
+| ------------------ | --------------------- |
+| Cache Aside        | DB first, cache later |
+| Write Through      | DB + cache together   |
+| Write Behind       | cache first, DB later |
+| Cache Invalidation | remove stale cache    |

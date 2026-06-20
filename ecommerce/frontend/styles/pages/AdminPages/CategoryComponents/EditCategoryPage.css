@@ -1,0 +1,197 @@
+/*ecommerce/frontend/styles/pages/AdminPages/CategoryComponents/EditCategoryPage.css*/
+
+.edit-category-page {
+  padding: 2.5rem 3rem;
+  max-width: 900px;
+  margin: 0 auto 4rem;
+  font-family: -apple-system, BlinkMacOSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #1a1a1a;
+}
+
+.edit-category-page h1 {
+  font-size: 2.1rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin: 0 0 2.2rem;
+  color: #111;
+}
+
+/* Messages */
+.message {
+  padding: 1rem 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 1.8rem;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.message.success {
+  background-color: #e6f4ea;
+  color: #2e7d32;
+  border: 1px solid #a5d6a7;
+}
+
+.message.error {
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #ef9a9a;
+}
+
+/* Form */
+.edit-form {
+  background: white;
+  border-radius: 16px;
+  padding: 2.2rem 2.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  border: 1px solid #f0f0f0;
+  transition: all 0.25s ease;
+}
+
+.edit-form:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.09);
+  transform: translateY(-2px);
+}
+
+.form-group {
+  margin-bottom: 1.8rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.6rem;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #444;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 90%;
+  padding: 0.9rem 1.1rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 0.97rem;
+  background: #fafafa;
+  transition: all 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #777;
+  box-shadow: 0 0 0 3px rgba(119, 119, 119, 0.12);
+  background: white;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+/* Image Section */
+.image-group {
+  margin-bottom: 2.2rem;
+}
+
+.image-preview {
+  margin: 1rem 0 1.4rem;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+  position: relative;
+  max-width: 420px;
+}
+
+.image-preview img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  aspect-ratio: 4 / 3;
+}
+
+.image-preview small {
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.65);
+  color: white;
+  padding: 0.35rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.78rem;
+}
+
+/* File input styling */
+.form-group input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.file-label {
+  display: inline-block;
+  padding: 0.85rem 1.6rem;
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.93rem;
+  transition: all 0.2s ease;
+}
+
+.file-label:hover {
+  background: #eee;
+  border-color: #ccc;
+}
+
+/* Action Buttons */
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2.5rem;
+  justify-content: flex-end;
+}
+
+.btn {
+  padding: 0.9rem 1.9rem;
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 0.96rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  border: none;
+}
+
+.btn.save {
+  background: #2c2c2c;
+  color: white;
+}
+
+.btn.save:hover:not(:disabled) {
+  background: #111;
+  transform: translateY(-1px);
+}
+
+.btn.cancel {
+  background: #f5f5f5;
+  color: #444;
+}
+
+.btn.cancel:hover:not(:disabled) {
+  background: #e8e8e8;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Loading state */
+.loading {
+  text-align: center;
+  padding: 8rem 2rem;
+  color: #777;
+  font-size: 1.2rem;
+}

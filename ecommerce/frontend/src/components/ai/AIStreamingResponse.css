@@ -1,0 +1,60 @@
+/* src/components/ai/AIStreamingResponse.css */
+
+.streaming-response {
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 24px;
+  margin-top: 20px;
+  min-height: 180px;
+  line-height: 1.7;
+  font-size: 1.02rem;
+  color: #333;
+  position: relative;
+}
+
+.response-content {
+  white-space: pre-wrap;
+}
+
+.streaming {
+  animation: subtle-pulse 2s infinite;
+}
+
+@keyframes subtle-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
+}
+
+.streaming-placeholder {
+  background: #f8f9fa;
+  border: 1px dashed #ccc;
+  border-radius: 12px;
+  padding: 40px 24px;
+  text-align: center;
+  color: #888;
+  font-style: italic;
+  min-height: 180px;
+}
+
+.streaming-indicator {
+  display: flex;
+  gap: 6px;
+  margin-top: 16px;
+}
+
+.streaming-indicator span {
+  height: 6px;
+  width: 6px;
+  background: #0066ff;
+  border-radius: 50%;
+  animation: bounce 1.2s infinite;
+}
+
+.streaming-indicator span:nth-child(2) { animation-delay: 150ms; }
+.streaming-indicator span:nth-child(3) { animation-delay: 300ms; }
+
+@keyframes bounce {
+  0%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-6px); }
+}

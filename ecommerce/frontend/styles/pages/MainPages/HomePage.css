@@ -1,0 +1,405 @@
+/*ecommerce/frontend/styles/pages/MainPages/HomePage.css*/
+  
+
+
+.ecom-home-container {
+  background-color: #f8f9fb;
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow-x: hidden;
+}
+
+/* ================== COMMON SECTION STYLES ================== */
+.ecom-home-container .ecom-home-section-container {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.ecom-home-container .ecom-home-section-title {
+  font-size: clamp(2.2rem, 5vw, 3rem);
+  font-weight: 700;
+  text-align: center;
+  color: #111;
+  margin-bottom: 3rem;
+  letter-spacing: -0.02em;
+}
+
+.ecom-home-container .ecom-home-section-footer {
+  text-align: center;
+  margin: 1.5rem;
+}
+
+.ecom-home-container .ecom-home-view-all-btn {
+  display: inline-block;
+  padding: 0.95rem 2.2rem;
+  background: #111;
+  color: white;
+  font-weight: 600;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ecom-home-container .ecom-home-view-all-btn:hover {
+  background: #000000;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 106, 0, 0.25);
+}
+
+/* ================== SWIPER STYLES (tight spacing + equal height) ================== */
+.ecom-home-container .ecom-home-featured-swiper,
+.ecom-home-container .ecom-home-trending-swiper {
+  width: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.ecom-home-container .ecom-home-featured-swiper .swiper-wrapper,
+.ecom-home-container .ecom-home-trending-swiper .swiper-wrapper {
+  padding: 0;
+}
+
+.ecom-home-container .ecom-home-featured-swiper .swiper-slide,
+.ecom-home-container .ecom-home-trending-swiper .swiper-slide {
+  height: auto;
+  padding: 0 8px;           /* subtle side breathing room */
+  box-sizing: border-box;
+}
+
+/* EQUAL HEIGHT CARDS IN SLIDER – very important for visual alignment */
+.ecom-home-container .ecom-home-featured-swiper .swiper-slide .ecom-home-product-card,
+.ecom-home-container .ecom-home-trending-swiper .swiper-slide .ecom-home-product-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.ecom-home-container .ecom-home-featured-swiper .swiper-slide .ecom-home-product-info,
+.ecom-home-container .ecom-home-trending-swiper .swiper-slide .ecom-home-product-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.ecom-home-container .ecom-home-featured-swiper .ecom-home-product-view-btn,
+.ecom-home-container .ecom-home-trending-swiper .ecom-home-product-add-btn {
+  margin-top: auto;
+  background: black;
+}
+.ecom-home-product-add-btn a{
+  color: white !important;
+}
+
+/* ================== PRODUCT CARD (Shared) ================== */
+.ecom-home-container .ecom-home-product-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ecom-home-container .ecom-home-product-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.14);
+}
+
+.ecom-home-container .ecom-home-product-image-wrapper {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: #f8f9fa;
+}
+
+.ecom-home-container .ecom-home-product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.48s ease;
+}
+
+.ecom-home-container .ecom-home-product-card:hover .ecom-home-product-image {
+  transform: scale(1.06);
+}
+
+.ecom-home-container .ecom-home-product-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: #ff6a00;
+  color: white;
+  padding: 0.4rem 0.9rem;
+  border-radius: 50px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  z-index: 2;
+}
+
+.ecom-home-container .ecom-home-product-info {
+  padding: 1.4rem 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.ecom-home-container .ecom-home-product-name {
+  font-size: 1.18rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+  line-height: 1.35;
+}
+
+.ecom-home-container .ecom-home-product-name a {
+  color: #111;
+  text-decoration: none;
+}
+
+.ecom-home-container .ecom-home-product-name a:hover {
+  color: #ff6a00;
+}
+
+.ecom-home-container .ecom-home-product-price-row {
+  margin-bottom: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.ecom-home-container .ecom-home-product-price {
+  font-size: 1.32rem;
+  font-weight: 700;
+  color: #111;
+}
+
+.ecom-home-container .ecom-home-product-old-price {
+  font-size: 1.08rem;
+  color: #777;
+  text-decoration: line-through;
+}
+
+.ecom-home-container .ecom-home-product-view-btn,
+.ecom-home-container .ecom-home-product-add-btn {
+  padding: 0.8rem 1.6rem;
+  border-radius: 10px;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.28s ease;
+  text-decoration: none;
+  font-size: 0.96rem;
+}
+
+.ecom-home-container .ecom-home-product-view-btn {
+  background: #000000;
+  color: white !important;
+
+}
+
+.ecom-home-container .ecom-home-product-view-btn:hover {
+  background: #ffffff;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.ecom-home-container .ecom-home-product-add-btn {
+  background: #ffffff;
+  color: white !important;
+}
+
+.ecom-home-container .ecom-home-product-add-btn:hover {
+  background: #3b3838;
+  transform: translateY(-2px);
+}
+
+/* ================== HERO ================== */
+.ecom-home-container .ecom-home-hero {
+  background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.65)),
+              url('https://img.freepik.com/free-photo/modern-stationary-collection-arrangement_23-2149309643.jpg?semt=ais_user_personalization&w=740&q=80') center/cover no-repeat;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  color: white;
+  position: relative;
+}
+
+.ecom-home-container .ecom-home-hero-content {
+  max-width: 920px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 0 1.5rem;
+}
+
+.ecom-home-container .ecom-home-hero-title {
+  font-size: clamp(3.2rem, 8vw, 5.2rem);
+  font-weight: 800;
+  line-height: 1.05;
+  margin-bottom: 1.2rem;
+color: #ffffff;
+}
+
+.ecom-home-container .ecom-home-highlight {
+  color: #ff6a00;
+}
+
+.ecom-home-container .ecom-home-hero-subtitle {
+  font-size: 1.45rem;
+  opacity: 0.95;
+  margin-bottom: 2.8rem;
+}
+
+.ecom-home-container .ecom-home-hero-actions {
+  display: flex;
+  gap: 1.4rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.ecom-home-container .ecom-home-cta {
+  padding: 1.1rem 2.8rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+  border-radius: 60px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.ecom-home-container .ecom-home-cta-primary {
+  background: #ff6a00;
+  color: white;
+}
+
+.ecom-home-container .ecom-home-cta-primary:hover {
+  background: #e55a00;
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(255, 106, 0, 0.3);
+}
+
+.ecom-home-container .ecom-home-cta-secondary {
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+}
+
+.ecom-home-container .ecom-home-cta-secondary:hover {
+  background: white;
+  color: #111;
+}
+
+/* ================== CATEGORIES ================== */
+.ecom-home-container .ecom-home-categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(136px, 1fr));
+    gap: 2rem;
+}
+
+.ecom-home-container .ecom-home-category-card {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  height: 340px;
+  text-decoration: none;
+  color: white;
+}
+
+.ecom-home-container .ecom-home-category-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.ecom-home-container .ecom-home-category-card:hover .ecom-home-category-image {
+  transform: scale(1.12);
+}
+
+.ecom-home-container .ecom-home-category-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.75), transparent 40%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 2rem 1.8rem;
+}
+
+.ecom-home-container .ecom-home-category-name {
+  font-size: 1.55rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.ecom-home-container .ecom-home-category-count {
+  opacity: 0.9;
+  font-size: 1rem;
+}
+
+/* ================== CTA BANNER ================== */
+.ecom-home-container .ecom-home-cta-section {
+  background: linear-gradient(135deg, #111 0%, #1f1f1f 100%);
+  color: white;
+  padding: 7rem 0;
+  text-align: center;
+}
+
+.ecom-home-container .ecom-home-cta-title {
+  font-size: 3.2rem;
+  font-weight: 800;
+  margin-bottom: 1.4rem;
+  color: #ffffff;
+}
+
+.ecom-home-container .ecom-home-cta-text {
+  font-size: 1.35rem;
+  max-width: 680px;
+  margin: 0 auto 2.8rem;
+  opacity: 0.9;
+}
+
+.ecom-home-container .ecom-home-cta-button {
+  background: #ff6a00;
+  color: white;
+  padding: 1.3rem 3.2rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  border-radius: 60px;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.ecom-home-container .ecom-home-cta-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 30px rgba(255, 106, 0, 0.4);
+}
+
+/* ================== SKELETON LOADER ================== */
+.ecom-home-container .ecom-home-skeleton {
+  height: 80vh;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ================== RESPONSIVE ================== */
+@media (max-width: 1024px) {
+  .ecom-home-container .ecom-home-section-container {
+    padding: 0 1.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .ecom-home-container .ecom-home-hero {
+    min-height: 78vh;
+  }
+
+  .ecom-home-container .ecom-home-section-title {
+    font-size: clamp(1.9rem, 6vw, 2.6rem);
+  }
+}

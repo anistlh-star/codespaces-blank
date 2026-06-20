@@ -1,0 +1,21 @@
+┌──────────────┐
+│   CLIENT     │
+└─────┬────────┘
+                       ↓
+┌──────────────────┐
+│  API CONTROLLERS │
+└─────┬────────────┘
+    ↓
+┌────────────────────────┐
+│   CACHE ORCHESTRATOR   │
+└─────┬──────────┬───────┘
+        ↓          ↓
+Entity Cache   Query Cache   Computed Cache
+              ↓
+            MongoDB
+
+
+
+
+
+    before it was 1 caheKey per API request now we convert it into small peices so it will work better with out project 

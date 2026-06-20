@@ -1,0 +1,87 @@
+/* src/pages/AIToolsPage.css */
+
+.ai-tools-page {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  padding: 40px 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.ai-tools-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.ai-header {
+  padding: 40px 40px 20px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.ai-header h1 {
+  font-size: 2.8rem;
+  margin: 0 0 12px 0;
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+.ai-header p {
+  font-size: 1.1rem;
+  color: #666;
+  margin: 0;
+}
+
+.ai-tabs {
+  display: flex;
+  border-bottom: 1px solid #eee;
+  background: #fafafa;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 18px 24px;
+  font-size: 1.05rem;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #555;
+  transition: all 0.3s ease;
+}
+
+.tab-button:hover {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.tab-button.active {
+  background: white;
+  color: #0066ff;
+  border-bottom: 3px solid #0066ff;
+  font-weight: 600;
+}
+
+.tab-content {
+  padding: 40px;
+  min-height: 600px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ai-header h1 {
+    font-size: 2.2rem;
+  }
+  
+  .tab-button {
+    padding: 16px 12px;
+    font-size: 1rem;
+  }
+  
+  .tab-content {
+    padding: 25px 20px;
+  }
+}

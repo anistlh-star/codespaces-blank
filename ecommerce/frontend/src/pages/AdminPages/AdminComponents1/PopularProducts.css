@@ -1,0 +1,126 @@
+/* Modern card wrapper with subtle gradient and border */
+.popular-products-card {
+  background: linear-gradient(135deg, #ffffff, #f9fafb);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
+}
+
+.popular-products-card:hover {
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Title with underline accent */
+.popular-products-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1rem;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.popular-products-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(to right, #3b82f6, #6366f1);
+  border-radius: 2px;
+}
+
+/* Image with rounded corners and subtle shadow */
+.popular-product-image-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popular-product-image {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.popular-product-image:hover {
+  transform: scale(1.1);
+}
+
+/* Product name with ellipsis and tooltip support */
+.popular-product-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  cursor: pointer;
+  color: #374151;
+  font-weight: 500;
+}
+
+/* Category tag with padding and hover */
+.popular-category-tag {
+  padding: 0.3rem 0.8rem !important;
+  font-size: 0.85rem;
+  transition: transform 0.2s ease;
+}
+
+.popular-category-tag:hover {
+  transform: translateY(-2px);
+}
+
+/* Price with bold and color highlight */
+.popular-product-price {
+  font-weight: 600;
+  color: #16a34a; /* Green for price */
+}
+
+/* Empty message with icon and centered */
+.popular-empty-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  font-style: italic;
+  padding: 1rem;
+}
+
+/* Table overrides for modern look */
+.popular-products-table .p-datatable-thead > tr > th {
+  background: #f3f4f6;
+  color: #374151;
+  font-weight: 600;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.popular-products-table .p-datatable-tbody > tr {
+  transition: background 0.2s ease;
+}
+
+.popular-products-table .p-datatable-tbody > tr:hover {
+  background: #f9fafb;
+}
+
+.popular-products-table .p-paginator {
+  padding-top: 1rem;
+  justify-content: flex-end;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .popular-products-card {
+    padding: 1rem;
+  }
+  .popular-products-title {
+    font-size: 1.2rem;
+  }
+  .popular-product-image {
+    width: 40px;
+    height: 40px;
+  }
+}

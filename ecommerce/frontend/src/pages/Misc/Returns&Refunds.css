@@ -1,0 +1,16 @@
+/* ecommerce/frontend/src/pages/Misc/ReturnsRefunds.css */
+
+.misc-list {
+  margin: 1rem 0 0 1.5rem;
+  color: #334155;
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+.misc-list li {
+  margin-bottom: 0.5rem;
+}
+
+.misc-list.numbered {
+  list-style-type: decimal;
+}

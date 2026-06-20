@@ -1,0 +1,7 @@
+i will integrate the cacheWarmer later but i grabbed the concept : 
+when starts every time it starts cold like with out cache first time so it slows down the cpu and database eventually takes time so when we integrate cache warmer it will preload cache in every start of the server to make it quick like warming up the engine before driving 
+✅ SEPARATE ENDPOINTS (for cache to work )
+/api/products
+/api/products/featured
+/api/products/trending
+/api/products/new-arrivals

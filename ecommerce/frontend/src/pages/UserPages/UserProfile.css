@@ -1,0 +1,148 @@
+.profile-container {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.profile-card {
+  background: white;
+  border-radius: 24px;
+  padding: 3rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.avatar-large {
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: white;
+  font-size: 3rem;
+  font-weight: 700;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+}
+
+.user-info h1 {
+  margin: 0.5rem 0 0.3rem;
+  font-size: 2.2rem;
+  color: #1f2937;
+}
+
+.email {
+  color: #64748b;
+  font-size: 1.1rem;
+}
+
+.joined {
+  color: #94a3b8;
+  font-size: 0.95rem;
+}
+
+.stats-row {
+  display: flex;
+  justify-content: center;
+  gap: 4rem;
+  margin: 2.5rem 0;
+  padding: 1.5rem 0;
+  border-top: 1px solid #f1f5f9;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #4f46e5;
+  display: block;
+}
+
+.stat-label {
+  font-size: 0.95rem;
+  color: #64748b;
+  margin-top: 0.3rem;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.5rem;
+  margin: 2rem 0;
+  text-align: left;
+}
+
+.info-item label {
+  font-size: 0.85rem;
+  color: #64748b;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-item p {
+  margin: 0.4rem 0 0;
+  font-size: 1.1rem;
+  color: #1f2937;
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 6px 18px;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.role-badge.user { background: #dbeafe; color: #1e40af; }
+.role-badge.admin { background: #fee2e2; color: #991b1b; }
+.role-badge.customer { background: #ecfdf5; color: #065f46; }
+.role-badge.guest { background: #f3e8ff; color: #6b21a8; }
+
+.profile-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.btn-edit {
+  background: #4f46e5;
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-logout, .btn-delete {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.back-btn {
+  margin-bottom: 1rem;
+  background: none;
+  border: none;
+  color: #6366f1;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.loading {
+  text-align: center;
+  padding: 4rem;
+  font-size: 1.2rem;
+}

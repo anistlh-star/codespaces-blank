@@ -1,0 +1,225 @@
+/*ecommerce/frontend/styles/pages/AdminPages/AdminComponents/AdminStyles.css*/
+
+/* === ROOT LAYOUT === */
+.admin-layout {
+  min-height: 100vh;
+  background-color: #f8fafc;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-container {
+  display: flex;
+  flex: 1;
+  /* margin-top: 64px; matches fixed topbar height */
+}
+
+/* === TOPBAR === */
+.admin-topbar {
+  height: 64px;
+  background-color: white;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 1000;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.admin-topbar__left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.admin-topbar__toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 6px;
+  color: #64748b;
+}
+
+.admin-topbar__toggle:hover {
+  background-color: #f1f5f9;
+}
+
+.admin-topbar__title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  color: #1e293b;
+}
+
+/* === USER MENU / DROPDOWN === */
+.admin-user {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 6px;
+  color: #1e293b;
+}
+
+.admin-user:hover {
+  background-color: #f1f5f9;
+}
+
+.admin-user__avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.admin-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+  min-width: 180px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+  z-index: 1001;
+  overflow: hidden;
+}
+
+.admin-dropdown--open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.admin-dropdown__item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  color: #475569;
+  font-size: 0.875rem;
+}
+
+.admin-dropdown__item:hover {
+  background-color: #f8fafc;
+}
+
+.admin-dropdown__item--danger {
+  color: #ef4444;
+}
+
+.admin-dropdown__item--danger:hover {
+  background-color: #fef2f2;
+}
+
+.admin-dropdown__divider {
+  height: 1px;
+  background: #e2e8f0;
+  margin: 0.25rem 0;
+}
+
+/* === SIDEBAR & MAIN CONTENT === */
+.admin-sidebar {
+  position: fixed;
+  top: 64px;
+  left: 0;
+  height: calc(100vh - 64px);
+  z-index: 999;
+  background: white;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+  transition: width 0.3s ease, transform 0.3s ease;
+}
+
+.admin-main {
+  flex: 1;
+  padding: 2rem;
+  transition: margin-left 0.3s ease;
+  min-height: calc(100vh - 64px);
+}
+
+/* ── Desktop collapsed / expanded ── */
+.admin-container.sidebar-collapsed .admin-sidebar {
+  /* width: 80px; */
+  overflow: hidden;
+}
+
+.admin-container.sidebar-expanded .admin-sidebar {
+  /* width: 250px; */
+  transition: all 0.3s ease;
+}
+
+.admin-container.sidebar-collapsed .admin-main {
+  /* margin-left: 80px; */
+    transition: all 0.3s ease;
+
+}
+
+.admin-container.sidebar-expanded .admin-main {
+  /* margin-left: 250px; */
+    transition: all 0.3s ease;
+
+}
+
+/* ── Mobile (slide-in drawer) ── */
+@media (max-width: 1023px) {
+  .admin-sidebar {
+    width: 280px !important;
+    transform: translateX(-100%);
+  }
+
+  .admin-container.sidebar-expanded .admin-sidebar {
+      transition: all 0.3s ease;
+
+    transform: translateX(0);
+  }
+
+  .admin-main {
+    margin-left: 0 !important;
+  }
+
+  /* Optional: make drawer a bit narrower on very small phones */
+  @media (max-width: 400px) {
+    .admin-sidebar {
+      width: 85% !important;
+      max-width: 280px;
+    }
+  }
+}
+
+/* ── If you're using react-pro-sidebar library (optional) ── */
+/* Only keep these if AdminSidebar.jsx actually uses <ProSidebar> */
+.pro-sidebar > .pro-sidebar-inner {
+  background: white !important;
+}
+.pro-sidebar .pro-menu a {
+  
+    color: black !important; ;
+}
+.pro-sidebar {
+    color: black !important;
+}
+.pro-sidebar .pro-menu.shaped .pro-menu-item > .pro-inner-item > .pro-icon-wrapper {
+    background-color: white !important;
+}
+/* Uncomment / add more if needed, e.g.:
+.pro-sidebar .pro-menu-item {
+  color: #1e293b !important;
+}
+*/
