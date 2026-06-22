@@ -36,17 +36,15 @@ const CheckoutPage = () => {
   const normalizedItems = directItem
     ? [{ ...directItem, product: directItem._id }]
     : (cart?.items || []).map((item) => ({
-        product: item.productId, // ← already the ID
-        name: item.name || "Unknown Product",
-        image: item.images?.[0] || "",
-        price: item.price || 0,
-        quantity: item.quantity || 1,
-      }));
+      product: item.productId, // ← already the ID
+      name: item.name || "Unknown Product",
+      image: item.images?.[0] || "",
+      price: item.price || 0,
+      quantity: item.quantity || 1,
+    }));
   // Use backend-provided totals when available (more reliable)
   const subtotal =
-    cart?.totalAmount ||
-    normalizedItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-
+    cart.totalAmount || 0;
   const shippingCost = subtotal > 100 ? 0 : 8.99;
   const total = subtotal + shippingCost;
 
@@ -116,7 +114,7 @@ const CheckoutPage = () => {
       console.error("Order error:", err.response?.data); // ← helpful for debugging
       setError(
         err.response?.data?.message ||
-          "Could not place order. Please try again.",
+        "Could not place order. Please try again.",
       );
     } finally {
       setLoading(false);

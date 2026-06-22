@@ -19,66 +19,73 @@ const CartPage = () => {
     );
   }
 
-  const subtotal = cart.items.reduce(
-    (acc, item) => acc + (item.price || 0) * item.quantity,
-    0
-  );
+  const subtotal = cart.totalAmount || 0;
 
   return (
     <div className="cart-page">
       <h2>Your Cart</h2>
 
       <div className="cart-items">
-        {cart.items.map((item) => (
-          <div key={item.productId} className="cart-item">
-            <div className="cart-item-image">
-              <img
-                src={item.images?.[0] || "/images/placeholder.jpg"}
-                alt={item.name || "Product"}
-              />
-            </div>
+        {cart.items.map((item) => {
+          // Extract the populated product data safely
+          const productInfo = item.productId || {};
+          // Extract the true string ID safely regardless of population state
+          const trueProductId = productInfo._id || item.productId;
 
-            <div className="cart-item-details">
-              <h4 className="cart-item-name">
-                {item.name || "Unknown Product"}
-              </h4>
-              <p className="cart-item-price">
-                ${(item.price || 0).toFixed(2)}
-              </p>
-              <p className="cart-item-quantity">Qty: {item.quantity}</p>
-            </div>
+          return (
+            <div key={trueProductId} className="cart-item">
+              <div className="cart-item-image">
+                {/* FIX: Read images from the populated productInfo object */}
+                <img
+                  src={productInfo.images?.[0] || "/images/placeholder.jpg"}
+                  alt={productInfo.name || "Product"}
+                />
+              </div>
 
-            <button
-              className="cart-item-remove"
-              onClick={() => removeFromCart(item.productId)}
-            >
-              Remove
-            </button>
+              <div className="cart-item-details">
+                {/* FIX: Read name and price from productInfo */}
+                <h4 className="cart-item-name">
+                  {productInfo.name || "Unknown Product"}
+                </h4>
+                <p className="cart-item-price">
+                  ${(productInfo.price || 0).toFixed(2)}
+                </p>
+                <p className="cart-item-quantity">Qty: {item.quantity}</p>
+              </div>
 
-            <div className="quantity-control">
+              {/* FIX: Pass the true string ID to your context action methods */}
               <button
-                onClick={() =>
-                  updateCartItem(item.productId, item.quantity - 1)
-                }
-                disabled={item.quantity <= 1}
-                aria-label="Decrease quantity"
+                className="cart-item-remove"
+                onClick={() => removeFromCart(trueProductId)}
               >
-                −
+                Remove
               </button>
 
-              <span className="quantity-display">{item.quantity}</span>
+              <div className="quantity-control">
+                <button
+                  onClick={() =>
+                    updateCartItem(trueProductId, item.quantity - 1)
+                  }
+                  disabled={item.quantity <= 1}
+                  aria-label="Decrease quantity"
+                >
+                  −
+                </button>
 
-              <button
-                onClick={() =>
-                  updateCartItem(item.productId, item.quantity + 1)
-                }
-                aria-label="Increase quantity"
-              >
-                +
-              </button>
+                <span className="quantity-display">{item.quantity}</span>
+
+                <button
+                  onClick={() =>
+                    updateCartItem(trueProductId, item.quantity + 1)
+                  }
+                  aria-label="Increase quantity"
+                >
+                  +
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <div className="cart-total">

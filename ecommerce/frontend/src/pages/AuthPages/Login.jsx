@@ -21,7 +21,6 @@ const Login = () => {
 
   try {
 const result = await login(email, password);
-    console.log("Login result:", result);
 
     if (!result.success) {
       throw new Error(result.message || "Login failed");

@@ -1,12 +1,16 @@
 // ecommerce/backend/controllers/cartController.js
 import asyncHandler from "../utils/asyncHandler.js";
 import Cart from "../models/Cart.js";
-import Product from "../models/Product.js";
-import mongoose from "mongoose";
 import { cacheOrchestrator } from "../cache/cacheOrchestrator.js";
 import { TTL } from "../cache/ttl.js";
 import { delCache } from "../cache/cacheService.js";
 import logger from "../config/logger.js";
+import {
+  addItemToCart,
+  getUserCart,
+  removeUserCartItem,
+  updateItemsInCart,
+} from "../services/cartService.js";
 
 const getCartQuery = (req) => {
   logger.info("🔍 getCartQuery Debug:", {
@@ -18,244 +22,168 @@ const getCartQuery = (req) => {
   }
   return null;
 };
+
+// Reusable Service Error Mapper for HTTP consistency
+const handleServiceError = (res, err) => {
+  const statusMap = {
+    INVALID_PRODUCT_ID: 400,
+    INVALID_QUANTITY: 400,
+    INSUFFICIENT_STOCK: 409, // 409 Conflict
+    PRODUCT_NOT_FOUND: 404,
+    CART_NOT_FOUND: 404,
+    ITEM_NOT_FOUND: 404,
+  };
+  return res.status(statusMap[err.message] || 500).json({
+    success: false,
+    message: err.message,
+  });
+};
+
 // ─── GET CART ───────────────────────────────────────────────────────────────
 export const getCart = asyncHandler(async (req, res) => {
   const query = getCartQuery(req);
-  logger.info("getCart query:", query);
-  if (!query) {
+  const emptyCartStructure = { items: [], totalAmount: 0, totalItems: 0 };
+
+  if (!query || !query.userId) {
     return res.status(200).json({
       success: true,
-      cart: { items: [], totalAmount: 0, totalItems: 0 },
+      cart: emptyCartStructure,
     });
   }
+
   const cartCacheKey = `cart:${query.userId}`;
-  const cart = await cacheOrchestrator({
+
+  let cart = await cacheOrchestrator({
     key: cartCacheKey,
     ttl: TTL.cart,
     fetch: async () => {
-      let cart = await Cart.findOne(query).populate("items.productId");
-
-      logger.info("Found cart:", cart ? cart._id : "none");
-
-      if (!cart) {
-        logger.info("Attempting to create cart with query:", query);
-        try {
-          cart = await Cart.create(query);
-          logger.info("Cart created successfully, ID:", cart._id);
-          cart = await Cart.findById(cart._id).populate("items.productId");
-        } catch (err) {
-          logger.error("Cart creation error:", err);
-          throw new Error("Cart creation failed");
-        }
-      }
-
-      return cart;
+      const dbCart = await getUserCart(query.userId);
+      console.log("Fetched cart from DB:", dbCart);
+      return dbCart || emptyCartStructure;
     },
   });
-  logger.info("cart : ", cart);
 
-  res.json({ success: true, cart: formatCartResponse(cart) });
+  if (!cart) {
+    cart = emptyCartStructure;
+  }
+
+  return res.status(200).json({
+    success: true,
+    cart: cart,
+  });
 });
 
 // ─── ADD TO CART ────────────────────────────────────────────────────────────
 export const addToCart = asyncHandler(async (req, res) => {
   const { productId, quantity = 1 } = req.body;
-  const qty = Number(quantity);
 
-  if (!mongoose.Types.ObjectId.isValid(productId)) {
-    return res
-      .status(400)
-      .json({ success: false, message: "Invalid product ID" });
-  }
-  if (isNaN(qty) || qty < 1) {
-    return res
-      .status(400)
-      .json({ success: false, message: "Quantity must be ≥ 1" });
-  }
-
-  const product = await Product.findById(productId);
-  if (!product)
-    return res
-      .status(404)
-      .json({ success: false, message: "Product not found" });
-
+  console.log("Received addToCart request:", { productId, quantity });
   const query = getCartQuery(req);
-  if (!query)
-    return res
-      .status(401)
-      .json({ success: false, message: "Authentication required" });
 
-  let cart = await Cart.findOne(query);
-  if (!cart) {
-    cart = new Cart({ ...query, items: [] });
-  }
-
-  const itemIndex = cart.items.findIndex(
-    (i) => i.productId.toString() === productId,
-  );
-
-  const newQty = itemIndex >= 0 ? cart.items[itemIndex].quantity + qty : qty;
-
-  if (newQty > product.stock) {
-    return res.status(400).json({
+  if (!query?.userId) {
+    return res.status(401).json({
       success: false,
-      message: `Only ${product.stock} in stock (requested: ${newQty})`,
+      message: "Authentication required",
     });
   }
 
-  if (itemIndex >= 0) {
-    cart.items[itemIndex].quantity = newQty;
-  } else {
-    cart.items.push({ productId, quantity: qty });
-  }
-  const cartCacheKey = `cart:${query.userId}`;
-  await delCache(cartCacheKey);
-  await updateCartTotals(cart);
-  await cart.save();
+  try {
+    const populatedCart = await addItemToCart(query.userId, productId, quantity);
 
-  const populated = await Cart.findById(cart._id).populate(
-    "items.productId",
-    "name price images slug stock",
-  );
-  res.json({ success: true, cart: formatCartResponse(populated) });
+    // FIX 1: Cache invalidation happens safely AFTER the write operation completes
+    await delCache(`cart:${query.userId}`);
+
+    return res.status(200).json({
+      success: true,
+      cart: populatedCart,
+    });
+  } catch (err) {
+    return handleServiceError(res, err);
+  }
 });
 
 // ─── UPDATE CART ITEM ───────────────────────────────────────────────────────
 export const updateCartItem = asyncHandler(async (req, res) => {
   const { productId } = req.params;
   const { quantity } = req.body;
-  const qty = Number(quantity);
-
-  if (isNaN(qty) || qty < 1) {
-    return res
-      .status(400)
-      .json({ success: false, message: "Quantity must be ≥ 1" });
-  }
-
+  console.log("Received updateCartItem request:", { productId, quantity });
   const query = getCartQuery(req);
-  if (!query)
-    return res
-      .status(401)
-      .json({ success: false, message: "Not authenticated" });
 
-  const cart = await Cart.findOne(query);
-  if (!cart)
-    return res.status(404).json({ success: false, message: "Cart not found" });
-
-  const item = cart.items.find((i) => i.productId.toString() === productId);
-  if (!item)
-    return res
-      .status(404)
-      .json({ success: false, message: "Item not in cart" });
-
-  const product = await Product.findById(productId);
-  if (qty > product.stock) {
-    return res
-      .status(400)
-      .json({ success: false, message: `Only ${product.stock} available` });
+  if (!query || !query.userId) {
+    return res.status(401).json({ success: false, message: "Not authenticated" });
   }
 
-  item.quantity = qty;
-  const cartCacheKey = `cart:${query.userId}`;
-  await delCache(cartCacheKey);
-  await updateCartTotals(cart);
-  await cart.save();
+  try {
+    // FIX 2: Execute service first before wiping the cache
+    const populated = await updateItemsInCart(
+      query.userId,
+      productId,
+      quantity,
+    
+    );
+console.log("Updated cart from service:", populated);
+    // Wipe cache second to block out read race conditions completely
+    const cartCacheKey = `cart:${query.userId}`;
+    await delCache(cartCacheKey);
 
-  const populated = await Cart.findById(cart._id).populate(
-    "items.productId",
-    "name price images",
-  );
-  res.json({ success: true, cart: formatCartResponse(populated) });
+    return res.status(200).json({ success: true, cart: populated });
+  } catch (err) {
+    return handleServiceError(res, err);
+  }
 });
 
 // ─── REMOVE CART ITEM ───────────────────────────────────────────────────────
 export const removeCartItem = asyncHandler(async (req, res) => {
   const { productId } = req.params;
-  logger.info("Removing productId:", productId);
   const query = getCartQuery(req);
-  if (!query)
-    return res
-      .status(401)
-      .json({ success: false, message: "Not authenticated" });
 
-  const cart = await Cart.findOne(query);
-  logger.info("Query used to find cart:", JSON.stringify(query, null, 2));
-  logger.info("Current cart items before removal:", cart);
-
-  if (!cart) {
-    return res.status(404).json({ success: false, message: "Cart not found" });
+  if (!query || !query.userId) {
+    return res.status(401).json({ success: false, message: "Not authenticated" });
   }
-  cart.items = cart.items.filter((i) => i.productId.toString() !== productId);
-  const cartCacheKey = `cart:${query.userId}`;
-  await delCache(cartCacheKey);
-  await updateCartTotals(cart);
-  await cart.save();
 
-  const populated = await Cart.findById(cart._id).populate(
-    "items.productId",
-    "name price images",
-  );
-  res.json({ success: true, cart: formatCartResponse(populated) });
+  try {
+    // FIX 3: Mutate data first
+    const updatedCart = await removeUserCartItem({
+      userId: query.userId,
+      productId,
+    });
+    
+    // FIX 4: Delete the cache key after data mutation completes
+    const cartCacheKey = `cart:${query.userId}`;
+    await delCache(cartCacheKey);
+
+    const finalCart = updatedCart || { items: [], totalAmount: 0, totalItems: 0 };
+
+    return res.status(200).json({
+      success: true,
+      message: "Cart updated successfully.",
+      cart: finalCart,
+    });
+  } catch (err) {
+    return handleServiceError(res, err);
+  }
 });
 
 // ─── CLEAR CART ─────────────────────────────────────────────────────────────
 export const clearCart = asyncHandler(async (req, res) => {
   const query = getCartQuery(req);
-  if (!query)
-    return res
-      .status(401)
-      .json({ success: false, message: "Not authenticated" });
-  const cartCacheKey = `cart:${query.userId}`;
-  await delCache(cartCacheKey);
-  await Cart.findOneAndUpdate(query, {
-    $set: { items: [], totalAmount: 0, totalItems: 0 },
-  });
 
-  res.json({
+  if (!query || !query.userId) {
+    return res.status(401).json({ success: false, message: "Not authenticated" });
+  }
+
+  const { userId } = query;
+  const cartCacheKey = `cart:${userId}`;
+
+  await Cart.findOneAndUpdate(
+    { userId },
+    { $set: { items: [], totalAmount: 0, totalItems: 0 } }
+  );
+
+  await delCache(cartCacheKey);
+
+  return res.status(200).json({
     success: true,
     cart: { items: [], totalAmount: 0, totalItems: 0 },
   });
 });
-// Helpers (unchanged from your code)
-async function updateCartTotals(cartDoc) {
-  // If cartDoc is a plain object or partial doc, fetch populated cart by id
-  let cart = cartDoc;
-  if (cartDoc && cartDoc._id) {
-    cart = await Cart.findById(cartDoc._id).populate("items.productId");
-  }
-
-  let totalItems = 0;
-  let totalAmount = 0;
-
-  (cart.items || []).forEach((item) => {
-    const price = item.productId?.price || 0;
-    totalItems += item.quantity || 0;
-    totalAmount += price * (item.quantity || 0);
-  });
-
-  // Update both the populated cart and the original cartDoc reference if different
-  if (cart) {
-    cart.totalItems = totalItems;
-    cart.totalAmount = totalAmount;
-  }
-  if (cartDoc && cartDoc !== cart) {
-    cartDoc.totalItems = totalItems;
-    cartDoc.totalAmount = totalAmount;
-  }
-}
-
-function formatCartResponse(cart) {
-  return {
-    _id: cart._id,
-    items: cart.items.map((item) => ({
-      productId: item.productId?._id || item.productId,
-      name: item.productId?.name,
-      price: item.productId?.price,
-      images: item.productId?.images,
-      quantity: item.quantity,
-    })),
-    totalItems: cart.totalItems,
-    totalAmount: cart.totalAmount,
-    updatedAt: cart.updatedAt,
-  };
-}
