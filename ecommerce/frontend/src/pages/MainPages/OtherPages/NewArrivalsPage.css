@@ -1,224 +1,293 @@
-/*ecommerce/frontend/src/pages/MainPages/OtherPages/NewArrivalsPage.css*/
-.new-arrivals-page {
-  max-width: 1280px;
+/* ecommerce/frontend/src/pages/MainPages/OtherPages/NewArrivalsPage.css */
+
+.new-arrivals-container {
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 4.5rem 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-.page-header {
+/* Informational Header Section */
+.new-arrivals-header {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 3.5rem;
 }
 
-.page-header h1 {
-  font-size: 2.8rem;
-  font-weight: 700;
+.new-arrivals-tagline {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #64748b;
+  display: block;
   margin-bottom: 0.75rem;
-  color: #111827;
 }
 
-.page-header p {
-  font-size: 1.2rem;
-  color: #4b5563;
+.new-arrivals-title {
+  font-size: 2.75rem;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.03em;
+  margin: 0 0 0.75rem 0;
 }
 
-/* Grid */
-.products-grid {
+.new-arrivals-subtitle {
+  font-size: 1.05rem;
+  color: #475569;
+  margin: 0;
+}
+
+/* Master Grid Structure Layout */
+.new-arrivals-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /*[cite: 22] */
+  gap: 2rem; /*[cite: 22] */
+  margin-top: 2rem;
 }
 
-.prod-list-card {
-  background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: all 0.25s ease;
-  animation: slideIn 0.4s ease-out forwards;
+/* Minimalist Hardware Card Components */
+.arrival-product-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px; /*[cite: 22] */
+  overflow: hidden; /*[cite: 22] */
+  display: flex;
+  flex-direction: column;
+  position: relative;
   opacity: 0;
+  transform: translateY(12px);
+  animation: arrivalFadeUp 0.45s cubic-bezier(0.215, 0.61, 0.355, 1) forwards; /*[cite: 22] */
 }
 
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
+@keyframes arrivalFadeUp {
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-.prod-list-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+.arrival-product-card:hover {
+  transform: translateY(-4px); /*[cite: 22] */
+  border-color: #cbd5e1;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.04); /*[cite: 22] */
 }
 
-.prod-list-card-image-wrapper {
+/* Interactive Image Container Frame */
+.arrival-card-image-box {
+  aspect-ratio: 1 / 1;
+  background: #fafafa; /*[cite: 22] */
+  border-bottom: 1px solid #f1f5f9;
   position: relative;
-  height: 320px;
-  overflow: hidden;
-  background: #f9fafb;
+  overflow: hidden; /*[cite: 22] */
 }
 
-.prod-list-card-image-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.4s ease;
+/* Smooth Image Scale Zoom Interactivity */
+.arrival-card-image-box :global(.product-image-slider img) {
+  transition: transform 0.3s cubic-bezier(0.215, 0.61, 0.355, 1); /*[cite: 22] */
 }
 
-.prod-list-card:hover .prod-list-card-image-wrapper img {
-  transform: scale(1.05);
+.arrival-product-card:hover .arrival-card-image-box :global(.product-image-slider img) {
+  transform: scale(1.03); /*[cite: 22] */
 }
 
-.prod-list-card-content {
-  padding: 1.25rem;
-}
-
-.prod-list-card-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin: 0 0 0.75rem;
-  color: #111827;
-  text-decoration: none;
-}
-
-.prod-list-card-title:hover {
-  color: #2563eb;
-  text-decoration: underline;
-}
-
-.prod-list-card-brand {
-  font-size: 0.9rem;
-  color: #6b7280;
-  margin-bottom: 0.75rem;
-}
-
-.prod-list-card-price-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.prod-list-card-price {
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: #111827;
-}
-
-.prod-list-card-rating {
-  color: #fbbf24;
-  font-size: 0.95rem;
-}
-
-.wishlist-btn {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: white;
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
+/* Contextual Wishlist Button Placement */
+.arrival-wishlist-trigger {
+  position: absolute; /*[cite: 22] */
+  top: 1rem; /*[cite: 22] */
+  right: 1rem; /*[cite: 22] */
+  background: #ffffff; /*[cite: 22] */
+  border: 1px solid #e2e8f0;
+  border-radius: 50%; /*[cite: 22] */
+  width: 36px; /*[cite: 22] */
+  height: 36px; /*[cite: 22] */
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s;
-  color: #6b7280;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer; /*[cite: 22] */
+  z-index: 5;
+  color: #64748b; /*[cite: 22] */
+  transition: all 0.15s ease; /*[cite: 22] */
 }
 
-.wishlist-btn:hover {
-  color: #ef4444;
+.arrival-wishlist-trigger:hover {
+  color: #0f172a;
+  border-color: #cbd5e1;
+  transform: scale(1.05);
 }
 
-.wishlist-btn.active {
-  color: #ef4444;
+.arrival-wishlist-trigger.is-active {
+  color: #ef4444; /*[cite: 22] */
+  background: #ffffff;
+  border-color: #fca5a5;
 }
 
-.wishlist-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+/* Inner Information Box Layout */
+.arrival-card-meta {
+  padding: 1.25rem; /*[cite: 22] */
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
-.prod-list-card-add-btn,
-.prod-list-card-buy-now-btn {
-  width: 100%;
-  padding: 10px 16px;
-  border: none;
-  border-radius: 6px;
+.arrival-card-brand {
+  font-size: 0.7rem;
   font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-top: 0.75rem;
+  text-transform: uppercase;
+  color: #94a3b8; /*[cite: 22] */
+  letter-spacing: 0.05em;
+  margin-bottom: 0.35rem; /*[cite: 22] */
 }
 
-.prod-list-card-add-btn {
-  background: #2563eb;
-  color: white;
+.arrival-card-title {
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin: 0 0 0.75rem 0; /*[cite: 22] */
+  line-height: 1.4;
 }
 
-.prod-list-card-add-btn:hover:not(:disabled) {
-  background: #1d4ed8;
-}
-
-.prod-list-card-buy-now-btn {
-  background: #111827;
-  color: white;
-}
-
-.prod-list-card-buy-now-btn:hover:not(:disabled) {
-  background: #1f2937;
-}
-
-.prod-list-card-add-btn:disabled,
-.prod-list-card-buy-now-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.no-results,
-.loading,
-.error-message {
-  text-align: center;
-  padding: 3rem 1rem;
-  font-size: 1.1rem;
-  color: #6b7280;
-}
-
-/* View More */
-.view-more {
-  text-align: center;
-  margin-top: 4rem;
-}
-
-.view-more-btn {
-  display: inline-block;
-  padding: 14px 32px;
-  background: #111827;
-  color: white;
-  border-radius: 8px;
-  font-weight: 600;
+.arrival-card-title a {
+  color: #1e293b; /*[cite: 22] */
   text-decoration: none;
-  transition: background 0.2s;
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color 0.1s ease;
 }
 
-.view-more-btn:hover {
-  background: #1f2937;
+.arrival-card-title a:hover {
+  color: #0f172a; /*[cite: 22] */
 }
 
-/* Responsive */
+/* Metric Price Tag and Ratings Row */
+.arrival-card-metrics {
+  display: flex; /*[cite: 22] */
+  justify-content: space-between; /*[cite: 22] */
+  align-items: center; /*[cite: 22] */
+  margin-bottom: 1.25rem; /*[cite: 22] */
+  margin-top: auto;
+}
+
+.arrival-card-price {
+  font-size: 1.15rem; /*[cite: 22] */
+  font-weight: 600;
+  color: #0f172a; /*[cite: 22] */
+}
+
+.arrival-card-rating {
+  font-size: 0.85rem; /*[cite: 22] */
+  font-weight: 500;
+  color: #334155;
+  background: #f1f5f9;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.arrival-card-rating :global(svg) {
+  color: #e2b813; /*[cite: 22] */
+}
+
+/* Action Control Row UI */
+.arrival-card-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.arrival-btn-primary,
+.arrival-btn-secondary {
+  padding: 0.65rem 0.75rem; /*[cite: 22] */
+  border-radius: 4px; /*[cite: 22] */
+  font-size: 0.82rem;
+  font-weight: 500; /*[cite: 22] */
+  cursor: pointer; /*[cite: 22] */
+  transition: all 0.15s ease; /*[cite: 22] */
+  text-align: center;
+  border: 1px solid transparent;
+}
+
+.arrival-btn-secondary {
+  background: #f1f5f9; /*[cite: 22] */
+  color: #334155;
+  border-color: #e2e8f0;
+}
+
+.arrival-btn-secondary:hover:not(:disabled) {
+  background: #e2e8f0; /*[cite: 22] */
+  color: #0f172a;
+}
+
+.arrival-btn-primary {
+  background: #0f172a; /*[cite: 22] */
+  color: #ffffff; /*[cite: 22] */
+}
+
+.arrival-btn-primary:hover:not(:disabled) {
+  background: #1e293b; /*[cite: 22] */
+}
+
+.arrival-btn-primary:disabled,
+.arrival-btn-secondary:disabled {
+  opacity: 0.5; /*[cite: 22] */
+  background: #f1f5f9;
+  color: #94a3b8;
+  border-color: #e2e8f0;
+  cursor: not-allowed; /*[cite: 22] */
+}
+
+/* Page Feedback States */
+.new-arrivals-empty,
+.display-centered {
+  text-align: center; /*[cite: 22] */
+  padding: 5rem 1rem; /*[cite: 22] */
+  color: #64748b; /*[cite: 22] */
+  font-size: 1rem; /*[cite: 22] */
+}
+
+.ecom-loading-spinner {
+  color: #0f172a;
+  font-weight: 500;
+}
+
+.ecom-error-message {
+  color: #ef4444;
+}
+
+/* Footer Section / Navigation Elements */
+.new-arrivals-footer {
+  text-align: center; /*[cite: 22] */
+  margin-top: 4.5rem; /*[cite: 22] */
+}
+
+.arrival-explore-all-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 2rem; /*[cite: 22] */
+  background: transparent;
+  color: #475569; /*[cite: 22] */
+  border: 1px solid #cbd5e1;
+  border-radius: 4px; /*[cite: 22] */
+  font-weight: 500; /*[cite: 22] */
+  font-size: 0.9rem;
+  text-decoration: none; /*[cite: 22] */
+  transition: all 0.15s ease; /*[cite: 22] */
+}
+
+.arrival-explore-all-btn:hover {
+  background: #f8fafc; /*[cite: 22] */
+  color: #0f172a;
+  border-color: #0f172a;
+}
+
+/* Media Screen Adjustments */
 @media (max-width: 768px) {
-  .products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .page-header h1 {
-    font-size: 2.2rem;
-  }
+  .new-arrivals-container { padding: 3rem 1.25rem; }
+  .new-arrivals-grid { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1.25rem; } /*[cite: 22] */
+  .new-arrivals-title { font-size: 2rem; } /*[cite: 22] */
+  .arrival-card-actions { grid-template-columns: 1fr; }
 }

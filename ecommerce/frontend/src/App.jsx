@@ -45,8 +45,7 @@ import NewArrivalsPage from "./pages/MainPages/OtherPages/NewArrivals.jsx";
 import OrderSuccess from "./pages/MainPages/CartPage/OrderSuccess.jsx";
 import MyOrders from "./pages/AdminPages/OtherPages/MyOrders.jsx";
 import OrderDetails from "./pages/AdminPages/OtherPages/OrderDetails.jsx";
-// import MyProducts from "./pages/MainPages/OtherPages/MyProducts.jsx";
-import MyProductDetail from "./pages/MainPages/OtherPages/MyProductDetail.jsx";
+import MyProductDetail from "./pages/UserPages/MyProductDetail.jsx";
 import UserManagement from "./pages/AdminPages/UserComponents/UserManagement.jsx";
 import AdminUserProfile from "./pages/AdminPages/AdminUserProfile.jsx";
 import UserProfile from "./pages/UserPages/UserProfile.jsx";
@@ -122,7 +121,7 @@ function App() {
               <Route path="my-orders" element={<MyOrders />} />
               <Route path="my-orders/:id" element={<OrderDetails />} />
               <Route path="/my-products" element={<MyProducts />} />
-              <Route path="/my-product/:id" element={<MyProductDetail />} />
+              <Route path="/my-products/:id" element={<MyProductDetail />} />
               <Route path="/edit-product/:id" element={<AddEditProduct />} />
               <Route path="/add-product" element={<AddEditProduct />} />
               <Route path="/wishlist" element={<Wishlist />} />

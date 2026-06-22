@@ -71,6 +71,7 @@ export const useProducts = (filters = {}) => {
 
       try {
         const ProductRes = await API.get("/products/all", { params });
+        console.log('ProductRes:', ProductRes);
         const featuredRes = await API.get("/products/featured");
         const BrandRes = await API.get("/products/brands");
         const trendingRes = await API.get("/products/trending");

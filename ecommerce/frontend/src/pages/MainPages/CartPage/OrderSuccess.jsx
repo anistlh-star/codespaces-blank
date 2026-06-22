@@ -1,66 +1,75 @@
-//ecommerce/frontend/src/pages/MainPages/CartPage/OrderSuccess.jsx
+// ecommerce/frontend/src/pages/MainPages/CartPage/OrderSuccess.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './OrderSuccess.css';
+import { motion } from 'framer-motion';
 import { useAuth } from '../../../../context/AuthContext';
+import { ShieldCheck, ArrowRight, ShoppingCart, HelpCircle, Mail, Phone } from 'lucide-react';
+import './OrderSuccess.css';
 
 const OrderSuccess = () => {
-  const {user} = useAuth();
+  const { user } = useAuth();
+
   return (
-    <div className="order-success-container">
-      <div className="success-card">
-        <div className="check-circle">
-          <svg
-            className="checkmark"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 52 52"
-          >
-            <circle
-              className="checkmark-circle"
-              cx="26"
-              cy="26"
-              r="25"
-              fill="none"
-            />
-            <path
-              className="checkmark-check"
-              fill="none"
-              d="M14.1 27.2l7.1 7.2 16.7-16.8"
-            />
-          </svg>
+    <div className="eh-success-page">
+      <motion.div 
+        className="eh-success-card"
+        initial={{ opacity: 0, scale: 0.95, y: 15 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ type: "spring", stiffness: 100, damping: 15, duration: 0.5 }}
+      >
+        {/* Animated Checkmark Indicator Container */}
+        <div className="eh-success-icon-shield">
+          <div className="eh-success-pulse-ring"></div>
+          <ShieldCheck size={52} className="eh-success-vector" />
         </div>
 
-        <h1>Order Placed Successfully!</h1>
+        <h1>Allocation Successful</h1>
         
-    <p className="thank-you">
-  Thank you for your purchase, {user?.name || "there"}!
-</p>
+        <p className="eh-success-greeting">
+          Thank you for choosing ElectroHub, <strong>{user?.name || "Client Matrix User"}</strong>. Your device allocation order has been integrated.
+        </p>
 
-        <div className="order-info">
-          <p>Your order has been received and is now being processed.</p>
-          <p>You will receive a confirmation email/SMS shortly.</p>
-          <p className="eta">
-            Expected delivery: <strong>3–5 business days</strong>
-          </p>
+        <div className="eh-success-info-panel">
+          <p>Your payload processing sequences are currently running.</p>
+          <p>An administrative dispatch notification will be relayed via secure email pipelines shortly.</p>
+          <div className="eh-success-eta-tag">
+            <span>Logistics Priority Window:</span>
+            <strong>3–5 Business Days</strong>
+          </div>
         </div>
 
-        <div className="action-buttons">
-          <Link to="/my-orders" className="btn primary">
-            View My Orders
+        {/* Action Route Navigation Switches */}
+        <div className="eh-success-action-group">
+          <Link to="/my-orders" className="eh-success-nav-btn eh-success-btn-filled">
+            <span>Access Orders Ledger</span>
+            <ArrowRight size={16} />
           </Link>
           
-          <Link to="/" className="btn secondary">
-            Continue Shopping
+          <Link to="/" className="eh-success-nav-btn eh-success-btn-border">
+            <ShoppingCart size={16} />
+            <span>Continue Procurement</span>
           </Link>
         </div>
 
-        <div className="support-note">
-          <p>Need help? Contact us at</p>
-          <a href="mailto:support@yourstore.pk">support@yourstore.pk</a>
-          <span> | </span>
-          <a href="tel:+923001234567">+92 300 1234567</a>
+        {/* Administrative Technical Support Elements */}
+        <div className="eh-success-support-tray">
+          <div className="eh-success-support-label">
+            <HelpCircle size={14} />
+            <span>Need Systems Assistance?</span>
+          </div>
+          <div className="eh-success-support-links">
+            <a href="mailto:support@yourstore.pk" className="eh-success-channel">
+              <Mail size={13} />
+              <span>support@yourstore.pk</span>
+            </a>
+            <span className="eh-success-divider-pipe">|</span>
+            <a href="tel:+923001234567" className="eh-success-channel">
+              <Phone size={13} />
+              <span>+92 300 1234567</span>
+            </a>
+          </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

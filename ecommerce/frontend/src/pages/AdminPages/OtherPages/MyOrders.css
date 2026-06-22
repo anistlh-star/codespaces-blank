@@ -1,214 +1,306 @@
-/*ecommerce/frontend/src/pages/AdminPages/OtherPages/MyOrders.css*/
+/* ecommerce/frontend/src/pages/AdminPages/OtherPages/MyOrders.css */
 
-.my-orders-page {
-  min-height: 80vh;
-  padding: 4rem 2rem;
-  background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+.eh-orders-page {
+  min-height: 85vh;
+  padding: 3rem 1.5rem;
+  background-color: var(--gray-50);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  box-sizing: border-box;
 }
 
-.orders-container {
-  max-width: 900px;
+.eh-orders-container {
+  max-width: 1000px;
   margin: 0 auto;
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-  padding: 3rem 2.5rem;
-  transition: all 0.3s ease;
 }
 
-.orders-container:hover {
-  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.12);
-}
-
-h1 {
-  text-align: center;
-  color: #1a1a1a;
+/* Header Element Styles */
+.eh-orders-header {
   margin-bottom: 2.5rem;
-  font-size: 2.2rem;
+  border-bottom: 1px solid var(--gray-200);
+  padding-bottom: 1.5rem;
 }
 
-.loading-container {
-  text-align: center;
-  padding: 4rem 0;
+.eh-orders-title-block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.loading-spinner {
-  width: 48px;
-  height: 48px;
-  border: 5px solid #e5e7eb;
-  border-top: 5px solid #4f46e5;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin: 0 auto 1rem;
+.eh-orders-header-icon {
+  color: var(--primary);
+  width: 32px;
+  height: 32px;
 }
 
-.loading-spinner.large {
-  width: 64px;
-  height: 64px;
+.eh-orders-header h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--gray-900);
+  margin: 0;
+  letter-spacing: -0.025em;
 }
 
-.error-message {
-  text-align: center;
-  padding: 4rem 0;
-  color: #ef4444;
-  font-size: 1.1rem;
+.eh-orders-subtitle {
+  color: var(--gray-500);
+  font-size: 1rem;
+  margin: 6px 0 0 0;
 }
 
-.empty-state {
-  text-align: center;
-  padding: 4rem 0;
-  color: #555;
-  font-size: 1.1rem;
-}
-
-.orders-list {
+/* Master Grid List layout */
+.eh-orders-list {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
-.order-card {
-  background: #f8fafc;
-  border-radius: 12px;
-  padding: 1.8rem;
-  border: 1px solid #e5e7eb;
-  transition: all 0.3s ease;
+/* Elegant Order Card layout blocks */
+.eh-orders-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 1.5rem;
+    border: 1px solid black;
+    box-shadow: black;
+    transition: var(--transition);
 }
 
-.order-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-  background: white;
+.eh-orders-card:hover {
+  border-color: var(--gray-300);
+  box-shadow: var(--shadow-md);
 }
 
-.order-header {
+.eh-orders-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--gray-100);
+  margin-bottom: 1.25rem;
 }
 
-.order-header h3 {
-  margin: 0;
-  font-size: 1.25rem;
-  color: #333;
-}
-
-.status-badge {
-  padding: 0.4rem 1rem;
-  border-radius: 50px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-.status-badge.pending {
-  background: #fef3c7;
-  color: #d97706;
-}
-
-.status-badge.processing {
-  background: #dbeafe;
-  color: #2563eb;
-}
-
-.status-badge.completed,
-.status-badge.delivered {
-  background: #dcfce7;
-  color: #15803d;
-}
-
-.status-badge.cancelled {
-  background: #fee2e2;
-  color: #b91c1c;
-}
-
-.order-details {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-  color: #555;
-  font-size: 0.95rem;
-}
-
-.order-details p {
-  margin: 0;
-}
-
-.order-actions {
+.eh-orders-id-group {
   display: flex;
-  gap: 1rem;
-  justify-content: flex-end;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 2px;
 }
 
-.btn {
-  padding: 0.7rem 1.5rem;
-  border-radius: 50px;
+.eh-orders-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--gray-400);
+  letter-spacing: 0.05em;
+}
+
+.eh-orders-id-group h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--gray-900);
+}
+
+/* Refined Component Micro Status Elements */
+.eh-orders-status {
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.eh-orders-status-pending { background: #fef3c7; color: var(--secondary-dark); }
+.eh-orders-status-processing { background: #dbeafe; color: var(--primary); }
+.eh-orders-status-completed,
+.eh-orders-status-delivered { background: #dcfce7; color: var(--success); }
+.eh-orders-status-cancelled { background: #fee2e2; color: var(--danger); }
+
+/* Interior Multi-Node grid allocation styling */
+.eh-orders-details-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.eh-orders-meta-node {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.eh-orders-meta-node svg {
+  color: var(--gray-400);
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.eh-orders-node-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--gray-400);
+  margin-bottom: 2px;
+}
+
+.eh-orders-meta-node p {
+  margin: 0;
   font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--gray-800);
+}
+
+.eh-orders-price-weight {
+  color: var(--primary) !important;
+}
+
+.eh-orders-substatus {
+  font-size: 0.8rem;
+  color: var(--gray-500);
+  font-weight: 400;
+}
+
+/* Internal Buttons Alignment Row */
+.eh-orders-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  border-top: 1px solid var(--gray-100);
+  padding-top: 1.25rem;
+}
+
+/* Core Buttons Architecture configuration rules */
+.eh-orders-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 0.88rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: var(--transition);
   border: none;
 }
 
-.btn.primary {
-  background: #4f46e5;
-  color: white;
+.eh-orders-btn-primary {
+  background: var(--primary);
+  color: #ffffff;
 }
 
-.btn.primary:hover {
-  background: #4338ca;
-  transform: translateY(-2px);
+.eh-orders-btn-primary:hover {
+  background: var(--primary-dark);
 }
 
-.btn.secondary {
+.eh-orders-btn-secondary {
+  background: var(--gray-100);
+  color: var(--gray-700);
+}
+
+.eh-orders-btn-secondary:hover {
+  background: var(--gray-200);
+}
+
+.eh-orders-btn-danger {
   background: transparent;
-  color: #ef4444;
-  border: 2px solid #ef4444;
+  color: var(--danger);
+  border: 1px solid var(--gray-200);
 }
 
-.btn.secondary:hover {
-  background: #ef4444;
-  color: white;
+.eh-orders-btn-danger:hover {
+  background: #fef2f2;
+  border-color: #fca5a5;
 }
 
-/* Animations */
-.animate-fade-in {
-  animation: fadeIn 0.8s ease-out forwards;
+/* Async Processing Box elements */
+.eh-orders-loading-box,
+.eh-orders-error-box,
+.eh-orders-empty-box {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1px solid var(--gray-200);
+  box-shadow: var(--shadow-sm);
+  max-width: 500px;
+  margin: 2rem auto;
 }
 
-.animate-slide-up {
-  opacity: 0;
-  transform: translateY(40px);
-  animation: slideUp 0.7s ease-out forwards;
+.eh-orders-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--gray-200);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 1.25rem;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+.eh-orders-error-box {
+  color: var(--danger);
 }
 
-@keyframes slideUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.eh-orders-error-box p {
+  color: var(--gray-700);
+  margin: 8px 0 20px;
+}
+
+.eh-orders-empty-icon {
+  color: var(--gray-300);
+  margin-bottom: 1rem;
+}
+
+.eh-orders-empty-box p {
+  color: var(--gray-500);
+  margin: 0 0 1.5rem 0;
+}
+
+.eh-orders-fallback-card {
+  background: white;
+  padding: 3rem 2rem;
+  border-radius: 20px;
+  text-align: center;
+  border: 1px solid var(--gray-200);
+  max-width: 400px;
+  box-shadow: var(--shadow-sm);
+}
+
+.eh-orders-alert-icon {
+  color: var(--secondary);
+  margin-bottom: 12px;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  to { transform: rotate(360deg); }
 }
 
-/* Responsive */
-@media (max-width: 600px) {
-  .orders-container {
-    padding: 2rem 1.5rem;
+/* Responsive Overrides Configuration */
+@media (max-width: 1024px) {
+  .eh-orders-details-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
   }
-  
-  .order-actions {
-    justify-content: center;
+}
+
+@media (max-width: 640px) {
+  .eh-orders-page {
+    padding: 1.5rem 1rem;
+  }
+  .eh-orders-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .eh-orders-status {
+    align-self: flex-start;
+  }
+  .eh-orders-details-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .eh-orders-card-actions {
+    flex-direction: column-reverse;
+  }
+  .eh-orders-btn {
+    width: 100%;
   }
 }

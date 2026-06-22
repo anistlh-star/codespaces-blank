@@ -197,7 +197,7 @@ export const createOrder = asyncHandler(async (req, res) => {
     paymentStatus,
     status,
   } = req.body;
-
+  console.log("Admin order creation request:", req.body);
   if (!user || !mongoose.isValidObjectId(user)) {
     return res.status(400).json({ success: false, message: "Valid user ID is required" });
   }
@@ -308,7 +308,7 @@ export const createOrder = asyncHandler(async (req, res) => {
 
 export const placeOrder = asyncHandler(async (req, res) => {
   const userId = req.user._id;
-
+console.log("Placing order for user:", userId, "with body:", req.body);
   // ─── 1. Extract & validate input ───────────────────────────────────────
   const {
     items,

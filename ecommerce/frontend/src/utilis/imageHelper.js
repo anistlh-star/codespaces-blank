@@ -17,7 +17,7 @@ export const imageHelper = (imagePath) => {
 
   // Relative path → prepend backend URL
   const BACKEND_URL =
-    import.meta.env.VITE_API_URL ;
+    import.meta.env.VITE_BACKEND_URL ;
 
   // Make sure it starts with slash (optional but cleaner)
   const cleanPath = imagePath.startsWith("/") ? imagePath : `/${imagePath}`;

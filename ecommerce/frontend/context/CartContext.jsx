@@ -48,10 +48,9 @@ export const CartProvider = ({ children }) => {
     setLoading(true);
     try {
       const headers = getCartHeaders();
-      console.log("🧑‍💼 Fetching cart for logged-in user");
+      // console.log("🧑‍💼 Fetching cart for logged-in user");
 
       const res = await API.get("/cart/get", { headers });
-console.log("📦 Cart fetched successfully:", res);
       const fetchedCart = res.data.cart || {
         items: [],
         totalAmount: 0,
@@ -59,7 +58,6 @@ console.log("📦 Cart fetched successfully:", res);
       };
 
       setCart(fetchedCart);
-      console.log("✅ Cart updated:", fetchedCart.totalItems, "items");
     } catch (err) {
       console.error("❌ Failed to fetch cart:", err.response?.data || err.message);
       // Optional: clear cart on fetch error
@@ -112,7 +110,7 @@ console.log("📦 Cart fetched successfully:", res);
   // Update Cart Item Quantity
   const updateCartItem = async (productId, quantity) => {
     if (!isAuthenticated || !token || quantity < 1) return;
-console.log("Updating cart item:", { productId, quantity });
+    // console.log("Updating cart item:", { productId, quantity });
     try {
       const headers = getCartHeaders();
       const res = await API.put(

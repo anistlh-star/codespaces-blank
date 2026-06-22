@@ -1,89 +1,429 @@
-/*ecommerce/frontend/src/pages/AdminPages/OtherPages/OrderDetails.css*/
-.order-details-page {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 0 1rem;
+/* ecommerce/frontend/src/pages/AdminPages/OtherPages/OrderDetails.css */
+
+.eh-details-page {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 24px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  box-sizing: border-box;
 }
 
-.order-details-container {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  padding: 2rem;
+/* Header structural configuration elements */
+.eh-details-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--gray-200);
+  padding-bottom: 16px;
+  margin-bottom: 24px;
 }
 
-.header {
+.eh-details-back-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  color: var(--gray-500);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 0;
+  transition: var(--transition);
+}
+
+.eh-details-back-trigger:hover {
+  color: var(--primary);
+}
+
+.eh-details-header h1 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--gray-900);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+/* Premium Dashboard Form Layout Matrix styles */
+.eh-details-grid-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.eh-details-main-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.eh-details-side-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Clean Panel Structural Layouts configuration rules */
+.eh-details-card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid var(--gray-200);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.eh-details-card-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--gray-100);
+  padding-bottom: 12px;
+}
+
+.eh-details-card-title svg {
+  color: var(--primary);
+}
+
+.eh-details-card-title h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin: 0;
+}
+
+/* Master Overview Meta summary card overrides */
+.eh-details-meta-summary {
+  background: var(--gray-900);
+  border: none;
+  padding: 16px 24px;
+}
+
+.eh-details-summary-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.eh-details-meta-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--gray-400);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.eh-details-meta-pill svg {
+  color: var(--gray-500);
+}
+
+/* Functional Component Target Badges style profiles */
+.eh-details-tag {
+  margin-left: auto;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.eh-details-tag-pending { background: #78350f; color: #fef3c7; }
+.eh-details-tag-processing { background: #1e3a8a; color: #dbeafe; }
+.eh-details-tag-completed,
+.eh-details-tag-delivered { background: #065f46; color: #dcfce7; }
+.eh-details-tag-cancelled { background: #991b1b; color: #fee2e2; }
+
+/* Structural Mapping Loops For Payload Items elements */
+.eh-details-items-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.eh-details-item-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.eh-details-item-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.eh-details-item-row:first-child {
+  padding-top: 0;
+}
+
+.eh-details-item-thumb {
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.eh-details-item-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.eh-details-item-info {
+  flex: 1;
+}
+
+.eh-details-item-info h4 {
+  margin: 0 0 4px 0;
+  font-size: 0.98rem;
+  font-weight: 600;
+}
+
+.eh-details-item-info h4 a {
+  color: var(--gray-900);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.eh-details-item-info h4 a:hover {
+  color: var(--primary);
+}
+
+.eh-details-item-meta-metrics {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--gray-500);
+  font-size: 0.85rem;
+}
+
+.eh-details-item-meta-metrics svg {
+  color: var(--gray-300);
+}
+
+.eh-details-item-valuation {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--gray-900);
+}
+
+/* Financial Matrix Cards tracking components style overrides */
+.eh-details-invoice-card {
+  background: var(--gray-50);
+  border-color: var(--gray-200);
+}
+
+.eh-details-invoice-card h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin: 0 0 16px 0;
+}
+
+.eh-details-invoice-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.eh-details-invoice-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: var(--gray-600);
+}
+
+.eh-details-invoice-line span:last-child {
+  font-weight: 600;
+  color: var(--gray-900);
+}
+
+.eh-details-invoice-grand {
+  border-top: 1px solid var(--gray-250);
+  margin-top: 6px;
+  padding-top: 14px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--gray-900) !important;
+}
+
+.eh-details-invoice-grand span:last-child {
+  font-size: 1.35rem;
+  color: var(--primary) !important;
+  font-weight: 800;
+}
+
+/* Shipping / Address Destination Block Layout modules styling */
+.eh-details-address-block p {
+  margin: 0 0 6px 0;
+  font-size: 0.95rem;
+  color: var(--gray-600);
+  line-height: 1.4;
+}
+
+.eh-details-address-block p:last-child {
+  margin-bottom: 0;
+}
+
+.eh-details-recipient {
+  font-weight: 700;
+  color: var(--gray-900) !important;
+}
+
+.eh-details-country-line {
+  font-size: 0.85rem !important;
+  font-weight: 700;
+  color: var(--gray-400) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 8px !important;
+}
+
+/* Core Payment Layer Parameter Elements modules styling */
+.eh-details-payment-block {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.eh-details-payment-line {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  font-size: 0.9rem;
 }
 
-.back-btn {
-  background: #f1f5f9;
-  color: #334155;
+.eh-details-payment-line span:first-child {
+  color: var(--gray-500);
 }
 
-.order-summary-card {
-  background: #f8fafc;
-  padding: 1.5rem;
-  border-radius: 10px;
-  margin-bottom: 2rem;
+.eh-details-payment-line strong {
+  color: var(--gray-900);
 }
 
-.order-meta > div {
-  margin: 0.5rem 0;
+.eh-details-payment-status {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 6px;
 }
 
-.order-totals {
-  margin-top: 1.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid #e2e8f0;
-}
+.eh-details-pay-paid { background: #dcfce7; color: #15803d; }
+.eh-details-pay-unpaid,
+.eh-details-pay-pending { background: #fee2e2; color: #b91c1c; }
 
-.total-row {
+/* Global Module Loader Exception states structural components */
+.eh-details-centered {
+  min-height: 70vh;
   display: flex;
-  justify-content: space-between;
-  margin: 0.5rem 0;
+  align-items: center;
+  justify-content: center;
 }
 
-.grand-total {
-  font-size: 1.2rem;
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 2px solid #cbd5e1;
+.eh-details-spinner-block {
+  text-align: center;
 }
 
-.shipping-address, .payment-info {
-  background: #f8fafc;
-  padding: 1.5rem;
+.eh-details-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--gray-200);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 12px;
+}
+
+.eh-details-fallback {
+  background: white;
+  padding: 40px 24px;
+  border-radius: 20px;
+  border: 1px solid var(--gray-200);
+  text-align: center;
+  max-width: 420px;
+  box-shadow: var(--shadow-sm);
+}
+
+.eh-details-err-icon {
+  color: var(--danger);
+  margin-bottom: 16px;
+}
+
+.eh-details-fallback h2 {
+  font-size: 1.3rem;
+  margin: 0 0 8px 0;
+  color: var(--gray-900);
+}
+
+.eh-details-fallback p {
+  font-size: 0.95rem;
+  color: var(--gray-500);
+  margin: 0 0 24px 0;
+  line-height: 1.5;
+}
+
+.eh-details-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
   border-radius: 10px;
-  margin-bottom: 2rem;
-}
-
-.order-item-row {
-  display: flex;
-  gap: 1.5rem;
-  padding: 1rem 0;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.order-item-row:last-child {
-  border-bottom: none;
-}
-
-.item-image img {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-.item-info h4 {
-  margin: 0 0 0.5rem;
-}
-
-.item-subtotal {
+  font-size: 0.9rem;
   font-weight: 600;
-  color: #2563eb;
+  cursor: pointer;
+  border: none;
+  transition: var(--transition);
+}
+
+.eh-details-btn-primary { background: var(--primary); color: #ffffff; }
+.eh-details-btn-primary:hover { background: var(--primary-dark); }
+.eh-details-btn-secondary { background: var(--gray-100); color: var(--gray-700); }
+.eh-details-btn-secondary:hover { background: var(--gray-200); }
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Responsiveness Structural Configuration */
+@media (max-width: 1024px) {
+  .eh-details-grid-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .eh-details-page {
+    padding: 0 16px;
+    margin: 24px auto;
+  }
+  .eh-details-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .eh-details-tag {
+    margin-left: 0;
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+  }
+  .eh-details-item-row {
+    flex-wrap: wrap;
+  }
+  .eh-details-item-info {
+    width: calc(100% - 80px);
+  }
+  .eh-details-item-valuation {
+    width: 100%;
+    text-align: right;
+    margin-top: 8px;
+  }
 }

@@ -1,291 +1,133 @@
 /* src/pages/AdminPages/AddEditProduct.css */
 
-/* Similar to MyProducts.css – clean, modern, responsive */
-
-.add-edit-product-page {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem;
-  background: #f9f9f9;
+.ecom-form-container-page {
+  max-width: 840px;
+  margin: 3rem auto;
+  padding: 0 2rem;
   min-height: 100vh;
 }
 
-.add-edit-product-page h1 {
-  font-size: 2.2rem;
-  color: #1a1a1a;
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
-.product-form {
-  background: white;
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-}
-
-.form-section {
+.ecom-form-container-page h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.03em;
   margin-bottom: 2.5rem;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 2rem;
 }
 
-.form-section:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
-}
-
-.form-section h2 {
-  font-size: 1.4rem;
-  color: #333;
-  margin-bottom: 1.5rem;
-  border-left: 4px solid #4361ee;
-  padding-left: 1rem;
-}
-
-.form-group {
+.ecom-interactive-form {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 2.5rem;
   display: flex;
   flex-direction: column;
-  margin-bottom: 1.5rem;
+  gap: 2.5rem;
 }
 
-.form-group label {
-  font-weight: 500;
-  color: #444;
-  margin-bottom: 0.6rem;
-  font-size: 0.95rem;
+.ecom-form-segment {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
-  padding: 0.85rem 1.2rem;
-  border: 1px solid #ddd;
+.ecom-form-segment h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px dashed #e2e8f0;
+}
+
+.ecom-input-field-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ecom-input-field-block label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.ecom-input-field-block input,
+.ecom-input-field-block select,
+.ecom-input-field-block textarea {
+  padding: 0.75rem 1rem;
+  border: 1px solid #cbd5e1;
   border-radius: 8px;
-  font-size: 1rem;
-  transition: border 0.2s;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-  border-color: #4361ee;
+  font-size: 0.95rem;
+  background: #ffffff;
+  color: #0f172a;
   outline: none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.form-group textarea {
-  resize: vertical;
-  min-height: 120px;
+.ecom-input-field-block input:focus,
+.ecom-input-field-block select:focus,
+.ecom-input-field-block textarea:focus {
+  border-color: #0f172a;
+  box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.05);
 }
 
-.form-row {
+.ecom-input-grid-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
 }
 
-.form-checkboxes {
-  display: flex;
-  gap: 2rem;
-  margin-top: 1rem;
+.ecom-input-grid-row.tri {
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
-.form-checkboxes label {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.form-checkboxes input {
-  width: 18px;
-  height: 18px;
-  accent-color: #4361ee;
-}
-
-/* Images */
-.file-input {
-  margin-bottom: 1.5rem;
-  padding: 0.85rem;
-  border: 2px dashed #ddd;
-  border-radius: 8px;
-  cursor: pointer;
-  text-align: center;
-  color: #666;
-  transition: border 0.2s;
-}
-
-.file-input:hover {
-  border-color: #4361ee;
-}
-
-.image-preview {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.image-item {
+.ecom-upload-dragzone {
   position: relative;
-  width: 150px;
-  height: 150px;
-  border-radius: 8px;
-  overflow: hidden;
-  border: 1px solid #eee;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  background: #f8fafc;
+  cursor: pointer;
 }
 
-.image-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.image-item button {
+.ecom-upload-dragzone input[type="file"] {
   position: absolute;
-    top: 1px;
-    right: 15px;
-  background: transparent;
-  color: #ff0f0f;
-  border: none;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
+  top: 0; left: 0; width: 100%; height: 100%;
+  opacity: 0;
   cursor: pointer;
-  font-weight: bold;
-  transition: background 0.2s;
 }
 
-.image-item button:hover {
-  background: transparent;
-}
-.image-item button svg{
-      height: 35px;
-    width: 35px;
-}
-/* Specifications */
-.spec-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr auto;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
+.ecom-upload-dragzone p { margin: 0; font-size: 0.88rem; color: #64748b; font-weight: 500; }
 
-.spec-row input {
-  padding: 0.85rem 1.2rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-}
+.ecom-media-preview-strip { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; }
+.ecom-media-item-card { position: relative; width: 100px; height: 100px; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0; }
+.ecom-media-item-card img { width: 100%; height: 100%; object-fit: cover; }
+.ecom-media-item-card button { position: absolute; top: 4px; right: 4px; background: rgba(255, 255, 255, 0.9); border: none; border-radius: 50%; color: #ef4444; width: 24px; height: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
-.spec-row button {
-  background: #f1f3f5;
-  border: 1px solid #dee2e6;
-  color: #dc3545;
-  padding: 0.85rem 1.2rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.spec-row button:hover {
-  background: #f8d7da;
-}
-
-.btn-add-spec {
-  background: #4361ee;
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background 0.2s;
-}
-
-.btn-add-spec:hover {
-  background: #3f37c9;
-}
-
-/* Form Actions */
-.form-actions {
+.ecom-form-commit-footer {
   display: flex;
   justify-content: flex-end;
-  gap: 1.5rem;
-  margin-top: 2rem;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
 }
 
-.btn-save {
-  background: #4361ee;
-  color: white;
-  padding: 1rem 2rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background 0.2s;
-}
+.ecom-action-btn { padding: 0.75rem 1.75rem; font-size: 0.9rem; font-weight: 600; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; border: none; }
+.ecom-action-btn.cancel { background: #f1f5f9; color: #475569; }
+.ecom-action-btn.cancel:hover { background: #e2e8f0; color: #0f172a; }
+.ecom-action-btn.commit { background: #0f172a; color: #ffffff; }
+.ecom-action-btn.commit:hover { background: #1e293b; }
+.ecom-action-btn.commit:disabled { background: #94a3b8; cursor: not-allowed; }
 
-.btn-save:hover {
-  background: #3f37c9;
-}
+.ecom-notification-banner { padding: 1rem; border-radius: 8px; font-size: 0.9rem; font-weight: 600; text-align: center; }
+.ecom-notification-banner.error { background: #fee2e2; color: #991b1b; }
+.ecom-notification-banner.success { background: #ccfbf1; color: #115e59; }
 
-.btn-save:disabled {
-  background: #adb5bd;
-  cursor: not-allowed;
-}
-
-.btn-cancel {
-  background: #f1f3f5;
-  color: #495057;
-  padding: 1rem 2rem;
-  border: 1px solid #dee2e6;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background 0.2s;
-}
-
-.btn-cancel:hover {
-  background: #e9ecef;
-}
-
-/* Messages */
-.error-message {
-  background: #f8d7da;
-  color: #721c24;
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-
-.success-message {
-  background: #d4edda;
-  color: #155724;
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .form-row {
-    grid-template-columns: 1fr;
-  }
-
-  .spec-row {
-    grid-template-columns: 1fr;
-  }
-
-  .form-actions {
-    flex-direction: column-reverse;
-    gap: 1rem;
-  }
-
-  .btn-save,
-  .btn-cancel {
-    width: 100%;
-  }
+@media (max-width: 600px) {
+  .ecom-input-grid-row, .ecom-input-grid-row.tri { grid-template-columns: 1fr; gap: 1.25rem; }
+  .ecom-form-commit-footer { flex-direction: column-reverse; }
+  .ecom-action-btn { width: 100%; }
 }

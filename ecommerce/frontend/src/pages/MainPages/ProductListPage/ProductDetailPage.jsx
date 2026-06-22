@@ -5,15 +5,12 @@ import {
   Star,
   Heart,
   ShoppingCart,
-  ChevronLeft,
-  ChevronRight,
 } from "lucide-react";
 import "./ProductDetailPage.css";
 import API from "../../../../api";
 import { useCart } from "../../../../context/CartContext";
 import { useWishlist } from "../../../hooks/useWishlist";
-import { imageHelper } from "../../../utilis/imageHelper";
-import "./ProductDetailPage.css";
+import ProductImageSlider from "../../../components/ProductImageSlider";
 
 const ProductDetailPage = () => {
   const navigate = useNavigate();
@@ -24,8 +21,6 @@ const ProductDetailPage = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
@@ -39,8 +34,8 @@ const ProductDetailPage = () => {
       try {
         setLoading(true);
         const res = await API.get(`/products/${id}`);
+        console.log("Fetched product data:", res);
         setProduct(res.data.data || res.data);
-        setCurrentImageIndex(0);
         setQuantity(1);
       } catch (err) {
         setError(
@@ -54,23 +49,6 @@ const ProductDetailPage = () => {
 
     fetchProduct();
   }, [id]);
-
-  // Image navigation
-  const nextImage = () => {
-    if (!product?.images?.length) return;
-    setCurrentImageIndex((prev) => (prev + 1) % product.images.length);
-  };
-
-  const prevImage = () => {
-    if (!product?.images?.length) return;
-    setCurrentImageIndex(
-      (prev) => (prev - 1 + product.images.length) % product.images.length,
-    );
-  };
-
-  const selectImage = (index) => {
-    setCurrentImageIndex(index);
-  };
 
   // Quantity controls
   const handleQuantityChange = (e) => {
@@ -110,10 +88,11 @@ const ProductDetailPage = () => {
       },
     });
   };
+
   const price = product?.price ?? 0;
   const salePrice = product?.salePrice;
-
   const finalPrice = salePrice ?? price;
+  const isOutOfStock = product?.stock <= 0;
 
   // Loading skeleton
   if (loading) {
@@ -143,11 +122,11 @@ const ProductDetailPage = () => {
             onClick={() => navigate("/products")}
             style={{
               marginTop: "1rem",
-              padding: "0.75rem 2rem",
+              padding: "0.6rem 1.5rem",
               background: "var(--primary)",
               color: "white",
               border: "none",
-              borderRadius: "2rem",
+              borderRadius: "4px",
               cursor: "pointer",
             }}
           >
@@ -157,15 +136,6 @@ const ProductDetailPage = () => {
       </div>
     );
   }
-
-  const images =
-    Array.isArray(product.images) && product.images.length > 0
-      ? product.images.map((img) => imageHelper(img) || img)
-      : ["/images/placeholder-product.jpg"];
-
-  const mainImage = images[currentImageIndex] || images[0];
-
-  const isOutOfStock = product.stock <= 0;
 
   return (
     <div className="pdp-wrapper">
@@ -181,64 +151,14 @@ const ProductDetailPage = () => {
         </div>
 
         <div className="product-content">
-          {/* Image Gallery */}
+          {/* Swiper Image Gallery Slider */}
           <div className="image-gallery">
-            <div className="main-image-wrapper">
-              <img
-                src={mainImage}
-                alt={product.name}
-                className="main-image"
-                loading="lazy"
-                onError={(e) => {
-                  e.target.src =
-                    "https://placehold.co/600x600?text=Image+Not+Found";
-                }}
-              />
-
-              {images.length > 1 && (
-                <>
-                  <button
-                    className="nav-arrow nav-arrow-left"
-                    onClick={prevImage}
-                    aria-label="Previous image"
-                  >
-                    <ChevronLeft size={24} />
-                  </button>
-                  <button
-                    className="nav-arrow nav-arrow-right"
-                    onClick={nextImage}
-                    aria-label="Next image"
-                  >
-                    <ChevronRight size={24} />
-                  </button>
-                </>
-              )}
-
-              {product.onSale && product.discountPercentage > 0 && (
-                <div className="sale-badge">-{product.discountPercentage}%</div>
-              )}
-            </div>
-
-            {images.length > 1 && (
-              <div className="thumbnails">
-                {images.map((img, idx) => (
-                  <div
-                    key={idx}
-                    className={`thumbnail ${idx === currentImageIndex ? "active" : ""}`}
-                    onClick={() => selectImage(idx)}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => e.key === "Enter" && selectImage(idx)}
-                  >
-                    <img
-                      src={img}
-                      alt={`Thumbnail ${idx + 1} of ${product.name}`}
-                      loading="lazy"
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
+            <ProductImageSlider
+              images={product.images}
+              productName={product.name}
+              discount={product.onSale ? product.discountPercentage : 0}
+              showThumbnails={true}
+            />
           </div>
 
           {/* Product Info */}
@@ -330,7 +250,7 @@ const ProductDetailPage = () => {
                 className="add-to-cart-btn"
                 disabled={isOutOfStock}
               >
-                <ShoppingCart size={20} />
+                <ShoppingCart size={18} />
                 Add to Cart
               </button>
 
@@ -353,7 +273,7 @@ const ProductDetailPage = () => {
                 }
               >
                 <Heart
-                  size={22}
+                  size={18}
                   fill={isInWishlist(product._id) ? "currentColor" : "none"}
                 />
               </button>
@@ -382,7 +302,7 @@ const ProductDetailPage = () => {
                   <tr>
                     <td
                       colSpan={2}
-                      style={{ textAlign: "center", padding: "2rem" }}
+                      style={{ textAlign: "center", padding: "1.5rem" }}
                     >
                       No specifications available
                     </td>

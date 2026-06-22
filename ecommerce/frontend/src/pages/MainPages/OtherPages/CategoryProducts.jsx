@@ -1,7 +1,7 @@
 // ecommerce/frontend/src/pages/MainPages/CategoryPage/CategoryProducts.jsx
 import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { Grid, List, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { Grid, List, ChevronLeft, ChevronRight, Loader2, ArrowLeft } from "lucide-react";
 import "./CategoryProducts.css";
 import { useCategories } from "../../../hooks/useCategories";
 import ProductImageSlider from "../../../components/ProductImageSlider";
@@ -20,15 +20,13 @@ const sortOptions = [
 const ITEMS_PER_PAGE = 12;
 
 const CategoryProducts = () => {
-  const { categoryId } = useParams(); // e.g., "/category/:categoryId"
+  const { categoryId } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
-  // View mode & sorting
   const [viewMode, setViewMode] = useState("grid");
   const [sortBy, setSortBy] = useState("newest");
 
-  // Pagination from hook
   const {
     products,
     loadingProducts,
@@ -37,11 +35,10 @@ const CategoryProducts = () => {
     currentPage,
     setCurrentPage,
   } = useProducts({
-    category: categoryId,          // filter by this category ID
+    category: categoryId,
     sortBy,
   });
 
-  // Fetch categories to get the category name
   const { categories, loadingCategories } = useCategories();
   const [categoryName, setCategoryName] = useState("");
 
@@ -54,7 +51,6 @@ const CategoryProducts = () => {
 
   const isLoading = loadingProducts || loadingCategories;
 
-  // Pagination helpers
   const startItem = (currentPage - 1) * ITEMS_PER_PAGE + 1;
   const endItem = Math.min(currentPage * ITEMS_PER_PAGE, totalProducts);
 
@@ -65,7 +61,6 @@ const CategoryProducts = () => {
     }
   };
 
-  // Buy Now handler (direct checkout)
   const handleBuyNow = (product) => {
     navigate("/checkout", {
       state: {
@@ -80,13 +75,15 @@ const CategoryProducts = () => {
     });
   };
 
-  // If category not found after loading
   if (!loadingCategories && categories.length > 0 && !categoryName) {
     return (
       <div className="category-products-page">
         <div className="category-not-found">
-          <h2>Category not found</h2>
-          <Link to="/products" className="back-link">← Back to all products</Link>
+          <h2>Category Not Found</h2>
+          <p>The category you are looking for might have been moved or renamed.</p>
+          <Link to="/products" className="back-link">
+            <ArrowLeft size={16} /> Back to All Products
+          </Link>
         </div>
       </div>
     );
@@ -96,38 +93,43 @@ const CategoryProducts = () => {
     <div className="category-products-page">
       <div className="category-products-container">
 
-        {/* Header */}
-        <div className="category-header">
-          <h1 className="category-title">{categoryName || "Loading..."}</h1>
+        {/* Top Breadcrumb & Back Link Navigation */}
+        <div className="category-navigation">
           <Link to="/products" className="back-to-all">
-            ← All Products
+            <ArrowLeft size={16} /> <span>All Products</span>
           </Link>
         </div>
 
-        {/* Controls */}
-        <div className="category-controls">
+        {/* Dynamic Header Section */}
+        <div className="category-header">
+          <h1 className="category-title">{categoryName || "Loading Category..."}</h1>
           <div className="result-count">
             {isLoading
-              ? "Loading products..."
+              ? "Updating catalog..."
               : totalProducts === 0
-              ? "No products found"
-              : `Showing ${startItem}–${endItem} of ${totalProducts}`}
+              ? "No items found"
+              : `Showing ${startItem}–${endItem} of ${totalProducts} products`}
           </div>
+        </div>
 
+        {/* Filter & Layout Control Toolbar */}
+        <div className="category-controls">
           <div className="sort-view-wrapper">
             <div className="sort-box">
-              <label htmlFor="sort-select">Sort by:</label>
-              <select
-                id="sort-select"
-                value={sortBy}
-                onChange={(e) => { setSortBy(e.target.value); setCurrentPage(1); }}
-              >
-                {sortOptions.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
+              <label htmlFor="sort-select">Sort by</label>
+              <div className="select-container">
+                <select
+                  id="sort-select"
+                  value={sortBy}
+                  onChange={(e) => { setSortBy(e.target.value); setCurrentPage(1); }}
+                >
+                  {sortOptions.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
 
             <div className="view-toggle" role="tablist">
@@ -138,7 +140,7 @@ const CategoryProducts = () => {
                 aria-selected={viewMode === "grid"}
                 role="tab"
               >
-                <Grid size={20} />
+                <Grid size={18} />
               </button>
               <button
                 className={`view-btn ${viewMode === "list" ? "active" : ""}`}
@@ -147,29 +149,30 @@ const CategoryProducts = () => {
                 aria-selected={viewMode === "list"}
                 role="tab"
               >
-                <List size={20} />
+                <List size={18} />
               </button>
             </div>
           </div>
         </div>
 
-        {/* Products grid/list */}
+        {/* Products Display Board */}
         <div className={`products-grid products-grid--${viewMode}`}>
           {isLoading ? (
             <div className="loading-state">
-              <Loader2 size={40} className="spin" />
-              <p>Loading products...</p>
+              <Loader2 size={36} className="spin" />
+              <p>Curating collection...</p>
             </div>
           ) : products.length === 0 ? (
             <div className="empty-state">
-              <p>No products found in this category.</p>
+              <p>No products available in this category right now.</p>
+              <Link to="/products" className="shop-all-btn">Discover Other Items</Link>
             </div>
           ) : (
             products.map((product, index) => (
               <article
                 key={product._id}
                 className={`product-card product-card--${viewMode}`}
-                style={{ transitionDelay: `${Math.min(index * 50, 400)}ms` }}
+                style={{ animationDelay: `${Math.min(index * 40, 300)}ms` }}
               >
                 <div className="card-image-wrapper">
                   <ProductImageSlider
@@ -181,15 +184,17 @@ const CategoryProducts = () => {
                 </div>
 
                 <div className="card-content">
+                  <div className="card-info-header">
+                    <span className="product-brand">{product.brand || "Essential"}</span>
+                    <span className="rating">★ {product.rating?.toFixed(1) ?? "—"}</span>
+                  </div>
+
                   <Link to={`/product/${product._id}`} className="title-link">
                     <h3 className="product-title">{product.name}</h3>
                   </Link>
 
-                  <div className="product-brand">{product.brand || "—"}</div>
-
                   <div className="price-row">
                     <span className="price">${product.price?.toFixed(2) ?? "—"}</span>
-                    <span className="rating">★ {product.rating ?? "—"}</span>
                   </div>
 
                   <div className="card-actions">
@@ -198,7 +203,7 @@ const CategoryProducts = () => {
                       onClick={() => addToCart(product._id, 1)}
                       disabled={product.stock <= 0}
                     >
-                      {product.stock <= 0 ? "Out of Stock" : "Add to Cart"}
+                      {product.stock <= 0 ? "Out of Stock" : "Add to Bag"}
                     </button>
 
                     <button
@@ -215,37 +220,39 @@ const CategoryProducts = () => {
           )}
         </div>
 
-        {/* Pagination */}
+        {/* Minimalist Pagination System */}
         {totalPages > 1 && !isLoading && (
           <nav className="pagination" aria-label="Category products pagination">
             <button
-              className="page-btn"
+              className="page-btn directional-btn"
               onClick={() => goToPage(currentPage - 1)}
               disabled={currentPage === 1}
               aria-label="Previous page"
             >
-              <ChevronLeft size={18} />
+              <ChevronLeft size={16} />
             </button>
 
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <button
-                key={page}
-                className={`page-btn ${currentPage === page ? "active" : ""}`}
-                onClick={() => goToPage(page)}
-                aria-label={`Go to page ${page}`}
-                aria-current={currentPage === page ? "page" : undefined}
-              >
-                {page}
-              </button>
-            ))}
+            <div className="page-numbers">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <button
+                  key={page}
+                  className={`page-btn number-btn ${currentPage === page ? "active" : ""}`}
+                  onClick={() => goToPage(page)}
+                  aria-label={`Go to page ${page}`}
+                  aria-current={currentPage === page ? "page" : undefined}
+                >
+                  {page}
+                </button>
+              ))}
+            </div>
 
             <button
-              className="page-btn"
+              className="page-btn directional-btn"
               onClick={() => goToPage(currentPage + 1)}
               disabled={currentPage === totalPages}
               aria-label="Next page"
             >
-              <ChevronRight size={18} />
+              <ChevronRight size={16} />
             </button>
           </nav>
         )}

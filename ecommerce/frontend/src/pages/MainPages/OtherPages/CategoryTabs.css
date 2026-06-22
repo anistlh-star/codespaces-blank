@@ -1,63 +1,59 @@
-/*ecommerce/frontend/src/pages/MainPages/OtherPages/CategoryTabs.css*/
-.categoryTabs {
+/* ecommerce/frontend/src/pages/MainPages/OtherPages/CategoryTabs.css */
+
+.ecom-category-tabs-container {
   width: 100%;
-  padding: 20px 0;
+  padding: 1.5rem 0;
+  margin-bottom: 1.5rem;
 }
 
-/* Horizontal scroll tabs */
-.categoryTabs__tabs {
+/* Horizontal Scroll Strip Engine */
+.ecom-category-tabs-row {
   display: flex;
-  gap: 12px;
+  gap: 0.75rem;
   overflow-x: auto;
-  padding: 10px 20px;
-  border-bottom: 1px solid #e2e8f0;
-  scrollbar-width: none;
+  padding: 0.5rem 0.25rem;
+  scrollbar-width: none; /* Hides default scrollbar layout on Firefox */
+  -webkit-overflow-scrolling: touch; /* Frictionless momentum scrolling for iOS mobile */
 }
 
-.categoryTabs__tabs::-webkit-scrollbar {
+/* Hide Webkit Scrollbars natively */
+.ecom-category-tabs-row::-webkit-scrollbar {
   display: none;
 }
 
-.categoryTabs__tab {
+/* Premium Capsule Tab Interactive Triggers */
+.ecom-category-tab-btn {
   flex: 0 0 auto;
-  border: none;
-  background: #f1f5f9;
-  color: #334155;
-  padding: 10px 18px;
-  border-radius: 999px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #475569;
+  padding: 0.6rem 1.35rem;
+  border-radius: 999px; /* Seamless round pill-shape profiles */
   cursor: pointer;
+  font-size: 0.88rem;
   font-weight: 500;
-  transition: all 0.25s ease;
+  transition: all 0.2s cubic-bezier(0.215, 0.61, 0.355, 1);
   white-space: nowrap;
 }
 
-.categoryTabs__tab:hover {
-  background: #e2e8f0;
+/* Hover States */
+.ecom-category-tab-btn:hover {
+  background: #f8fafc;
+  color: #0f172a;
+  border-color: #cbd5e1;
 }
 
-.categoryTabs__tab.active {
-  background: #2563eb;
-  color: white;
-}
-
-/* Products grid */
-.categoryTabs__products {
-  padding: 24px 20px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 20px;
-}
-
-.categoryTabs__card {
-  background: white;
-  padding: 18px;
-  border-radius: 12px;
+/* Active Slate Highlight Configuration overrides Blue (#2563eb) */
+.ecom-category-tab-btn.is-active {
+  background: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
   font-weight: 600;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
 }
 
-.categoryTabs__card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 22px rgba(0,0,0,0.08);
+/* Focus Utility Indicators for Keyboard Navigators */
+.ecom-category-tab-btn:focus-visible {
+  outline: 2px solid #0f172a;
+  outline-offset: 2px;
 }

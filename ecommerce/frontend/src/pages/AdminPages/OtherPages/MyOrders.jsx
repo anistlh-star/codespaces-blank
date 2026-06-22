@@ -1,10 +1,22 @@
-//ecommerce/frontend/src/pages/AdminPages/OtherPages/MyOrders.jsx
+// ecommerce/frontend/src/pages/AdminPages/OtherPages/MyOrders.jsx
 import React, { useState, useEffect } from "react";
-import "./MyOrders.css";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { useAuth } from "../../../../context/AuthContext";
 import API from "../../../../api/index";
 import { useOrder } from "../../../hooks/useOrder";
-import { useNavigate } from "react-router-dom";
+import { 
+  ShoppingBag, 
+  Calendar, 
+  DollarSign, 
+  Layers, 
+  CreditCard, 
+  AlertCircle, 
+  ArrowRight, 
+  XCircle,
+  RefreshCw
+} from "lucide-react";
+import "./MyOrders.css";
 
 const MyOrders = () => {
   const { user } = useAuth();
@@ -13,6 +25,7 @@ const MyOrders = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { cancelOrder } = useOrder();
+
   useEffect(() => {
     const fetchOrders = async () => {
       if (!user?._id) return;
@@ -22,7 +35,7 @@ const MyOrders = () => {
         setOrders(res.data.orders || []);
         setLoading(false);
       } catch (err) {
-        setError("Failed to load your orders");
+        setError("Failed to synchronize your historical transaction records.");
         setLoading(false);
         console.error("Orders fetch error:", err);
       }
@@ -33,104 +46,157 @@ const MyOrders = () => {
 
   if (!user) {
     return (
-      <div className="my-orders-page">
-        <h2>Please log in to view your orders</h2>
+      <div className="eh-orders-page eh-orders-empty-state">
+        <div className="eh-orders-fallback-card">
+          <AlertCircle size={40} className="eh-orders-alert-icon" />
+          <h2>Authentication Required</h2>
+          <p>Please log in to review your personal order history pipeline.</p>
+          <button className="eh-orders-btn eh-orders-btn-primary" onClick={() => navigate("/login")}>
+            Go to Login Matrix
+          </button>
+        </div>
       </div>
     );
   }
 
+  // Animation layout dictionaries
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.08 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 15 },
+    visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 120, damping: 14 } }
+  };
+
   return (
-    <div className="my-orders-page">
-      <div className="orders-container animate-fade-in">
-        <h1>Your Orders</h1>
+    <div className="eh-orders-page">
+      <motion.div 
+        className="eh-orders-container"
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+      >
+        <div className="eh-orders-header">
+          <div className="eh-orders-title-block">
+            <ShoppingBag className="eh-orders-header-icon" />
+            <h1>Your Orders Ledger</h1>
+          </div>
+          <p className="eh-orders-subtitle">Track, inspect, and manage your current device acquisition allocations.</p>
+        </div>
 
         {loading ? (
-          <div className="loading-container">
-            <div className="loading-spinner large"></div>
-            <p>Loading your orders...</p>
+          <div className="eh-orders-loading-box">
+            <div className="eh-orders-spinner"></div>
+            <p>Retrieving transaction nodes...</p>
           </div>
         ) : error ? (
-          <div className="error-message">
+          <div className="eh-orders-error-box">
+            <AlertCircle size={24} />
             <p>{error}</p>
-            <button
-              onClick={() => window.location.reload()}
-              className="btn secondary"
-            >
-              Retry
+            <button onClick={() => window.location.reload()} className="eh-orders-btn eh-orders-btn-secondary">
+              <RefreshCw size={14} />
+              <span>Retry Sync</span>
             </button>
           </div>
         ) : orders.length === 0 ? (
-          <div className="empty-state">
-            <p>You haven't placed any orders yet.</p>
-            <a href="/shop" className="btn primary">
+          <div className="eh-orders-empty-box">
+            <ShoppingBag size={48} className="eh-orders-empty-icon" />
+            <p>No transaction parameters found matching this client profile.</p>
+            <button onClick={() => navigate("/shop")} className="eh-orders-btn eh-orders-btn-primary">
               Start Shopping
-            </a>
+            </button>
           </div>
         ) : (
-          <div className="orders-list">
-            {orders.map((order, index) => (
-              <div
+          <motion.div className="eh-orders-list" variants={containerVariants}>
+            {orders.map((order) => (
+              <motion.div
                 key={order._id}
-                className="order-card animate-slide-up"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                className="eh-orders-card"
+                variants={itemVariants}
+                whileHover={{ y: -4, transition: { duration: 0.2 } }}
               >
-                <div className="order-header">
-                  <h3>Order #{order._id.slice(-6).toUpperCase()}</h3>
-                  <span
-                    className={`status-badge ${order.status.toLowerCase()}`}
-                  >
+                <div className="eh-orders-card-header">
+                  <div className="eh-orders-id-group">
+                    <span className="eh-orders-label">ORDER NODE</span>
+                    <h3>#{order._id.slice(-6).toUpperCase()}</h3>
+                  </div>
+                  <span className={`eh-orders-status eh-orders-status-${order.status.toLowerCase()}`}>
                     {order.status}
                   </span>
                 </div>
 
-                <div className="order-details">
-                  <p>
-                    <strong>Date:</strong>{" "}
-                    {new Date(order.createdAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </p>
-                  <p>
-                    <strong>Total:</strong> ${order.totalAmount.toFixed(2)}
-                  </p>
-                  <p>
-                    <strong>Items:</strong> {order.items.length}
-                  </p>
-                  <p>
-                    <strong>Payment:</strong>{" "}
-                    {order.paymentMethod.toUpperCase()} ({order.paymentStatus})
-                  </p>
+                <div className="eh-orders-details-grid">
+                  <div className="eh-orders-meta-node">
+                    <Calendar size={16} />
+                    <div>
+                      <span className="eh-orders-node-label">Timestamp</span>
+                      <p>
+                        {new Date(order.createdAt).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="eh-orders-meta-node">
+                    <DollarSign size={16} />
+                    <div>
+                      <span className="eh-orders-node-label">Total Volume</span>
+                      <p className="eh-orders-price-weight">${order.totalAmount.toFixed(2)}</p>
+                    </div>
+                  </div>
+
+                  <div className="eh-orders-meta-node">
+                    <Layers size={16} />
+                    <div>
+                      <span className="eh-orders-node-label">Item Load</span>
+                      <p>{order.items.length} {order.items.length === 1 ? "Product" : "Products"}</p>
+                    </div>
+                  </div>
+
+                  <div className="eh-orders-meta-node">
+                    <CreditCard size={16} />
+                    <div>
+                      <span className="eh-orders-node-label">Payment Channel</span>
+                      <p>{order.paymentMethod.toUpperCase()} <span className="eh-orders-substatus">({order.paymentStatus})</span></p>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="order-actions">
-                  <button
-                    className="btn primary"
-                    onClick={() => navigate(`/my-orders/${order._id}`)}
-                  >
-                    View Details
-                  </button>{" "}
+                <div className="eh-orders-card-actions">
                   {order.status === "Pending" && (
                     <button
-                      className="btn secondary"
+                      className="eh-orders-btn eh-orders-btn-danger"
                       onClick={async () => {
                         if (await cancelOrder(order._id)) {
-                          setOrders((prev) =>
-                            prev.filter((o) => o._id !== order._id),
-                          );
+                          setOrders((prev) => prev.filter((o) => o._id !== order._id));
                         }
                       }}
                     >
-                      Cancel Order
+                      <XCircle size={14} />
+                      <span>Revoke Order</span>
                     </button>
                   )}
+                  <button
+                    className="eh-orders-btn eh-orders-btn-primary"
+                    onClick={() => navigate(`/my-orders/${order._id}`)}
+                  >
+                    <span>View Node Metrics</span>
+                    <ArrowRight size={14} />
+                  </button>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         )}
-      </div>
+      </motion.div>
     </div>
   );
 };

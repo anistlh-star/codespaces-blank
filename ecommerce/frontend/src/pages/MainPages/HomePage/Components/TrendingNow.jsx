@@ -1,9 +1,9 @@
-//ecommerce/frontend/src/pages/MainPages/HomePage/Components/TrendingNow.jsx
+// ecommerce/frontend/src/pages/MainPages/HomePage/Components/TrendingNow.jsx
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
+import { Pagination } from "swiper/modules";
 import "swiper/css";
-import { getImageSrc } from "../../../../components/imageHandler";
+import "swiper/css/pagination";
 import { useProducts } from "../../../../hooks/useProducts";
 import ProductImageSlider from "../../../../components/ProductImageSlider";
 
@@ -16,57 +16,59 @@ const TrendingNow = () => {
   return (
     <section className="ecom-home-trending-section">
       <div className="ecom-home-section-container">
-        <h2 className="ecom-home-section-title">Trending Now</h2>
+        <div className="ecom-home-section-header">
+          <h2 className="ecom-home-section-title">Trending Now</h2>
+          <p className="ecom-home-section-subtitle">Highly sought-after items with rapid ecosystem adoption.</p>
+        </div>
 
         <Swiper
-          modules={[]}
+          modules={[Pagination]}
           loop={true}
-          spaceBetween={20}
+          spaceBetween={24}
           slidesPerView={1}
+          pagination={{ clickable: true, el: '.trending-custom-pagination' }}
           breakpoints={{
-            640: { slidesPerView: 2 },
-            1024: { slidesPerView: 3 },
-            1280: { slidesPerView: 4 },
+            480:  { slidesPerView: 2, spaceBetween: 16 },
+            768:  { slidesPerView: 2, spaceBetween: 24 },
+            1024: { slidesPerView: 3, spaceBetween: 24 },
+            1280: { slidesPerView: 4, spaceBetween: 24 },
           }}
           className="ecom-home-trending-swiper"
         >
           {trendingProducts.map((product) => (
             <SwiperSlide key={product._id}>
-              <div className="ecom-home-product-card">
-                <div className="ecom-home-product-image-wrapper">
+              <article className="ecom-home-product-card">
+                <div className="ecom-home-product-image-container">
                   <ProductImageSlider
                     images={product.images}
                     productName={product.name}
-                    discount={product.discount} // if you have discount field
-                    showThumbnails={false} // ← hides thumbnails in product list
+                    discount={product.discount}
+                    showThumbnails={false}
                   />
                 </div>
-                <div className="ecom-home-product-info">
-                  <h3 className="ecom-home-product-name">
+                <div className="ecom-home-product-details">
+                  <span className="ecom-home-product-brand-label">{product.brand || "In Demand"}</span>
+                  <h3 className="ecom-home-product-heading">
                     <Link to={`/product/${product._id}`}>{product.name}</Link>
                   </h3>
-                  <div className="ecom-home-product-price-row">
-                    <span className="ecom-home-product-price">
+                  <div className="ecom-home-product-pricing-wrapper">
+                    <span className="ecom-home-product-current-price">
                       {formatPrice(product.price)}
                     </span>
                   </div>
-                  <button className="ecom-home-product-add-btn">
-                    {" "}
-                    <Link
-                      to={`/product/${product._id}`}
-                      className="electronics-home-product-view-btn"
-                    >
-                      View Details
-                    </Link>
-                  </button>
+                  <Link to={`/product/${product._id}`} className="ecom-home-product-action-link">
+                    View Details
+                  </Link>
                 </div>
-              </div>
+              </article>
             </SwiperSlide>
           ))}
         </Swiper>
 
+        <div className="trending-custom-pagination swiper-pagination-custom" />
+
         <div className="ecom-home-section-footer">
-          <Link to="/shop" className="ecom-home-view-all-btn">
+          <Link to="/shop" className="ecom-home-secondary-btn">
             See All Trending
           </Link>
         </div>

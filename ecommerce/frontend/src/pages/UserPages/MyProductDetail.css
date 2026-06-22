@@ -1,0 +1,125 @@
+/* ecommerce/frontend/src/pages/MainPages/OtherPages/MyProductDetail.css */
+
+.ecom-detail-view-hub {
+  max-width: 1200px;
+  margin: 3rem auto;
+  padding: 0 2rem;
+}
+
+.ecom-detail-back-anchor {
+  display: inline-flex;
+  align-items: center;
+  color: #475569;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  margin-bottom: 2rem;
+  transition: color 0.2s;
+}
+
+.ecom-detail-back-anchor:hover { color: #0f172a; }
+
+.ecom-detail-split-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 3rem;
+  border: 1px solid #e2e8f0;
+}
+
+.ecom-detail-hero-frame {
+  border-radius: 16px;
+  overflow: hidden;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+.ecom-detail-hero-frame img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.ecom-detail-thumb-strip {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  overflow-x: auto;
+}
+
+.ecom-thumb-node {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ecom-thumb-node:hover {
+  border-color: #0f172a;
+  transform: scale(1.02);
+}
+
+.ecom-detail-metrics-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.ecom-brand-tag {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 0.05em;
+}
+
+.ecom-product-title-heading {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0.5rem 0 0 0;
+  letter-spacing: -0.03em;
+}
+
+.ecom-detail-pricing-tier {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ecom-price-active { font-size: 2.25rem; font-weight: 700; color: #0f172a; }
+.ecom-price-struck { font-size: 1.5rem; color: #94a3b8; text-decoration: line-through; }
+.ecom-badge-discount { background: #f87171; color: #ffffff; padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.82rem; font-weight: 700; }
+
+.ecom-detail-fulfillment-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.ecom-pill-status { padding: 0.4rem 1rem; border-radius: 999px; font-size: 0.85rem; font-weight: 700; }
+.ecom-pill-status.in-stock { background: #ccfbf1; color: #115e59; }
+.ecom-pill-status.unavailable { background: #fee2e2; color: #991b1b; }
+
+.ecom-detail-narrative-box h3, .ecom-detail-specs-block h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 0.75rem 0;
+}
+
+.ecom-detail-narrative-box p { color: #475569; line-height: 1.6; margin: 0; font-size: 0.95rem; }
+
+.ecom-detail-specs-table { display: flex; flex-direction: column; gap: 0.5rem; }
+.ecom-specs-row-node { display: flex; justify-content: space-between; padding: 0.75rem 1rem; background: #f8fafc; border-radius: 8px; font-size: 0.9rem; }
+.lbl-key { font-weight: 600; color: #475569; }
+.lbl-val { color: #0f172a; font-weight: 500; }
+
+@media (max-width: 900px) {
+  .ecom-detail-split-grid { grid-template-columns: 1fr; gap: 2.5rem; padding: 1.75rem; }
+}

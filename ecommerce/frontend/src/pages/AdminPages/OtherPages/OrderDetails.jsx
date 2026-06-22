@@ -1,12 +1,23 @@
-//ecommerce/frontend/src/pages/AdminPages/OtherPages/OrderDetails.jsx
+// ecommerce/frontend/src/pages/AdminPages/OtherPages/OrderDetails.jsx
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import "./OrderDetails.css"; // you'll create this
+import { useParams, useNavigate, Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import { useAuth } from "../../../../context/AuthContext";
 import API from "../../../../api";
-import { Link } from "react-router-dom";
+import { 
+  ArrowLeft, 
+  Hash, 
+  Clock, 
+  MapPin, 
+  CreditCard, 
+  Package, 
+  ShieldAlert,
+  Disc
+} from "lucide-react";
+import "./OrderDetails.css";
+
 const OrderDetails = () => {
-  const { id } = useParams(); // from /order/:id
+  const { id } = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -22,7 +33,6 @@ const OrderDetails = () => {
         setLoading(true);
         const res = await API.get(`/orders/${id}`);
 
-        // Assuming backend returns { success, order, subTotal, tax, totalAmount }
         setOrder({
           ...res.data.order,
           subTotal: res.data.subTotal,
@@ -33,7 +43,7 @@ const OrderDetails = () => {
         console.error("Order fetch error:", err);
         setError(
           err.response?.data?.message ||
-            "Failed to load order details. It may not exist or you lack permission.",
+            "Failed to synchronize targeting architecture matching this order ID configuration node."
         );
       } finally {
         setLoading(false);
@@ -45,144 +55,190 @@ const OrderDetails = () => {
 
   if (!user) {
     return (
-      <div className="order-details-page">
-        <h2>Please log in to view order details</h2>
-        <button onClick={() => navigate("/login")}>Go to Login</button>
+      <div className="eh-details-page eh-details-centered">
+        <div className="eh-details-fallback">
+          <ShieldAlert size={40} className="eh-details-err-icon" />
+          <h2>Client Context Unassigned</h2>
+          <p>Please establish security credentials prior to inspecting this route mapping.</p>
+          <button className="eh-details-btn eh-details-btn-primary" onClick={() => navigate("/login")}>
+            Authorize Account
+          </button>
+        </div>
       </div>
     );
   }
 
   if (loading) {
     return (
-      <div className="loading-container">
-        <div className="loading-spinner large"></div>
-        <p>Loading order details...</p>
+      <div className="eh-details-page eh-details-centered">
+        <div className="eh-details-spinner-block">
+          <div className="eh-details-spinner"></div>
+          <p>Analyzing parameters for order record allocation...</p>
+        </div>
       </div>
     );
   }
 
   if (error || !order) {
     return (
-      <div className="error-message">
-        <h2>Error</h2>
-        <p>{error || "Order not found"}</p>
-        <button onClick={() => navigate("/my-orders")}>
-          Back to My Orders
-        </button>
+      <div className="eh-details-page eh-details-centered">
+        <div className="eh-details-fallback">
+          <ShieldAlert size={40} className="eh-details-err-icon" />
+          <h2>Query Exception</h2>
+          <p>{error || "The targeted object reference could not be localized on current cluster configurations."}</p>
+          <button className="eh-details-btn eh-details-btn-secondary" onClick={() => navigate("/my-orders")}>
+            <ArrowLeft size={14} />
+            <span>Return to Orders Index</span>
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="order-details-page">
-      <div className="order-details-container">
-        <div className="header">
-          <h1>Order Details</h1>
-          <button
-            className="btn back-btn"
-            onClick={() => navigate("/my-orders")}
-          >
-            ← Back to Orders
+    <motion.div 
+      className="eh-details-page"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+    >
+      <div className="eh-details-wrapper">
+        
+        {/* Navigation / Header Actions Row */}
+        <div className="eh-details-header">
+          <button className="eh-details-back-trigger" onClick={() => navigate("/my-orders")}>
+            <ArrowLeft size={16} />
+            <span>Back to Orders List</span>
           </button>
+          <h1>Metrics Panel</h1>
         </div>
 
-        <div className="order-summary-card">
-          <div className="order-meta">
-            <div>
-              <strong>Order ID:</strong> #{order._id.slice(-8).toUpperCase()}
-            </div>
-            <div>
-              <strong>Placed on:</strong>{" "}
-              {new Date(order.createdAt).toLocaleString("en-US", {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-                hour: "numeric",
-                minute: "2-digit",
-              })}
-            </div>
-            <div>
-              <strong>Status:</strong>{" "}
-              <span className={`status-badge ${order.status.toLowerCase()}`}>
-                {order.status}
-              </span>
-            </div>
-          </div>
-
-          <div className="order-totals">
-            <div className="total-row">
-              <span>Subtotal:</span>
-              <span>
-                ${order.subTotal?.toFixed(2) || order.totalAmount.toFixed(2)}
-              </span>
-            </div>
-            <div className="total-row">
-              <span>Tax (5%):</span>
-              <span>${order.tax?.toFixed(2) || "0.00"}</span>
-            </div>
-            <div className="total-row grand-total">
-              <strong>Total:</strong>
-              <strong>
-                $
-                {order.calculatedTotal?.toFixed(2) ||
-                  order.totalAmount.toFixed(2)}
-              </strong>
-            </div>
-          </div>
-        </div>
-
-        <h2>Shipping Address</h2>
-        <div className="shipping-address">
-          <p>{order.shippingAddress.street}</p>
-          <p>
-            {order.shippingAddress.city}, {order.shippingAddress.state}{" "}
-            {order.shippingAddress.zipCode}
-          </p>
-          <p>{order.shippingAddress.country}</p>
-        </div>
-
-        <h2>Payment Information</h2>
-        <div className="payment-info">
-          <p>
-            <strong>Method:</strong> {order.paymentMethod.toUpperCase()}
-          </p>
-          <p>
-            <strong>Status:</strong>{" "}
-            <span
-              className={`status-badge ${order.paymentStatus.toLowerCase()}`}
-            >
-              {order.paymentStatus}
-            </span>
-          </p>
-        </div>
-
-        <h2>Order Items</h2>
-        <div className="order-items-list">
-          {order.items.map((item) => (
-            <div key={item._id || item.product} className="order-item-row">
-              <div className="item-image">
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  onError={(e) => (e.target.src = "/images/placeholder.jpg")}
-                />
+        {/* Master Details Metadata Layout Card */}
+        <div className="eh-details-grid-layout">
+          
+          <div className="eh-details-main-rail">
+            <div className="eh-details-card eh-details-meta-summary">
+              <div className="eh-details-summary-row">
+                <div className="eh-details-meta-pill">
+                  <Hash size={14} />
+                  <span>ID: {order._id.toUpperCase()}</span>
+                </div>
+                <div className="eh-details-meta-pill">
+                  <Clock size={14} />
+                  <span>
+                    {new Date(order.createdAt).toLocaleDateString("en-US", {
+                      weekday: "short",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric"
+                    })}
+                  </span>
+                </div>
+                <span className={`eh-details-tag eh-details-tag-${order.status.toLowerCase()}`}>
+                  {order.status}
+                </span>
               </div>
-              <div className="item-info">
-                <h4>
-                  <Link to={`/product/${item.product._id}`}>{item.name}</Link>
-                </h4>
-                <p>Price: ${item.price.toFixed(2)}</p>
-                <p>Quantity: {item.quantity}</p>
-                <p className="item-subtotal">
-                  Subtotal: ${(item.price * item.quantity).toFixed(2)}
+            </div>
+
+            {/* Hardware Items Distribution Array mapping */}
+            <div className="eh-details-card">
+              <div className="eh-details-card-title">
+                <Package size={18} />
+                <h2>Allocated Payload Items</h2>
+              </div>
+              <div className="eh-details-items-list">
+                {order.items.map((item) => (
+                  <div key={item._id || item.product} className="eh-details-item-row">
+                    <div className="eh-details-item-thumb">
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        onError={(e) => (e.target.src = "/images/placeholder.jpg")}
+                      />
+                    </div>
+                    <div className="eh-details-item-info">
+                      <h4>
+                        <Link to={`/product/${item.product?._id || item.product}`}>{item.name}</Link>
+                      </h4>
+                      <div className="eh-details-item-meta-metrics">
+                        <span>Unit Matrix: ${item.price.toFixed(2)}</span>
+                        <Disc size={4} />
+                        <span>Load Qty: {item.quantity}</span>
+                      </div>
+                    </div>
+                    <div className="eh-details-item-valuation">
+                      ${(item.price * item.quantity).toFixed(2)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Right Sidebar Component Nodes */}
+          <div className="eh-details-side-rail">
+            
+            {/* Financial Invoice Breakdown mapping block */}
+            <div className="eh-details-card eh-details-invoice-card">
+              <h2>Invoice Ledger</h2>
+              <div className="eh-details-invoice-metrics">
+                <div className="eh-details-invoice-line">
+                  <span>Subtotal Pool</span>
+                  <span>${order.subTotal?.toFixed(2) || order.totalAmount.toFixed(2)}</span>
+                </div>
+                <div className="eh-details-invoice-line">
+                  <span>Surcharge Fee / Tax (5%)</span>
+                  <span>${order.tax?.toFixed(2) || "0.00"}</span>
+                </div>
+                <div className="eh-details-invoice-line eh-details-invoice-grand">
+                  <span>Aggregate Capital Total</span>
+                  <span>${order.calculatedTotal?.toFixed(2) || order.totalAmount.toFixed(2)}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Logistics Address node mappings */}
+            <div className="eh-details-card">
+              <div className="eh-details-card-title">
+                <MapPin size={16} />
+                <h2>Logistics Pipeline Destination</h2>
+              </div>
+              <div className="eh-details-address-block">
+                <p className="eh-details-recipient">{order.shippingAddress.fullName || user.name}</p>
+                <p>{order.shippingAddress.street}</p>
+                <p>
+                  {order.shippingAddress.city}, {order.shippingAddress.state}{" "}
+                  {order.shippingAddress.zipCode}
                 </p>
+                <p className="eh-details-country-line">{order.shippingAddress.country}</p>
               </div>
             </div>
-          ))}
+
+            {/* Payment Context Parameters blocks */}
+            <div className="eh-details-card">
+              <div className="eh-details-card-title">
+                <CreditCard size={16} />
+                <h2>Payment Core Infrastructure</h2>
+              </div>
+              <div className="eh-details-payment-block">
+                <div className="eh-details-payment-line">
+                  <span>Processing Method</span>
+                  <strong>{order.paymentMethod.toUpperCase()}</strong>
+                </div>
+                <div className="eh-details-payment-line">
+                  <span>Settlement Status</span>
+                  <span className={`eh-details-payment-status eh-details-pay-${order.paymentStatus.toLowerCase()}`}>
+                    {order.paymentStatus}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
+
       </div>
-    </div>
+    </motion.div>
   );
 };
 

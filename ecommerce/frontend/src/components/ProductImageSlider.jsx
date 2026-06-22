@@ -28,7 +28,10 @@ const ProductImageSlider = ({
   const hasMultipleImages = validImages.length > 1;
 
   return (
-    <div className="product-image-slider">
+    /* Prevent clicks on navigation/pagination controls 
+       from bubbling up to the product card's Link wrapper 
+    */
+    <div className="product-image-slider" onClick={(e) => e.stopPropagation()}>
       {/* Main image + badge */}
       <div className="slider-main-wrapper">
         {discount > 0 && (
@@ -44,11 +47,8 @@ const ProductImageSlider = ({
               : false
           }
           thumbs={{
-            swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
+            swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null
           }}
-          spaceBetween={0}
-          slidesPerView={1}
-          loop={hasMultipleImages}
           className="main-swiper"
         >
           {validImages.map((img, idx) => (

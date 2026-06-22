@@ -1,161 +1,177 @@
-/*ecommerce/frontend/src/components/Footer.css*/
-   /* Site Footer - Reusable across all pages
-   Classes prefixed with .site-footer- */
-   /*================================================ */
+/* ecommerce/frontend/src/components/Footer.css */
 
-.site-footer {
-  background-color: #111111;
-  color: #e5e5e5;
-  padding: 4rem 0 2rem;
-  font-size: 0.95rem;
-  margin-top: auto; /* pushes footer to bottom if using flex on body */
+.ecom-site-footer {
+  background-color: #0f172a;
+  color: #94a3b8;
+  padding: 5rem 0 2.5rem 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  border-top: 1px solid #1e293b;
 }
 
-.footer-container {
+.ecom-footer-container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 2rem;
 }
 
-.footer-top {
+/* Operational Matrix Grid Distribution */
+.ecom-footer-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 2.5rem;
-  margin-bottom: 3rem;
+  grid-auto-flow: column;
+  grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+  gap: 3.5rem;
+  margin-bottom: 4rem;
 }
 
-.footer-column {
-  display: flex;
-  flex-direction: column;
+/* Allows the main brand description block to take more visual priority */
+.ecom-footer-column.broad {
+  grid-column: span 2;
 }
 
-.footer-title {
-  font-size: 1.28rem;
+@media (max-width: 1024px) {
+  .ecom-footer-column.broad {
+    grid-column: span 1;
+  }
+
+  .ecom-footer-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+}
+
+.ecom-footer-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 1.25rem 0;
+  letter-spacing: -0.02em;
+}
+
+.ecom-footer-subtitle {
+  font-size: 0.88rem;
   font-weight: 600;
-  color: white;
-  margin-bottom: 1.4rem;
-  position: relative;
-  padding-bottom: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #f1f5f9;
+  margin: 0 0 1.5rem 0;
 }
 
-.footer-title::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 40px;
-  height: 3px;
-  background-color: #2563eb;
-  border-radius: 2px;
-}
-
-.footer-text {
+.ecom-footer-text {
+  font-size: 0.92rem;
   line-height: 1.6;
-  margin-bottom: 1.5rem;
-  opacity: 0.9;
+  color: #94a3b8;
+  margin: 0 0 1.75rem 0;
+  max-width: 360px;
 }
 
-.footer-socials {
+/* Minimalist Social Icon Configurations */
+.ecom-footer-socials {
   display: flex;
-  gap: 1rem;
-}
-
-.footer-socials a {
-  width: 36px;
-  height: 36px;
-  background-color: rgba(255,255,255,0.1);
-  border-radius: 50%;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.25s ease;
-}
-
-.footer-socials a:hover {
-  background-color: #2563eb;
-  transform: translateY(-3px);
-}
-
-.footer-links {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
   gap: 0.75rem;
 }
 
-.footer-links li a {
-  color: #d1d5db;
+.ecom-footer-socials a {
+  width: 32px;
+  height: 32px;
+  background-color: #1e293b;
+  border-radius: 4px;
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: all 0.15s ease;
 }
 
-.footer-links li a:hover {
-  color: #60a5fa;
+.ecom-footer-socials a:hover {
+  background-color: #f8fafc;
+  color: #0f172a;
+  transform: translateY(-1px);
 }
 
-.footer-contact {
+/* Hyperlink Navigation Systems */
+.ecom-footer-links {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.85rem;
 }
 
-.footer-contact li {
+.ecom-footer-links li a {
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.92rem;
+  transition: color 0.1s ease;
+}
+
+.ecom-footer-links li a:hover {
+  color: #ffffff;
+}
+
+/* Contact Module Configurations */
+.ecom-footer-contact {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.ecom-footer-contact li {
   display: flex;
   align-items: flex-start;
-  gap: 0.9rem;
+  gap: 0.85rem;
+  font-size: 0.92rem;
+  line-height: 1.4;
 }
 
-.footer-icon {
-  color: #60a5fa;
-  font-size: 1.2rem;
-  margin-top: 0.2rem;
+.ecom-footer-contact .contact-icon {
+  color: #cbd5e1;
+  margin-top: 0.15rem;
+  flex-shrink: 0;
 }
 
-.footer-bottom {
-  border-top: 1px solid rgba(255,255,255,0.08);
+/* Alignment Layer Sub-Footers */
+.ecom-footer-bottom {
+  border-top: 1px solid #1e293b;
   padding-top: 2rem;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
   align-items: center;
-  gap: 1.5rem;
-  font-size: 0.9rem;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
 }
 
-.footer-copyright {
-  opacity: 0.8;
+.ecom-footer-copyright {
+  font-size: 0.85rem;
+  color: #64748b;
 }
 
-.footer-payment img {
-  height: 32px;
-  width: auto;
-  max-width: 100%;
+.payment-clearing-img {
+  max-height: 24px;
+  object-fit: contain;
+  filter: grayscale(1) opacity(0.6);
+  transition: filter 0.2s ease;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .footer-top {
-    grid-template-columns: 1fr;
-    text-align: center;
+.payment-clearing-img:hover {
+  filter: grayscale(0) opacity(0.9);
+}
+
+@media (max-width: 640px) {
+  .ecom-site-footer {
+    padding: 4rem 0 2rem 0;
   }
 
-  .footer-title::after {
-    left: 50%;
-    transform: translateX(-50%);
+  .ecom-footer-grid {
+    gap: 2.5rem;
   }
 
-  .footer-socials {
-    justify-content: center;
-  }
-
-  .footer-bottom {
+  .ecom-footer-bottom {
     flex-direction: column;
     text-align: center;
+    gap: 1.25rem;
   }
 }

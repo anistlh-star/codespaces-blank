@@ -11,7 +11,7 @@ import { KEYS } from "../cache/keys.js";
 import { TTL } from "../cache/ttl.js";
 import { cacheOrchestrator } from "../cache/cacheOrchestrator.js";
 import { delCache } from "../cache/cacheService.js";
-import { invalidateProductCache } from "../cache/cacheInvalition.js";
+import { invalidateProductCache } from "../cache/cacheInvalidation.js";
 import logger from "../config/logger.js";
 
 export const getAllProducts = asyncHandler(async (req, res) => {
@@ -99,8 +99,6 @@ export const getAllProducts = asyncHandler(async (req, res) => {
 });
 export const getProductsByUser = asyncHandler(async (req, res) => {
   const userId = req.user?._id;
-  logger.info("USER:", req.user);
-  logger.info("USER ID:", userId);
   if (!userId) {
     return res.status(401).json({ success: false, message: "Unauthorized" });
   }
@@ -110,28 +108,26 @@ export const getProductsByUser = asyncHandler(async (req, res) => {
 
   const allowedFields = ["createdAt", "price", "rating"];
   if (!allowedFields.includes(sortField)) {
-    return res
-      .status(400)
-      .json({ success: false, message: "Invalid sort field" });
+    return res.status(400).json({ success: false, message: "Invalid sort field" });
   }
 
   const sortDir = sortOrder === "asc" ? 1 : -1;
-  const queryHash = getQueryHash(
-    JSON.stringify({ userId, sortField, sortOrder }),
-  );
+  const queryHash = getQueryHash(JSON.stringify({ userId, sortField, sortOrder }));
   const cacheKey = KEYS.userProducts(userId, queryHash);
 
   const result = await cacheOrchestrator({
     key: cacheKey,
     ttl: TTL.list,
     fetch: async () => {
+      // Changed from .findOne() to .find() to handle array collections cleanly
       const products = await Product.find({ createdBy: userId })
         .sort({ [sortField]: sortDir })
         .populate("category", "name")
         .lean();
+
       return {
-        products,
-        count: products.length,
+        products: products || [],
+        count: products ? products.length : 0
       };
     },
   });
@@ -243,25 +239,15 @@ export const getSingleProductById = asyncHandler(async (req, res) => {
 });
 export const AddProduct = asyncHandler(async (req, res) => {
   const {
-    name,
-    description,
-    price,
-    stock,
-    category,
-    releaseDate,
-    countryOfOrigin,
-    brand,
-    specifications,
+    name, description, price, stock, category,
+    releaseDate, countryOfOrigin, brand, specifications,
   } = req.body;
 
   let specsArray = [];
-
   if (specifications && typeof specifications == "string") {
     try {
       const parsed = JSON.parse(specifications);
-      specsArray = parsed.filter(
-        (item) => item?.label?.trim() && item?.value?.trim(),
-      );
+      specsArray = parsed.filter((item) => item?.label?.trim() && item?.value?.trim());
     } catch (error) {
       logger.error("error parsing the specifications ", error);
     }
@@ -269,14 +255,11 @@ export const AddProduct = asyncHandler(async (req, res) => {
 
   if (!name || !description) {
     logger.warn("name or description required !! ");
-    return res.json({
-      success: false,
-      message: "name or description required !! ",
-    });
+    return res.json({ success: false, message: "name or description required !! " });
   }
-  const images = req.files
-    ? req.files.map((file) => `/images/${file.filename}`)
-    : [];
+
+  const images = req.files ? req.files.map((file) => `/images/${file.filename}`) : [];
+
   const product = await Product.create({
     name: name.trim(),
     description: description.trim(),
@@ -290,14 +273,14 @@ export const AddProduct = asyncHandler(async (req, res) => {
     specifications: specsArray,
     createdBy: req.user._id,
   });
-  const populatedProduct = await Product.findById(product._id).populate(
-    "category",
-    "name",
-  );
-  await reIngestProduct(populatedProduct._id);
 
-  // Invalidate cache for product lists
-  await invalidateProductCache("products:list:*");
+  const populatedProduct = await Product.findById(product._id).populate("category", "name");
+
+  // Properly invoke the revamped, targeted cache invalidation cycle
+  await invalidateProductCache({
+    productId: populatedProduct._id,
+    userId: req.user._id
+  });
 
   res.json({
     success: true,

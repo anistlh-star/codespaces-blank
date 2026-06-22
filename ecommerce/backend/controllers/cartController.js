@@ -58,7 +58,7 @@ export const getCart = asyncHandler(async (req, res) => {
     ttl: TTL.cart,
     fetch: async () => {
       const dbCart = await getUserCart(query.userId);
-      console.log("Fetched cart from DB:", dbCart);
+      // console.log("Fetched cart from DB:", dbCart);
       return dbCart || emptyCartStructure;
     },
   });

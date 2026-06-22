@@ -1,6 +1,6 @@
 // ecommerce/backend/controllers/userController.js
 import mongoose from "mongoose";
-import { invalidateUserCache } from "../cache/cacheInvalition.js";
+import { invalidateUserCache } from "../cache/cacheInvalidation.js";
 import { cacheOrchestrator } from "../cache/cacheOrchestrator.js";
 import { delCache } from "../cache/cacheService.js";
 import { KEYS } from "../cache/keys.js";

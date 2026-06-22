@@ -1,22 +1,20 @@
-//ecommerce/frontend/src/components/Navbar.jsx
+// ecommerce/frontend/src/components/Navbar.jsx
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { Menu, X, ShoppingBag, Heart, User } from "lucide-react";
-import { useState, useEffect } from "react";
+import { Menu, X, ShoppingBag, Heart, User, ShoppingCart } from "lucide-react";
+import { useState } from "react";
+import { MdAdminPanelSettings } from "react-icons/md";
 import "./Navbar.css";
 import { useAuth } from "../../context/AuthContext";
-import { useCategories } from "../hooks/useCategories";
-import { MdAdminPanelSettings } from "react-icons/md";
 import { useCart } from "../../context/CartContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const { token, logout, user } = useAuth();
-  // const { categories, loading: categoriesLoading } = useCategories();
   const { cart, clearCart } = useCart();
 
   const closeMenu = () => setIsMobileOpen(false);
-  // const toggleCategory = () => setIsCategoryOpen(!isCategoryOpen);
+  const toggleMenu = () => setIsMobileOpen(!isMobileOpen);
 
   const handleSignOut = () => {
     logout();
@@ -28,224 +26,112 @@ const Navbar = () => {
   const cartItemCount =
     cart?.items?.reduce((total, item) => total + (item.quantity || 1), 0) || 0;
 
+  const isAdmin = user?.role?.toLowerCase() === "admin";
+
   return (
     <>
-      <nav className="electronics-navbar">
-        <div className="electronics-navbar-container">
-          {/* Logo */}
-          <Link to="/" className="electronics-navbar-logo" onClick={closeMenu}>
-            Electro<span>Hub</span>
+      <nav className="ecom-navbar">
+        <div className="ecom-navbar-container">
+          {/* Brand Logo */}
+          <Link to="/" className="ecom-navbar-logo" onClick={closeMenu}>
+            Electro<span className="logo-accent">Hub</span>
           </Link>
 
-          {/* Desktop Menu */}
-          <div className="electronics-navbar-menu electronics-desktop-only">
-            <NavLink
-              to="/shop"
-              className={({ isActive }) =>
-                isActive
-                  ? "electronics-navbar-link active"
-                  : "electronics-navbar-link"
-              }
-            >
+          {/* Desktop Navigation Routes */}
+          <div className="ecom-navbar-routes">
+            <NavLink to="/" className={({ isActive }) => `ecom-navbar-link ${isActive ? "active" : ""}`} end>
+              Home
+            </NavLink>
+            <NavLink to="/shop" className={({ isActive }) => `ecom-navbar-link ${isActive ? "active" : ""}`}>
               Shop
-            </NavLink>
-            <NavLink to="/ai" onClick={closeMenu}>
-              AI
-            </NavLink>
-
-            {/* <div
-              className="electronics-category-dropdown-wrapper"
-              onMouseEnter={() => setIsCategoryOpen(true)}
-              onMouseLeave={() => setIsCategoryOpen(false)}
-            >
-              <button className="electronics-navbar-link" onClick={toggleCategory}>
-                Categories
-              </button>
-
-              {isCategoryOpen && (
-                <div className="electronics-category-dropdown">
-                  {categoriesLoading ? (
-                    <div className="electronics-dropdown-loading">Loading...</div>
-                  ) : categories.length === 0 ? (
-                    <div className="electronics-dropdown-empty">No categories yet</div>
-                  ) : (
-                    categories.map((cat) => (
-                      <button
-                        key={cat._id}
-                        className="electronics-dropdown-item"
-                        onClick={() => {
-                          navigate(`/category/${cat._id}`);
-                          setIsCategoryOpen(false);
-                        }}
-                      >
-                        {cat.categoryName || cat.name}
-                      </button>
-                    ))
-                  )}
-                </div>
-              )}
-            </div> */}
-
-            <NavLink
-              to="/newarrivals"
-              className={({ isActive }) =>
-                isActive
-                  ? "electronics-navbar-link active"
-                  : "electronics-navbar-link"
-              }
-            >
-              New Arrivals
             </NavLink>
           </div>
 
-          {/* Right Icons & Auth */}
-          <div className="electronics-navbar-actions">
-            <Link
-              to="/wishlist"
-              className="electronics-navbar-icon-btn"
-              aria-label="Wishlist"
-            >
+          {/* User Operations Panel */}
+          <div className="ecom-navbar-actions">
+            {isAdmin && (
+              <Link to="/admin" className="ecom-icon-btn admin-indicator" title="Admin Control Panel">
+                <MdAdminPanelSettings size={22} />
+              </Link>
+            )}
+
+            <Link to="/wishlist" className="ecom-icon-btn" aria-label="View Wishlist">
               <Heart size={20} />
             </Link>
+            <Link to="/my-orders" className="ecom-icon-btn" aria-label="View Wishlist">
+              <ShoppingBag size={20} />
+            </Link>
 
-            <Link
-              to="/cart"
-              className="electronics-navbar-icon-btn electronics-navbar-cart-btn"
-              aria-label={`Cart ${cartItemCount > 0 ? `(${cartItemCount} items)` : ""}`}
-            >
-              <ShoppingBag size={20} strokeWidth={1.8} />
+            <Link to="/cart" className="ecom-icon-btn ecom-cart-trigger" aria-label="View Cart">
+              <ShoppingCart size={20} />
+
               {cartItemCount > 0 && (
-                <span className="electronics-navbar-cart-count">
-                  {cartItemCount}
-                </span>
+                <span className="ecom-navbar-badge">{cartItemCount}</span>
               )}
             </Link>
-            {/* if user role is admin then choose the profile if not then choose the userprofile */}
 
             {token ? (
-              <>
-                <Link
-                  to={
-                    user && user.role === "Admin" ? "/profile" : "/userprofile"
-                  }
-                  className="electronics-navbar-icon-btn"
-                  aria-label="Account"
-                >
+              <div className="ecom-user-dropdown-wrapper">
+                <Link to="/profile" className="ecom-icon-btn" aria-label="Account Profile">
                   <User size={20} />
                 </Link>
-                <button
-                  className="electronics-navbar-link electronics-signout-btn electronics-desktop-only"
-                  onClick={handleSignOut}
-                >
-                  Sign Out
-                </button>
-                {user && (user.role === "Admin" || user.role === "admin") && (
-                  <Link
-                    to="/admin"
-                    className="electronics-navbar-link electronics-admin-btn electronics-desktop-only"
-                  >
-                    <MdAdminPanelSettings size={22} /> Admin
-                  </Link>
-                )}
-              </>
+                <div className="ecom-dropdown-menu">
+                  <Link to="/userprofile" className="ecom-dropdown-item">My Profile</Link>
+                  <Link to="/my-orders" className="ecom-dropdown-item">Order History</Link>
+                  <button onClick={handleSignOut} className="ecom-dropdown-item ecom-logout-btn">
+                    Sign Out
+                  </button>
+                </div>
+              </div>
             ) : (
-              <Link
-                to="/login"
-                className="electronics-navbar-link electronics-signin-btn electronics-desktop-only"
-              >
+              <Link to="/login" className="ecom-auth-cta-btn">
                 Sign In
               </Link>
             )}
-            <button
-              className="electronics-navbar-toggle electronics-mobile-only"
-              onClick={() => setIsMobileOpen(!isMobileOpen)}
-              aria-label="Toggle menu"
-            >
-              {isMobileOpen ? <X size={28} /> : <Menu size={28} />}
+
+            {/* Mobile Menu Action Trigger */}
+            <button className="ecom-mobile-toggle" onClick={toggleMenu} aria-label="Toggle Menu">
+              {isMobileOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
       </nav>
 
-      {/* Mobile Drawer with smooth slide */}
+      {/* Synchronized Mobile View Overlay Architecture */}
       <div
-        className={`electronics-mobile-overlay ${isMobileOpen ? "electronics-mobile-overlay--visible" : ""}`}
+        className={`ecom-mobile-overlay ${isMobileOpen ? "visible" : ""}`}
         onClick={closeMenu}
-      >
-        <div
-          className={`electronics-mobile-drawer ${isMobileOpen ? "electronics-mobile-drawer--open" : ""}`}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="electronics-mobile-drawer-header">
-            <Link
-              to="/"
-              className="electronics-mobile-logo"
-              onClick={closeMenu}
-            >
-              Electro<span>Hub</span>
-            </Link>
-            <button
-              className="electronics-mobile-close-btn"
-              onClick={closeMenu}
-            >
-              <X size={28} />
-            </button>
+      />
+
+      <div className={`ecom-mobile-drawer ${isMobileOpen ? "open" : ""}`}>
+        <div className="ecom-drawer-header">
+          <span className="ecom-navbar-logo">Electro<span className="logo-accent">Hub</span></span>
+          <button className="ecom-drawer-close" onClick={closeMenu}>
+            <X size={22} />
+          </button>
+        </div>
+
+        <div className="ecom-drawer-body">
+          <div className="ecom-drawer-links">
+            <Link to="/" onClick={closeMenu}>Home</Link>
+            <Link to="/shop" onClick={closeMenu}>Shop</Link>
+            <Link to="/wishlist" onClick={closeMenu}>Wishlist</Link>
+            <Link to="/cart" onClick={closeMenu}>Cart ({cartItemCount})</Link>
+            {token && <Link to="/profile" onClick={closeMenu}>My Account</Link>}
+            {isAdmin && (
+              <Link to="/admin" onClick={closeMenu} className="ecom-drawer-admin-link">
+                Admin Settings
+              </Link>
+            )}
           </div>
 
-          <nav className="electronics-mobile-nav-links">
-            <NavLink to="/shop" onClick={closeMenu}>
-              Shop
-            </NavLink>
-            <NavLink to="/ai" onClick={closeMenu}>
-              AI
-            </NavLink>
-            <NavLink to="/newarrivals" onClick={closeMenu}>
-              New Arrivals
-            </NavLink>
-          </nav>
-
-          <div className="electronics-mobile-secondary-links">
-            <Link to="/wishlist" onClick={closeMenu}>
-              Wishlist
-            </Link>
-            <Link to="/cart" onClick={closeMenu}>
-              Cart
-            </Link>
-            <Link to="/userprofile" onClick={closeMenu}>
-              My Account
-            </Link>
-            <Link to="/profile" onClick={closeMenu}>
-              My Account
-            </Link>
-
+          <div className="ecom-drawer-footer">
             {token ? (
-              <>
-                <button
-                  onClick={handleSignOut}
-                  className="electronics-mobile-auth-link electronics-logout"
-                >
-                  Sign Out
-                </button>
-
-                {user &&
-                  user.role === "Admin" &&
-                  user.role ===
-                    "admin"(
-                      <Link
-                        to="/admin"
-                        className="electronics-mobile-auth-link"
-                        onClick={closeMenu}
-                      >
-                        <MdAdminPanelSettings size={22} /> Admin
-                      </Link>,
-                    )}
-              </>
+              <button onClick={handleSignOut} className="ecom-drawer-auth-btn logout">
+                Sign Out
+              </button>
             ) : (
-              <Link
-                to="/login"
-                onClick={closeMenu}
-                className="electronics-mobile-auth-link"
-              >
+              <Link to="/login" onClick={closeMenu} className="ecom-drawer-auth-btn">
                 Sign In / Register
               </Link>
             )}
