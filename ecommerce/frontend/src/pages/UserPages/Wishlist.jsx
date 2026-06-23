@@ -13,7 +13,8 @@ const Wishlist = () => {
 
   const [wishlist, setWishlist] = useState({ products: [] });
   const [loading, setLoading] = useState(true);
-  const [viewMode, setViewMode] = useState("grid");
+  const [viewMode, setViewMode] = useState("grid"); // "grid" | "list"
+  const [actionError, setActionError] = useState("");
 
   useEffect(() => {
     if (!user) return;
@@ -36,124 +37,154 @@ const Wishlist = () => {
 
   const removeItem = async (productId) => {
     if (!productId) return;
+    setActionError("");
 
     try {
       const res = await API.delete(`/wishlist/${productId}`);
       setWishlist(res.data.wishlist || { products: [] });
     } catch (err) {
       console.error("Failed to remove item:", err);
-      alert("Failed to remove from wishlist");
+      setActionError("Could not remove item. Please try again.");
+      setTimeout(() => setActionError(""), 3000);
     }
   };
 
   if (!user) {
-    return <div className="loading-message">Please log in to view your wishlist</div>;
+    return (
+      <div className="wishlist-gate">
+        <div className="wishlist-gate__card">
+          <h2>Access Denied</h2>
+          <p>Please log in to manage your curated personal wishlist.</p>
+          <Link to="/login" className="wl-btn wl-btn--primary">
+            Sign In Account
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   const products = wishlist.products || [];
 
   return (
-    <div className="wishlist-page">
-      <div className="page-header">
-        <h1>My Wishlist ({products.length})</h1>
+    <div className="wl-page">
+      {/* Top Header Layout Controls */}
+      <div className="wl-header">
+        <div className="wl-header__meta">
+          <h1 className="wl-header__title">My Wishlist</h1>
+          <span className="wl-header__badge">
+            {products.length} {products.length === 1 ? "item" : "items"}
+          </span>
+        </div>
 
-        <div className="header-controls">
-          <div className="view-controls">
+        <div className="wl-header__controls">
+          <div className="wl-toggle-group">
             <button
-              className={`view-btn ${viewMode === "grid" ? "active" : ""}`}
+              className={`wl-toggle-btn ${viewMode === "grid" ? "is-active" : ""}`}
               onClick={() => setViewMode("grid")}
-              title="Grid view"
+              aria-label="Grid view"
             >
-              <span>⊞</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
             </button>
             <button
-              className={`view-btn ${viewMode === "list" ? "active" : ""}`}
+              className={`wl-toggle-btn ${viewMode === "list" ? "is-active" : ""}`}
               onClick={() => setViewMode("list")}
-              title="List view"
+              aria-label="List view"
             >
-              <span>≡</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
             </button>
           </div>
         </div>
       </div>
 
+      {actionError && <div className="wl-toast-error">{actionError}</div>}
+
+      {/* Main Structural Display Logic */}
       {loading ? (
-        <div className="loading-container">
-          <div className="spinner"></div>
-          <p>Loading your wishlist...</p>
+        <div className="wl-loader">
+          <div className="wl-loader__spinner"></div>
+          <p>Retrieving your saved items...</p>
         </div>
       ) : products.length === 0 ? (
-        <div className="empty-state">
-          <div className="empty-icon">❤️</div>
-          <h2>Your wishlist is empty</h2>
-          <p>Start adding products you love!</p>
-          <Link to="/products" className="btn-primary">
-            Browse Products
+        <div className="wl-empty">
+          <div className="wl-empty__icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+          </div>
+          <h2 className="wl-empty__title">Your wishlist is empty</h2>
+          <p className="wl-empty__text">Save items you love here to monitor stock availability and price adjustments.</p>
+          <Link to="/products" className="wl-btn wl-btn--primary">
+            Explore Collections
           </Link>
         </div>
       ) : (
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="popLayout">
           <motion.div
             key={viewMode}
-            className={`products-container ${viewMode}`}
-            initial={{ opacity: 0, y: 20 }}
+            className={`wl-container wl-container--${viewMode}`}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
           >
             {products.map((item) => {
               const product = item.product;
-
               if (!product || !product._id) return null;
+
+              const inStock = product.stock > 0;
 
               return (
                 <motion.div
                   key={product._id}
-                  className="product-card"
+                  className="wl-card"
                   layout
-                  initial={{ opacity: 0, scale: 0.95 }}
+                  initial={{ opacity: 0, scale: 0.98 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.3 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.28 }}
                 >
-                  <div className="product-image-wrapper">
+                  {/* Media Wrapper Frame */}
+                  <div className="wl-card__media">
                     {Array.isArray(product.images) && product.images.length > 0 ? (
                       <img
                         src={imageHelper(product.images[0])}
                         alt={product.name}
-                        className="product-image"
+                        className="wl-card__img"
+                        loading="lazy"
                         onError={(e) => {
                           e.target.onerror = null;
-                          e.target.src = "https://placehold.co/300x300?text=No+Image";
+                          e.target.src = "https://placehold.co/400x400?text=No+Image+Available";
                         }}
                       />
                     ) : (
-                      <div className="no-image">No Image</div>
+                      <div className="wl-card__no-img">No Image Available</div>
                     )}
+                    <button
+                      className="wl-card__quick-remove"
+                      onClick={() => removeItem(product._id)}
+                      title="Remove Item"
+                      aria-label="Remove from wishlist"
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
                   </div>
 
-                  <div className="product-info">
-                    <h3 className="product-name">{product.name}</h3>
-                    <p className="product-price">
-                      ${product.price?.toFixed(2) || "—"}
-                    </p>
-
-                    <div className="product-meta">
-                      <span className="stock">
-                        {product.stock > 0
-                          ? `${product.stock} in stock`
-                          : "Out of stock"}
-                      </span>
-                      <span className="category">
-                        {product.category?.name || "—"}
+                  {/* Item Content Descriptions */}
+                  <div className="wl-card__body">
+                    <div className="wl-card__header-row">
+                      <span className="wl-card__tag">{product.category?.name || "General"}</span>
+                      <span className={`wl-card__stock ${inStock ? "is-in-stock" : "is-out-stock"}`}>
+                        {inStock ? "In Stock" : "Sold Out"}
                       </span>
                     </div>
 
-                    <div className="product-actions">
-                      <Link to={`/product/${product._id}`} className="btn-view">
-                        View Details
+                    <h3 className="wl-card__title">{product.name}</h3>
+                    <p className="wl-card__price">${product.price?.toFixed(2) || "—"}</p>
+
+                    <div className="wl-card__actions">
+                      <Link to={`/product/${product._id}`} className="wl-btn wl-btn--secondary">
+                        View Product
                       </Link>
                       <button
-                        className="btn-remove"
+                        className="wl-btn wl-btn--text"
                         onClick={() => removeItem(product._id)}
                       >
                         Remove

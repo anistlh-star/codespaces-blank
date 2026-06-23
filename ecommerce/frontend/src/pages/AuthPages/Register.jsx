@@ -1,8 +1,8 @@
-//ecommerce/frontend/src/pages/AuthPages/Register.jsx
+// ecommerce/frontend/src/pages/AuthPages/Register.jsx
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import API from "../../../api";
-import "../../../styles/pages/AuthPage/Auth.css"; // ← use the same combined CSS file
+import "./Auth.css"; // shared CSS file
 
 const Register = () => {
   const navigate = useNavigate();
@@ -22,10 +22,11 @@ const Register = () => {
 
     try {
       await API.post("/auth/register", { name, email, password });
-      setSuccess("Registration successful! Redirecting to login...");
+      setSuccess("Account created successfully! Redirecting...");
       setTimeout(() => navigate("/login"), 1800);
     } catch (err) {
-       console.log(err || "Registration failed. Please try again.");
+      setError(err?.response?.data?.message || "Registration failed. Please try again.");
+      console.log(err);
     } finally {
       setIsLoading(false);
     }
@@ -35,6 +36,7 @@ const Register = () => {
     <div className="auth-page">
       <div className="auth-page__container">
         <h2 className="auth-page__title">Create account</h2>
+        <p className="auth-page__subtitle">Join us to explore premium collections.</p>
 
         {error && <div className="auth-page__error">{error}</div>}
         {success && <div className="auth-page__success">{success}</div>}
@@ -86,7 +88,14 @@ const Register = () => {
             className="auth-page__button"
             disabled={isLoading}
           >
-            {isLoading ? "Creating account..." : "Sign up"}
+            {isLoading ? (
+              <span className="auth-page__spinner-container">
+                <span className="auth-page__spinner"></span>
+                Creating account...
+              </span>
+            ) : (
+              "Sign up"
+            )}
           </button>
         </form>
 

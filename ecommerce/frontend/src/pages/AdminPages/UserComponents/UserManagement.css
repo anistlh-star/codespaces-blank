@@ -1,62 +1,152 @@
-/* ecommerce/frontend/src/pages/AdminPages/UserManagement.css */
-.user-management {
-  padding: 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
+/* ==========================================================================
+   Core Layout & Variables
+   ========================================================================== */
+:root {
+  --primary-color: #4f46e5;
+  --primary-hover: #4338ca;
+  --bg-main: #f8fafc;
+  --bg-surface: #ffffff;
+  --text-dark: #0f172a;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+  --smooth-transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.user-management {
+  padding: 2.5rem 2rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+  color: var(--text-dark);
+}
+
+/* ==========================================================================
+   Header & Typography
+   ========================================================================== */
 .page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 
 .page-header h1 {
-  font-size: 2.2rem;
-  color: #1f2937;
+  font-size: 1.85rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.5rem 0;
+  color: var(--text-dark);
+}
+
+.subtext {
+  color: var(--text-muted);
+  font-size: 0.95rem;
   margin: 0;
+  line-height: 1.5;
 }
 
-.btn-primary {
-  background: linear-gradient(135deg, #6366f1, #4f46e5);
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
-}
-
+/* ==========================================================================
+   Interactive Controls & Filters
+   ========================================================================== */
 .filters {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
 }
 
-.search-input, .role-filter {
-  padding: 12px 16px;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  font-size: 1rem;
+.search-input,
+.role-filter {
+  padding: 0.75rem 1.25rem;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  font-size: 0.95rem;
+  background-color: var(--bg-surface);
+  color: var(--text-dark);
+  transition: var(--smooth-transition);
+  outline: none;
 }
 
 .search-input {
   flex: 1;
-  max-width: 400px;
+  max-width: 450px;
 }
 
+.role-filter {
+  min-width: 180px;
+  cursor: pointer;
+}
+
+.search-input:focus,
+.role-filter:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+button {
+  font-family: inherit;
+  transition: var(--smooth-transition);
+}
+
+.btn-primary {
+  background-color: var(--text-dark);
+  color: var(--bg-surface);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(79, 70, 229, 0.2);
+}
+
+.btn-edit,
+.btn-delete {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  background: transparent;
+}
+
+.btn-edit {
+  color: var(--primary-color);
+}
+
+.btn-edit:hover {
+  background-color: #e0e7ff;
+}
+
+.btn-delete {
+  color: #ef4444;
+}
+
+.btn-delete:hover {
+  background-color: #fee2e2;
+}
+
+/* ==========================================================================
+   Table & Data Display
+   ========================================================================== */
 .table-container {
-  background: white;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
 }
 
 .user-table {
@@ -65,103 +155,487 @@
 }
 
 .user-table th {
-  background: #f8fafc;
-  padding: 16px;
+  background: var(--bg-main);
+  padding: 1.25rem 1.5rem;
   text-align: left;
   font-weight: 600;
-  color: #64748b;
-  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .user-table td {
-  padding: 18px 16px;
-  border-top: 1px solid #f1f5f9;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  vertical-align: middle;
+}
+
+.user-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Links & Badges */
+.user-profile-link {
+  font-weight: 600;
+  color: var(--text-dark);
+  text-decoration: none;
+  transition: var(--smooth-transition);
+}
+
+.user-profile-link:hover {
+  color: var(--primary-color);
 }
 
 .role-badge {
-  padding: 6px 14px;
+  padding: 0.35rem 0.85rem;
   border-radius: 9999px;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 600;
+  text-transform: capitalize;
+  display: inline-block;
 }
 
-.role-badge.user { background: #e0f2fe; color: #0369a1; }
-.role-badge.admin { background: #fee2e2; color: #b91c1c; }
-.role-badge.customer { background: #ecfdf5; color: #065f46; }
-.role-badge.guest { background: #f3e8ff; color: #6b21a8; }
-
-.btn-edit, .btn-delete {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 8px;
-  margin-right: 8px;
-  cursor: pointer;
-  font-size: 0.9rem;
+.role-badge.admin {
+  background: #fef2f2;
+  color: #991b1b;
 }
 
-.btn-edit {
-  background: #f3e8ff;
-  color: #6b21a8;
+.role-badge.user {
+  background: #f1f5f9;
+  color: #475569;
 }
 
-.btn-delete {
-  background: #fee2e2;
-  color: #b91c1c;
+.role-badge.customer {
+  background: #f0fdf4;
+  color: #166534;
 }
 
-.btn-edit:hover { background: #e0f2fe; }
-.btn-delete:hover { background: #fecaca; }
+.role-badge.guest {
+  background: #fdf4ff;
+  color: #86198f;
+}
 
+/* ==========================================================================
+   Modal Integration (Form)
+   ========================================================================== */
 .modal-overlay {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
+  inset: 0;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-}
+  animation: fadeIn 0.25;
+  /* Here is the refined stylesheet for your component, building directly on your existing base[cite: 7].  */
 
-.modal-content {
-  background: white;
-  padding: 2rem;
-  border-radius: 20px;
-  width: 100%;
-  max-width: 480px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-}
+  /* To align with a modern, simplistic aesthetic with fluid transitions, the heavy gradients have been swapped for flat, high-contrast tones, input focus states have been given softer utility rings, and the modal sequence has been upgraded with a responsive, hardware-accelerated entrance animation.  */
 
-.modal-content form input,
-.modal-content form select,
-.modal-content form textarea {
-  width: 100%;
-  padding: 14px;
-  margin-bottom: 1rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  font-size: 1rem;
-}
+  /* ### `UserManagement.css` */
 
-.modal-buttons {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
+  /* ```css */
+  /* ==========================================================================
+   Core Layout & Container[cite: 7]
+   ========================================================================== */
+  .user-management {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, sans-serif;
+    color: #0f172a;
+  }
 
-.btn-cancel {
-  flex: 1;
-  padding: 14px;
-  border: 1px solid #e5e7eb;
-  background: white;
-  border-radius: 12px;
-  cursor: pointer;
-}
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
 
-.loading {
-  text-align: center;
-  padding: 3rem;
-  font-size: 1.2rem;
-  color: #64748b;
+  .page-header h1 {
+    font-size: 2rem;
+    color: #0f172a;
+    margin: 0 0 0.25rem 0;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .subtext {
+    color: #64748b;
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  /* ==========================================================================
+   Interactive Elements & Controls
+   ========================================================================== */
+  .filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .search-input,
+  .role-filter {
+    padding: 12px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    background-color: #fafafa;
+    color: #0f172a;
+    outline: none;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .search-input {
+    flex: 1;
+    max-width: 400px;
+  }
+
+  .search-input:focus,
+  .role-filter:focus {
+    background-color: #ffffff;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  }
+
+  /* Simplistic Buttons */
+  button {
+    font-family: inherit;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .btn-primary {
+    background: #0f172a;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-primary:hover {
+    background: #4f46e5;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 16px rgba(79, 70, 229, 0.15);
+  }
+
+  .btn-edit,
+  .btn-delete {
+    padding: 8px 16px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    margin-left: 8px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+    background: transparent;
+  }
+
+  .btn-edit {
+    color: #4f46e5;
+  }
+
+  .btn-edit:hover {
+    background: #eff6ff;
+    color: #3b82f6;
+  }
+
+  .btn-delete {
+    color: #ef4444;
+  }
+
+  .btn-delete:hover {
+    background: #fef2f2;
+    color: #dc2626;
+  }
+
+  /* ==========================================================================
+   Data Table
+   ========================================================================== */
+  .table-container {
+    background: white;
+    border-radius: 12px;
+    overflow-x: auto;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  }
+
+  .user-table {
+    width: 100%;
+    border-collapse: collapse;
+    white-space: nowrap;
+  }
+
+  .user-table th {
+    background: #f8fafc;
+    padding: 16px 20px;
+    text-align: left;
+    font-weight: 600;
+    color: #64748b;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .user-table td {
+    padding: 16px 20px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+    font-size: 0.95rem;
+  }
+
+  .user-profile-link {
+    font-weight: 500;
+    color: #0f172a;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .user-profile-link:hover {
+    color: #4f46e5;
+  }
+
+  .text-muted {
+    color: #64748b;
+  }
+
+  /* Modern Badges[cite: 7] */
+  .role-badge {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    letter-spacing: 0.02em;
+  }
+
+  .role-badge.user {
+    background: #f1f5f9;
+    color: #475569;
+  }
+
+  .role-badge.admin {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+
+  .role-badge.customer {
+    background: #ecfdf5;
+    color: #166534;
+  }
+
+  .role-badge.guest {
+    background: #f3e8ff;
+    color: #6b21a8;
+  }
+
+  /* ==========================================================================
+   Modal Component[cite: 7]
+   ========================================================================== */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  .modal-content {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    animation: slideUpModal 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .modal-header {
+    margin-bottom: 2rem;
+  }
+
+  .modal-subtitle {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin: 6px 0 0 0;
+  }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 1.25rem;
+  }
+
+  .input-group label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #475569;
+  }
+
+  .input-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .modal-content form input,
+  .modal-content form select,
+  .modal-content form textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    background-color: #fafafa;
+    transition: all 0.2s ease;
+    outline: none;
+  }
+
+  .modal-content form input:focus,
+  .modal-content form select:focus,
+  .modal-content form textarea:focus {
+    background-color: #ffffff;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  }
+
+  .modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .btn.secondary {
+    padding: 12px 24px;
+    border: 1px solid #e2e8f0;
+    background: white;
+    color: #475569;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+
+  .btn.secondary:hover {
+    background: #f8fafc;
+    color: #0f172a;
+  }
+
+  /* ==========================================================================
+   Smooth Animations & States[cite: 7]
+   ========================================================================== */
+  .fade-in-row {
+    animation: rowReveal 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+    transition: background-color 0.2s ease;
+  }
+
+  .fade-in-row:hover {
+    background-color: #fafafa;
+  }
+
+  .loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5rem 2rem;
+    gap: 1.25rem;
+    color: #64748b;
+  }
+
+  .pulse-spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid #e0e7ff;
+    border-top-color: #4f46e5;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  .empty-table-state {
+    text-align: center;
+    padding: 4rem 2rem !important;
+    color: #94a3b8;
+  }
+
+  @keyframes rowReveal {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUpModal {
+    from {
+      opacity: 0;
+      transform: translateY(20px) scale(0.98);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Responsiveness */
+  @media (max-width: 768px) {
+    .input-row {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .user-management {
+      padding: 1rem;
+    }
+
+    .filters {
+      flex-direction: column;
+    }
+
+    .search-input {
+      max-width: 100%;
+    }
+  }
 }

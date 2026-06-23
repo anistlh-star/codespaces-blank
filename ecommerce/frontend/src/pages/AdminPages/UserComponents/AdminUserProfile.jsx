@@ -2,9 +2,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import UserFormModal from "./UserComponents/UserFormModal.jsx";
-import "../../pages/UserPages/UserProfile.css";
-import API from "../../../api";
+import UserFormModal from "./UserFormModal.jsx";
+import "./AdminUserProfile.css";
+import API from "../../../../api/index.js";
 
 const AdminUserProfile = () => {
   const { id } = useParams();

@@ -27,7 +27,6 @@ import EditProductPage from "./pages/AdminPages/ProductComponents/EditProductPag
 // Categories (admin)
 import CategoryPage from "./pages/AdminPages/CategoryComponents/CategoryPage.jsx";
 import SingleCategoryPage from "./pages/AdminPages/CategoryComponents/SingleCategoryPage.jsx";
-import EditCategoryPage from "./pages/AdminPages/CategoryComponents/EditCategoryPage.jsx";
 
 // Orders (admin)
 import OrdersPage from "./pages/AdminPages/OrdersComponent/OrdersPage.jsx";
@@ -47,7 +46,7 @@ import MyOrders from "./pages/AdminPages/OtherPages/MyOrders.jsx";
 import OrderDetails from "./pages/AdminPages/OtherPages/OrderDetails.jsx";
 import MyProductDetail from "./pages/UserPages/MyProductDetail.jsx";
 import UserManagement from "./pages/AdminPages/UserComponents/UserManagement.jsx";
-import AdminUserProfile from "./pages/AdminPages/AdminUserProfile.jsx";
+import AdminUserProfile from "./pages/AdminPages/UserComponents/AdminUserProfile.jsx";
 import UserProfile from "./pages/UserPages/UserProfile.jsx";
 import MyProducts from "./pages/UserPages/MyProducts.jsx";
 import AddEditProduct from "./pages/UserPages/AddEditProduct.jsx";
@@ -169,7 +168,6 @@ function App() {
               <Route path="category">
                 <Route index element={<CategoryPage />} />
                 <Route path=":id" element={<SingleCategoryPage />} />
-                <Route path="update/:id" element={<EditCategoryPage />} />
               </Route>
 
               {/* Orders */}

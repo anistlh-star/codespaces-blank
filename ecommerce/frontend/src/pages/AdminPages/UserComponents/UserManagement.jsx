@@ -3,7 +3,8 @@ import React, { useState, useEffect } from "react";
 import UserFormModal from "./UserFormModal";
 import "./UserManagement.css";
 import API from "../../../../api";
-  import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useAuth } from "../../../../context/AuthContext";
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -12,45 +13,51 @@ const UserManagement = () => {
   const [roleFilter, setRoleFilter] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
+  
+  const { user: currentUser } = useAuth();
+  const currentUserId = currentUser?._id || localStorage.getItem("userId");
 
   useEffect(() => {
     fetchUsers();
   }, []);
 
   const fetchUsers = async () => {
+    setLoading(true);
     try {
-      const res = await API.get("/users");
-      console.log("Fetched users:", res.data.data);
+      const res = await API.get("/admin/users/all");
       setUsers(res.data.data || []);
     } catch (err) {
-      console.error(err);
+      console.error("Error connecting to account registries:", err);
     } finally {
       setLoading(false);
     }
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Delete this user permanently?")) return;
+    if (!window.confirm("Are you sure you want to permanently remove this user account?")) return;
     try {
-      await API.delete(`/users/${id}`);
+      await API.delete(`/admin/users/${id}`);
       setUsers(users.filter((u) => u._id !== id));
     } catch (err) {
-      alert("Failed to delete user");
+      alert("Authorization error: Unable to terminate record.");
     }
   };
 
-  const filteredUsers = users.filter((user) => {
+  const filteredUsers = users.filter((u) => {
     const matchesSearch =
-      user.name.toLowerCase().includes(search.toLowerCase()) ||
-      user.email.toLowerCase().includes(search.toLowerCase());
-    const matchesRole = !roleFilter || user.role === roleFilter;
+      u.name?.toLowerCase().includes(search.toLowerCase()) ||
+      u.email?.toLowerCase().includes(search.toLowerCase());
+    const matchesRole = !roleFilter || u.role?.toLowerCase() === roleFilter.toLowerCase();
     return matchesSearch && matchesRole;
   });
 
   return (
     <div className="user-management">
       <div className="page-header">
-        <h1>User Management</h1>
+        <div>
+          <h1>User Directory</h1>
+          <p className="subtext">Manage system accounts, refine operational access parameters, and inspect profiles.</p>
+        </div>
         <button
           className="btn-primary"
           onClick={() => {
@@ -58,14 +65,14 @@ const UserManagement = () => {
             setShowModal(true);
           }}
         >
-          + Add New User
+          <span>+</span> Add New User
         </button>
       </div>
 
       <div className="filters">
         <input
           type="text"
-          placeholder="Search users..."
+          placeholder="Search by name or email identity..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="search-input"
@@ -75,7 +82,7 @@ const UserManagement = () => {
           onChange={(e) => setRoleFilter(e.target.value)}
           className="role-filter"
         >
-          <option value="">All Roles</option>
+          <option value="">All Account Roles</option>
           <option value="user">User</option>
           <option value="admin">Admin</option>
           <option value="customer">Customer</option>
@@ -85,50 +92,67 @@ const UserManagement = () => {
 
       <div className="table-container">
         {loading ? (
-          <div className="loading">Loading users...</div>
+          <div className="loading-state">
+            <div className="pulse-spinner"></div>
+            <p>Syncing secure profiles...</p>
+          </div>
         ) : (
           <table className="user-table">
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Phone</th>
-                <th>Joined</th>
-                <th>Actions</th>
+                <th>Profile Name</th>
+                <th>Email Address</th>
+                <th>System Role</th>
+                <th>Phone No.</th>
+                <th>Joined Date</th>
+                <th style={{ textAlign: "right" }}>Management Actions</th>
               </tr>
             </thead>
             <tbody>
-              {filteredUsers.map((user) => (
-                <tr key={user._id}>
-                  <td><Link to={`/admin/users/admin/${user._id}`}>{user.name}</Link></td>
-                  <td>{user.email}</td>
-                  <td>
-                    <span className={`role-badge ${user.role}`}>
-                      {user.role}
-                    </span>
-                  </td>
-                  <td>{user.phone || "—"}</td>
-                  <td>{new Date(user.createdAt).toLocaleDateString()}</td>
-                  <td>
-                    <button
-                      className="btn-edit"
-                      onClick={() => {
-                        setEditingUser(user);
-                        setShowModal(true);
-                      }}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="btn-delete"
-                      onClick={() => handleDelete(user._id)}
-                    >
-                      Delete
-                    </button>
+              {filteredUsers.length > 0 ? (
+                filteredUsers.map((u) => (
+                  <tr key={u._id} className="fade-in-row">
+                    <td>
+                      <Link to={`/admin/users/${u._id}`} className="user-profile-link">
+                        {u.name}
+                      </Link>
+                    </td>
+                    <td className="text-muted">{u.email}</td>
+                    <td>
+                      <span className={`role-badge ${u.role?.toLowerCase()}`}>
+                        {u.role}
+                      </span>
+                    </td>
+                    <td>{u.phone || "—"}</td>
+                    <td>{u.createdAt ? new Date(u.createdAt).toLocaleDateString("en-US", { month: 'short', day: 'numeric', year: 'numeric' }) : "—"}</td>
+                    <td style={{ textAlign: "right" }}>
+                      <button
+                        className="btn-edit"
+                        onClick={() => {
+                          setEditingUser(u);
+                          setShowModal(true);
+                        }}
+                      >
+                        Edit
+                      </button>
+                      {currentUserId !== u._id && (
+                        <button
+                          className="btn-delete"
+                          onClick={() => handleDelete(u._id)}
+                        >
+                          Delete
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="6" className="empty-table-state">
+                    No registry accounts match your filter definitions.
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         )}

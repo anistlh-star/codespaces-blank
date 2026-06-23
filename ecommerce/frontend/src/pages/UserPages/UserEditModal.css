@@ -1,74 +1,264 @@
-/* ecommerce/frontend/src/components/UserEditModal.css */
-.modal-overlay {
+/* ==========================================================
+   User Edit Modal Stylesheet — Modern Minimalist Design System
+   ========================================================== */
+
+:root {
+  --mdl-backdrop: rgba(15, 23, 42, 0.3);
+  --mdl-surface: #ffffff;
+  --mdl-txt-main: #0f172a;
+  --mdl-txt-sec: #475569;
+  --mdl-txt-muted: #94a3b8;
+  --mdl-border: #e2e8f0;
+  --mdl-border-light: #f1f5f9;
+  --mdl-accent: #2563eb;
+  --mdl-err-bg: #fef2f2;
+  --mdl-err-txt: #b91c1c;
+
+  --mdl-radius: 14px;
+  --mdl-radius-sm: 8px;
+  --mdl-ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Base Modal Fixed Container Context */
+.edt-modal {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2000;
-  backdrop-filter: blur(8px);
+  padding: 1.5rem;
+  box-sizing: border-box;
 }
 
-.modal-content {
-  background: white;
+/* Darkened Backdrop Element */
+.edt-modal__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  max-width: 460px;
-  border-radius: 20px;
-  padding: 2.5rem;
-  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.15);
+  height: 100%;
+  background-color: var(--mdl-backdrop);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  animation: modalFadeIn 0.25s linear forwards;
 }
 
-.modal-content h2 {
-  margin-bottom: 1.8rem;
-  text-align: center;
-  color: #1e2937;
-}
-
-.modal-content input,
-.modal-content select,
-.modal-content textarea {
+/* Main Sliding UI Card Block */
+.edt-modal__container {
+  position: relative;
+  background-color: var(--mdl-surface);
   width: 100%;
-  padding: 14px 16px;
-  margin-bottom: 1.2rem;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 12px;
-  font-size: 1rem;
-  transition: all 0.3s;
+  max-width: 480px;
+  border-radius: var(--mdl-radius);
+  border: 1px solid var(--mdl-border-light);
+  box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.08), 0 10px 10px -5px rgba(15, 23, 42, 0.04);
+  padding: 2.25rem;
+  box-sizing: border-box;
+  opacity: 0;
+  transform: scale(0.96) translateY(8px);
+  animation: modalSlideUp 0.35s var(--mdl-ease) forwards;
+  z-index: 2;
 }
 
-.modal-content input:focus,
-.modal-content select:focus,
-.modal-content textarea:focus {
-  outline: none;
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+@keyframes modalFadeIn {
+  to { opacity: 1; }
 }
 
-.modal-buttons {
+@keyframes modalSlideUp {
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Header Text Blocks Layout */
+.edt-modal__header {
+  margin-bottom: 1.75rem;
+}
+
+.edt-modal__title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--mdl-txt-main);
+  letter-spacing: -0.02em;
+  margin: 0 0 0.25rem 0;
+}
+
+.edt-modal__subtitle {
+  font-size: 0.88rem;
+  color: var(--mdl-txt-sec);
+  margin: 0;
+}
+
+/* Form Management Framework */
+.edt-modal__form {
   display: flex;
-  gap: 12px;
-  margin-top: 1rem;
+  flex-direction: column;
+  gap: 1.2rem;
 }
 
-.btn-cancel {
-  flex: 1;
-  padding: 14px;
-  background: #f1f5f9;
-  color: #475569;
-  border: none;
-  border-radius: 12px;
-  font-weight: 600;
-  cursor: pointer;
+.edt-modal__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
 }
 
-.btn-save {
-  flex: 1;
-  padding: 14px;
-  background: linear-gradient(135deg, #6366f1, #4f46e5);
-  color: white;
-  border: none;
-  border-radius: 12px;
+.edt-modal__label {
+  font-size: 0.8rem;
   font-weight: 600;
+  color: var(--mdl-txt-sec);
+  letter-spacing: 0.01em;
+}
+
+.edt-modal__input,
+.edt-modal__textarea {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  font-size: 0.92rem;
+  color: var(--mdl-txt-main);
+  background-color: transparent;
+  border: 1px solid var(--mdl-border);
+  border-radius: var(--mdl-radius-sm);
+  outline: none;
+  box-sizing: border-box;
+  font-family: inherit;
+  transition: border-color 0.2s var(--mdl-ease), box-shadow 0.2s var(--mdl-ease);
+}
+
+.edt-modal__textarea {
+  resize: vertical;
+  min-height: 70px;
+}
+
+/* Interactive Input States */
+.edt-modal__input:focus,
+.edt-modal__textarea:focus {
+  border-color: var(--mdl-txt-main);
+  box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.04);
+}
+
+.edt-modal__input::placeholder,
+.edt-modal__textarea::placeholder {
+  color: var(--mdl-txt-muted);
+}
+
+/* Error Dynamic Notification Module */
+.edt-modal__error {
+  padding: 0.75rem 0.9rem;
+  background-color: var(--mdl-err-bg);
+  color: var(--mdl-err-txt);
+  border: 1px solid rgba(185, 28, 28, 0.15);
+  border-radius: var(--mdl-radius-sm);
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  animation: errorShudder 0.2s var(--mdl-ease);
+}
+
+@keyframes errorShudder {
+  0% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+  100% { transform: translateX(0); }
+}
+
+/* Control Elements Action Blocks */
+.edt-modal__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.edt-btn {
+  font-size: 0.9rem;
+  font-weight: 550;
+  padding: 0.7rem 1.25rem;
+  border-radius: var(--mdl-radius-sm);
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s var(--mdl-ease), color 0.15s var(--mdl-ease), transform 0.1s var(--mdl-ease);
+}
+
+.edt-btn:active {
+  transform: scale(0.98);
+}
+
+.edt-btn--primary {
+  background-color: var(--mdl-txt-main);
+  color: #ffffff;
+  border: none;
+}
+
+.edt-btn--primary:hover:not(:disabled) {
+  background-color: #1e293b;
+}
+
+.edt-btn--secondary {
+  background-color: transparent;
+  color: var(--mdl-txt-sec);
+  border: 1px solid var(--mdl-border);
+}
+
+.edt-btn--secondary:hover:not(:disabled) {
+  background-color: var(--mdl-border-light);
+  color: var(--mdl-txt-main);
+}
+
+.edt-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Loading Spin Indicator Configs */
+.edt-modal__spinner-flex {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.edt-modal__spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #ffffff;
+  animation: modalSpin 0.55s linear infinite;
+}
+
+@keyframes modalSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 480px) {
+  .edt-modal {
+    padding: 0;
+    align-items: flex-end;
+  }
+  .edt-modal__container {
+    border-radius: var(--mdl-radius) var(--mdl-radius) 0 0;
+    padding: 2rem 1.5rem 2.5rem 1.5rem;
+    transform: translateY(100%);
+    animation: modalSlideUpMobile 0.35s cubic-bezier(0.32, 0.94, 0.6, 1) forwards;
+  }
+  .edt-modal__actions {
+    flex-direction: column-reverse;
+  }
+  .edt-btn {
+    width: 100%;
+  }
+}
+
+@keyframes modalSlideUpMobile {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

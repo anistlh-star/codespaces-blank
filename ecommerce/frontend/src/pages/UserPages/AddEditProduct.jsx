@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 import API from "../../../api";
-import { MdDeleteForever } from "react-icons/md";
+import { MdDeleteForever, MdAdd } from "react-icons/md";
 import "./AddEditProduct.css";
 import { useCategories } from "../../hooks/useCategories";
 import { useCountries } from "../../hooks/useCountries";
@@ -16,10 +16,20 @@ const AddEditProduct = () => {
   const isEditMode = !!productId;
 
   const [formData, setFormData] = useState({
-    name: "", description: "", price: 0, salePrice: null,
-    discountPercentage: null, stock: 0, featured: false, onSale: false,
-    brand: "", category: "", countryOfOrigin: "", releaseDate: "",
-    specifications: [], stockStatus: "in-stock",
+    name: "",
+    description: "",
+    price: 0,
+    salePrice: null,
+    discountPercentage: null,
+    stock: 0,
+    featured: false,
+    onSale: false,
+    brand: "",
+    category: "",
+    countryOfOrigin: "",
+    releaseDate: "",
+    specifications: [],
+    stockStatus: "in-stock",
   });
 
   const [images, setImages] = useState([]);
@@ -43,13 +53,13 @@ const AddEditProduct = () => {
             name: product.name || "",
             description: product.description || "",
             price: product.price || 0,
-            salePrice: product.salePrice || null,
-            discountPercentage: product.discountPercentage || null,
+            salePrice: product.salePrice ?? null,
+            discountPercentage: product.discountPercentage ?? null,
             stock: product.stock || 0,
             featured: product.featured || false,
             onSale: product.onSale || false,
             brand: product.brand || "",
-            category: product.category?._id || "",
+            category: product.category?._id || product.category || "",
             countryOfOrigin: product.countryOfOrigin || "",
             releaseDate: product.releaseDate ? new Date(product.releaseDate).toISOString().split("T")[0] : "",
             specifications: product.specifications || [],
@@ -68,7 +78,10 @@ const AddEditProduct = () => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: type === "checkbox" ? checked : value }));
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
   const handleSpecChange = (index, field, value) => {
@@ -77,23 +90,48 @@ const AddEditProduct = () => {
     setFormData((prev) => ({ ...prev, specifications: newSpecs }));
   };
 
+  const addSpecification = () => {
+    setFormData((prev) => ({
+      ...prev,
+      specifications: [...prev.specifications, { label: "", value: "" }],
+    }));
+  };
+
+  const removeSpecification = (index) => {
+    setFormData((prev) => ({
+      ...prev,
+      specifications: prev.specifications.filter((_, idx) => idx !== index),
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); setSuccess(""); setLoading(true);
+    setError("");
+    setSuccess("");
+    setLoading(true);
     const form = new FormData();
 
     Object.entries(formData).forEach(([key, value]) => {
-      if (key === "specifications") form.append(key, JSON.stringify(value));
-      else if (value !== null && value !== "") form.append(key, value);
+      if (key === "specifications") {
+        form.append(key, JSON.stringify(value));
+      } else if (value !== null && value !== "") {
+        form.append(key, value);
+      }
     });
 
     images.forEach((file) => form.append("images", file));
-    if (isEditMode) form.append("existingImages", JSON.stringify(existingImages));
+    if (isEditMode) {
+      form.append("existingImages", JSON.stringify(existingImages));
+    }
 
     try {
-      let res = isEditMode 
-        ? await API.put(`/products/${productId}`, form, { headers: { "Content-Type": "multipart/form-data" } })
-        : await API.post("/products/add", form, { headers: { "Content-Type": "multipart/form-data" } });
+      let res = isEditMode
+        ? await API.put(`/products/${productId}`, form, {
+            headers: { "Content-Type": "multipart/form-data" },
+          })
+        : await API.post("/products/add", form, {
+            headers: { "Content-Type": "multipart/form-data" },
+          });
 
       setSuccess(res.data.message || "Parameters committed successfully.");
       setTimeout(() => navigate("/my-products"), 1500);
@@ -109,81 +147,285 @@ const AddEditProduct = () => {
   }
 
   return (
-    <motion.div className="ecom-form-container-page" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      <h1>{isEditMode ? "Modify Ledger Resource" : "Register Inventory Node"}</h1>
+    <motion.div
+      className="ecom-form-container-page"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+    >
+      <h1>{isEditMode ? "Modify the Product" : "Add a new product"}</h1>
       {error && <div className="ecom-notification-banner error">{error}</div>}
       {success && <div className="ecom-notification-banner success">{success}</div>}
 
       <form onSubmit={handleSubmit} className="ecom-interactive-form">
+        {/* SECTION 1: Core Parameters */}
         <section className="ecom-form-segment">
-          <h2>Core Parameters</h2>
+          <h2>Product details</h2>
           <div className="ecom-input-field-block">
-            <label>Product Designation Name *</label>
-            <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+            <label>Product Name*</label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
           </div>
           <div className="ecom-input-field-block">
-            <label>Public Index Narrative Description *</label>
-            <textarea name="description" value={formData.description} onChange={handleChange} rows={5} required />
+            <label>Product Description </label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              rows={5}
+              required
+            />
           </div>
           <div className="ecom-input-grid-row">
             <div className="ecom-input-field-block">
-              <label>Manufacturer Brand Identifier</label>
-              <input type="text" name="brand" value={formData.brand} onChange={handleChange} />
+              <label>Manufacturer Brand </label>
+              <input
+                type="text"
+                name="brand"
+                value={formData.brand}
+                onChange={handleChange}
+              />
             </div>
             <div className="ecom-input-field-block">
-              <label>System Categorization Category *</label>
-              <select name="category" value={formData.category} onChange={handleChange} required>
+              <label>Select Category </label>
+              <select
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+                required
+              >
                 <option value="">Choose Class</option>
-                {categories.map((cat) => <option key={cat._id} value={cat._id}>{cat.name}</option>)}
+                {categories.map((cat) => (
+                  <option key={cat._id} value={cat._id}>
+                    {cat.name}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
         </section>
 
+        {/* SECTION 2: Price and Stock */}
         <section className="ecom-form-segment">
-          <h2>Financials & Volume</h2>
+          <h2>Price and Stock</h2>
           <div className="ecom-input-grid-row tri">
-            <div className="ecom-input-field-block"><label>Base Value Price *</label><input type="number" name="price" value={formData.price} onChange={handleChange} step="0.01" required /></div>
-            <div className="ecom-input-field-block"><label>Markdown Offer Price</label><input type="number" name="salePrice" value={formData.salePrice || ""} onChange={handleChange} step="0.01" /></div>
-            <div className="ecom-input-field-block"><label>Percentage Cut %</label><input type="number" name="discountPercentage" value={formData.discountPercentage || ""} onChange={handleChange} /></div>
+            <div className="ecom-input-field-block">
+              <label>Base Value Price *</label>
+              <input
+                type="number"
+                name="price"
+                value={formData.price}
+                onChange={handleChange}
+                step="0.01"
+                required
+              />
+            </div>
+            <div className="ecom-input-field-block">
+              <label>Markdown Offer Price</label>
+              <input
+                type="number"
+                name="salePrice"
+                value={formData.salePrice || ""}
+                onChange={handleChange}
+                step="0.01"
+              />
+            </div>
+            <div className="ecom-input-field-block">
+              <label>Percentage Cut %</label>
+              <input
+                type="number"
+                name="discountPercentage"
+                value={formData.discountPercentage || ""}
+                onChange={handleChange}
+              />
+            </div>
           </div>
           <div className="ecom-input-grid-row">
-            <div className="ecom-input-field-block"><label>Available Reserve Stock *</label><input type="number" name="stock" value={formData.stock} onChange={handleChange} required /></div>
             <div className="ecom-input-field-block">
-              <label>Availability Profile Status *</label>
-              <select name="stockStatus" value={formData.stockStatus} onChange={handleChange} required>
+              <label>Stock</label>
+              <input
+                type="number"
+                name="stock"
+                value={formData.stock}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="ecom-input-field-block">
+              <label>Availability  Status *</label>
+              <select
+                name="stockStatus"
+                value={formData.stockStatus}
+                onChange={handleChange}
+                required
+              >
                 <option value="in-stock">In Stock / Deliverable</option>
                 <option value="unavailable">Unavailable / Backordered</option>
+                <option value="to-be-announced">To Be Announced</option>
               </select>
+            </div>
+          </div>
+
+          {/* Model Flag Checkboxes */}
+          <div className="ecom-checkbox-container-row">
+            <label className="ecom-interactive-checkbox-label">
+              <input
+                type="checkbox"
+                name="featured"
+                checked={formData.featured}
+                onChange={handleChange}
+              />
+              <span>Promote as Featured Product</span>
+            </label>
+            <label className="ecom-interactive-checkbox-label">
+              <input
+                type="checkbox"
+                name="onSale"
+                checked={formData.onSale}
+                onChange={handleChange}
+              />
+              <span>Mark as Active Promotional Sale </span>
+            </label>
+          </div>
+        </section>
+
+        {/* SECTION 3: Logistics & Lifecycle */}
+        <section className="ecom-form-segment">
+          <h2>Logistics & Lifecycle</h2>
+          <div className="ecom-input-grid-row">
+            <div className="ecom-input-field-block">
+              <label>Country of Origin</label>
+              <select
+                name="countryOfOrigin"
+                value={formData.countryOfOrigin}
+                onChange={handleChange}
+              >
+                <option value="">Choose Country</option>
+                {countries.map((country) => (
+                  <option key={country} value={country}>
+                    {country}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="ecom-input-field-block">
+              <label>Release Date</label>
+              <input
+                type="date"
+                name="releaseDate"
+                value={formData.releaseDate}
+                onChange={handleChange}
+              />
             </div>
           </div>
         </section>
 
+        {/* SECTION 4: Technical Specifications */}
         <section className="ecom-form-segment">
-          <h2>Visual Asset Attachments</h2>
+          <div className="ecom-segment-header-actions">
+            <h2>Technical Specifications</h2>
+            <button
+              type="button"
+              className="ecom-secondary-action-btn"
+              onClick={addSpecification}
+            >
+              <MdAdd size={18} /> Add Specs
+            </button>
+          </div>
+
+          {formData.specifications.length === 0 ? (
+            <p className="ecom-empty-placeholder-text">
+              No custom attributes declared for this model record yet.
+            </p>
+          ) : (
+            <div className="ecom-dynamic-specs-list">
+              {formData.specifications.map((spec, index) => (
+                <div key={index} className="ecom-spec-input-row">
+                  <div className="ecom-input-field-block">
+                    <input
+                      type="text"
+                      placeholder="Label (e.g. Material)"
+                      value={spec.label}
+                      onChange={(e) => handleSpecChange(index, "label", e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="ecom-input-field-block">
+                    <input
+                      type="text"
+                      placeholder="Value (e.g. Stainless Steel)"
+                      value={spec.value}
+                      onChange={(e) => handleSpecChange(index, "value", e.target.value)}
+                      required
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    className="ecom-spec-delete-btn"
+                    onClick={() => removeSpecification(index)}
+                    title="Delete specification entry"
+                  >
+                    <MdDeleteForever size={20} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+
+        {/* SECTION 5: Images */}
+        <section className="ecom-form-segment">
+          <h2>Upload Images</h2>
           <div className="ecom-upload-dragzone">
-            <input type="file" multiple accept="image/*" onChange={(e) => setImages([...images, ...Array.from(e.target.files)])} />
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={(e) => setImages([...images, ...Array.from(e.target.files)])}
+            />
             <p>Click to bind digital assets or drop files locally</p>
           </div>
           <div className="ecom-media-preview-strip">
             {existingImages.map((url, i) => (
               <div key={`exist-${i}`} className="ecom-media-item-card">
                 <img src={url} alt="Server asset" />
-                <button type="button" onClick={() => setExistingImages(existingImages.filter((_, idx) => idx !== i))}><MdDeleteForever /></button>
+                <button
+                  type="button"
+                  onClick={() => setExistingImages(existingImages.filter((_, idx) => idx !== i))}
+                >
+                  <MdDeleteForever />
+                </button>
               </div>
             ))}
             {images.map((file, i) => (
               <div key={`new-${i}`} className="ecom-media-item-card">
                 <img src={URL.createObjectURL(file)} alt="Local buffer" />
-                <button type="button" onClick={() => setImages(images.filter((_, idx) => idx !== i))}><MdDeleteForever /></button>
+                <button
+                  type="button"
+                  onClick={() => setImages(images.filter((_, idx) => idx !== i))}
+                >
+                  <MdDeleteForever />
+                </button>
               </div>
             ))}
           </div>
         </section>
 
         <div className="ecom-form-commit-footer">
-          <button type="button" className="ecom-action-btn cancel" onClick={() => navigate("/my-products")}>Discard</button>
-          <button type="submit" className="ecom-action-btn commit" disabled={loading}>{loading ? "Processing..." : isEditMode ? "Apply Changes" : "Deploy Asset"}</button>
+          <button
+            type="button"
+            className="ecom-action-btn cancel"
+            onClick={() => navigate("/my-products")}
+          >
+            Discard
+          </button>
+          <button type="submit" className="ecom-action-btn commit" disabled={loading}>
+            {loading ? "Processing..." : isEditMode ? "Apply Changes" : "Add Product"}
+          </button>
         </div>
       </form>
     </motion.div>

@@ -1,0 +1,198 @@
+/* ==========================================================================
+   Hardware-Accelerated Category Overlay Interface
+   ========================================================================== */
+.cat-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.3);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: catFadeIn 0.2s ease-out;
+}
+
+.cat-modal-content {
+  background: #ffffff;
+  padding: 2.5rem;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.12);
+  animation: catSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.cat-modal-header {
+  margin-bottom: 2rem;
+}
+
+.cat-modal-header h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.cat-modal-subtitle {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin: 0.35rem 0 0 0;
+}
+
+.cat-modal-error {
+  background: #fef2f2;
+  color: #b91c1c;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  border-left: 3px solid #ef4444;
+}
+
+/* Form Controls System */
+.cat-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.cat-input-group label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cat-input-group input[type="text"],
+.cat-input-group textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  background-color: #fafafa;
+  color: #0f172a;
+  outline: none;
+  box-sizing: border-box;
+  font-family: inherit;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cat-input-group textarea {
+  resize: vertical;
+}
+
+.cat-input-group input[type="text"]:focus,
+.cat-input-group textarea:focus {
+  background-color: #ffffff;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.06);
+}
+
+/* Custom Minimal Image Uploader Pipeline */
+.cat-uploader-container {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  background: #fafafa;
+  border: 1px dashed #cbd5e1;
+  padding: 1rem;
+  border-radius: 12px;
+}
+
+.cat-uploader-preview {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #e2e8f0;
+}
+
+.cat-uploader-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cat-input-group input[type="file"] {
+  display: none;
+}
+
+.cat-file-trigger {
+  padding: 0.5rem 1rem;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #475569;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cat-file-trigger:hover {
+  background: #f8fafc;
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
+
+/* Form Action Matrix */
+.cat-modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.cat-btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cat-btn.primary {
+  background: #0f172a;
+  color: #ffffff;
+}
+
+.cat-btn.primary:hover:not(:disabled) {
+  background: #4f46e5;
+  transform: translateY(-1px);
+}
+
+.cat-btn.secondary {
+  background: transparent;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+
+.cat-btn.secondary:hover:not(:disabled) {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.cat-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Animations declarations */
+@keyframes catFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes catSlideUp {
+  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}

@@ -1,0 +1,204 @@
+/* ==========================================================================
+   Hardware Accelerated Order Modal Overlay
+   ========================================================================== */
+.order-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.35);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000; /* Stays clean above Material UI tables */
+  animation: orderFadeIn 0.2s ease-out;
+}
+
+.order-modal-content {
+  background: #ffffff;
+  padding: 2.5rem;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 560px;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.15);
+  animation: orderSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.order-modal-header {
+  margin-bottom: 1.75rem;
+}
+
+.order-modal-header h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.order-modal-subtitle {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin: 0.35rem 0 0 0;
+}
+
+.order-id-highlight {
+  font-family: monospace;
+  color: #4f46e5;
+  background: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+/* Structural Layout Fields */
+.order-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1.15rem;
+  width: 100%;
+}
+
+.order-input-group label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.order-input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.order-input-row.custom-three-col {
+  grid-template-columns: 2fr 1fr 1.5fr;
+}
+
+.order-section-divider {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 1.5rem 0 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.order-section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e2e8f0;
+}
+
+/* Flat High-Contrast Form Inputs */
+.order-modal-content form input,
+.order-modal-content form select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  background-color: #fafafa;
+  color: #0f172a;
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.order-modal-content form input:focus,
+.order-modal-content form select:focus {
+  background-color: #ffffff;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
+}
+
+.read-only-field {
+  background-color: #f1f5f9 !important;
+  color: #64748b !important;
+  cursor: not-allowed;
+}
+
+/* Total Metric Block Banner */
+.order-total-banner {
+  background: #0f172a;
+  color: #ffffff;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1.5rem 0 2rem 0;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.banner-amount {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Master Actions Alignment */
+.order-modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.order-btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.order-btn.primary {
+  background: #4f46e5;
+  color: #ffffff;
+}
+
+.order-btn.primary:hover:not(:disabled) {
+  background: #4338ca;
+  transform: translateY(-1px);
+}
+
+.order-btn.secondary {
+  background: transparent;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+
+.order-btn.secondary:hover {
+  background: #f8fafc;
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
+
+/* Animations Definitions */
+@keyframes orderFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes orderSlideUp {
+  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Mobile Core Breakpoint scaling */
+@media (max-width: 640px) {
+  .order-modal-content { padding: 1.75rem 1.25rem; }
+  .order-input-row, .order-input-row.custom-three-col { grid-template-columns: 1fr; gap: 0; }
+  .order-modal-buttons { flex-direction: column-reverse; }
+  .order-btn { width: 100%; }
+}

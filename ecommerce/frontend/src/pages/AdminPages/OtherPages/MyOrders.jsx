@@ -84,9 +84,9 @@ const MyOrders = () => {
         <div className="eh-orders-header">
           <div className="eh-orders-title-block">
             <ShoppingBag className="eh-orders-header-icon" />
-            <h1>Your Orders Ledger</h1>
+            <h1>Your Orders</h1>
           </div>
-          <p className="eh-orders-subtitle">Track, inspect, and manage your current device acquisition allocations.</p>
+          <p className="eh-orders-subtitle">You can Track, inspect, and manage your current Orders and their status.</p>
         </div>
 
         {loading ? (

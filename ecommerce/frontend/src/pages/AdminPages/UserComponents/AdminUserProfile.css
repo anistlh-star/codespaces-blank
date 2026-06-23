@@ -1,0 +1,336 @@
+/* ==========================================================================
+   Core Layout Surfaces (Handles standard & Admin Profile Wrappers)
+   ========================================================================== */
+.profile-page,
+.profile-container.admin-profile {
+  min-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8fafc;
+  padding: 3rem 1.5rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, sans-serif;
+  box-sizing: border-box;
+}
+
+/* Base Profile Card Mechanics */
+.profile-card {
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  padding: 3rem 2.5rem;
+  max-width: 620px;
+  width: 100%;
+  box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.04);
+  box-sizing: border-box;
+}
+
+/* Minimal Header Configuration */
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+/* Back Button Alignment for Admins */
+.back-btn {
+  align-self: flex-start;
+  max-width: 620px;
+  width: 100%;
+  margin: 0 auto 1.5rem auto;
+  background: transparent;
+  border: none;
+  color: #64748b;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.back-btn:hover {
+  color: #0f172a;
+}
+
+/* ==========================================================================
+   Flat, High-Contrast Identity Avatar Nodes
+   ========================================================================== */
+.avatar,
+.avatar-large {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: #0f172a;
+  color: #ffffff;
+  font-size: 2.2rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.profile-card:hover .avatar,
+.profile-card:hover .avatar-large {
+  transform: scale(1.04);
+}
+
+.user-info h1 {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+}
+
+.email {
+  color: #64748b;
+  margin: 0.35rem 0 0.5rem 0;
+  font-size: 1rem;
+}
+
+.joined {
+  color: #94a3b8;
+  font-size: 0.875rem;
+}
+
+/* ==========================================================================
+   Metrics Grid Layout (Standard Profiles)
+   ========================================================================== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin: 2.5rem 0;
+}
+
+.stat-card {
+  background: #fafafa;
+  border-radius: 14px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  background: #ffffff;
+  box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.06);
+  border-color: #cbd5e1;
+}
+
+.stat-icon {
+  font-size: 2.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.stat-card h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.stat-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #0f172a;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-link {
+  display: inline-block;
+  margin-top: 1rem;
+  color: #4f46e5;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.stat-link:hover {
+  color: #312e81;
+}
+
+/* ==========================================================================
+   Info Items Layout Grid (Admin View Profiles)
+   ========================================================================== */
+.info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px dashed #e2e8f0;
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-item label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.info-item p {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #0f172a;
+}
+
+/* System Role Badges inside Profile */
+.info-item .role-badge {
+  padding: 0.35rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.info-item .role-badge.user { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+.info-item .role-badge.admin { background: #fee2e2; color: #991b1b; }
+.info-item .role-badge.customer { background: #ecfdf5; color: #166534; }
+.info-item .role-badge.guest { background: #f3e8ff; color: #6b21a8; }
+
+/* ==========================================================================
+   Action Layout Sequences & Unified Buttons
+   ========================================================================== */
+.profile-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2.5rem;
+  flex-wrap: wrap;
+}
+
+/* Master buttons mapping across both JSX structures */
+.profile-actions button,
+.profile-actions .btn {
+  font-family: inherit;
+  padding: 0.85rem 1.75rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: none;
+  transition: all 0.25rem cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Primary Action Mechanics (Edit actions) */
+.profile-actions .btn-primary, 
+.profile-actions .btn-edit,
+.profile-actions .btn.primary {
+  background: #0f172a;
+  color: #ffffff;
+}
+
+.profile-actions .btn-primary:hover, 
+.profile-actions .btn-edit:hover,
+.profile-actions .btn.primary:hover {
+  background: #4f46e5;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(79, 70, 229, 0.1);
+}
+
+/* Secondary Action Mechanics (Password/Back changes) */
+.profile-actions .btn.secondary {
+  background: transparent;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+.profile-actions .btn.secondary:hover {
+  background: #fafafa;
+  color: #0f172a;
+  border-color: #94a3b8;
+}
+
+/* Danger Action Mechanics (Admin Deletions) */
+.profile-actions .btn-delete {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+.profile-actions .btn-delete:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(220, 38, 38, 0.15);
+}
+
+/* ==========================================================================
+   Motion Animations & Loading States
+   ========================================================================== */
+.animate-fade-in {
+  animation: profileFadeIn 0.4s ease-out forwards;
+}
+
+.animate-slide-up {
+  opacity: 0;
+  transform: translateY(16px);
+  animation: profileSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.loading-spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #4f46e5;
+  border-radius: 50%;
+  animation: spinProfileLoader 0.75s linear infinite;
+}
+
+.loading {
+  text-align: center;
+  padding: 4rem;
+  font-size: 1.1rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+@keyframes profileFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes profileSlideUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spinProfileLoader {
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   Mobile Responsive Adjustments
+   ========================================================================== */
+@media (max-width: 640px) {
+  .profile-card { padding: 2rem 1.5rem; }
+  .profile-header { flex-direction: column; text-align: center; gap: 1rem; }
+  .stats-grid { grid-template-columns: 1fr; }
+  .info-item { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+  .info-item .role-badge { align-self: flex-start; }
+  .profile-actions { flex-direction: column; width: 100%; }
+  .profile-actions button, .profile-actions .btn { width: 100%; }
+}

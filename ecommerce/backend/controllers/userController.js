@@ -20,7 +20,7 @@ export const getAllUsers = asyncHandler(async (req, res) => {
       return users;
     },
   });
-
+// delCache(userCacheKey); 
   res.json({ success: true, data: result });
 });
 export const createUser = asyncHandler(async (req, res) => {
@@ -47,6 +47,8 @@ export const createUser = asyncHandler(async (req, res) => {
     phone,
     address,
   });
+  await invalidateUserCache(KEYS.userList);
+  await delCache(KEYS.userList);
 
   res.status(201).json({
     success: true,

@@ -22,6 +22,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import OrderFormModal from "./OrderFormModal";
 
 const OrdersPage = () => {
   const [orders, setOrders] = useState([]);
@@ -32,22 +33,24 @@ const OrdersPage = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [showOrderModal, setShowOrderModal] = useState(false);
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const res = await API.get("/admin/orders/all");
-        setOrders(res.data.orders || res.data || []);
-      } catch (err) {
-        console.error("Failed to fetch orders:", err);
-        setError("Failed to load orders. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
+
     fetchOrders();
   }, []);
-
+  const fetchOrders = async () => {
+    try {
+      const res = await API.get("/admin/orders/all");
+      setOrders(res.data.orders || res.data || []);
+    } catch (err) {
+      console.error("Failed to fetch orders:", err);
+      setError("Failed to load orders. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
   // Filter orders based on search term
   const filteredOrders = useMemo(() => {
     if (!searchTerm.trim()) return orders;
@@ -196,6 +199,9 @@ const OrdersPage = () => {
                   <strong>Payment</strong>
                 </TableCell>
                 <TableCell>
+                  <strong>Payment Status</strong>
+                </TableCell>
+                <TableCell>
                   <strong>Status</strong>
                 </TableCell>
                 <TableCell align="center">
@@ -219,9 +225,9 @@ const OrdersPage = () => {
                   <TableCell>
                     {order.createdAt
                       ? new Date(order.createdAt).toLocaleString("en-PK", {
-                          dateStyle: "medium",
-                          timeStyle: "short",
-                        })
+                        dateStyle: "medium",
+                        timeStyle: "short",
+                      })
                       : "—"}
                   </TableCell>
 
@@ -232,11 +238,9 @@ const OrdersPage = () => {
                       "—"}
                   </TableCell>
                   <TableCell>
-                    {`${order.shippingAddress?.street || ""}, ${
-                      order.shippingAddress?.city || ""
-                    }, ${order.shippingAddress?.state || ""}, ${
-                      order.shippingAddress?.country || ""
-                    } - ${order.shippingAddress?.zipCode || ""}`}
+                    {`${order.shippingAddress?.street || ""}, ${order.shippingAddress?.city || ""
+                      }, ${order.shippingAddress?.state || ""}, ${order.shippingAddress?.country || ""
+                      } - ${order.shippingAddress?.zipCode || ""}`}
                   </TableCell>
                   <TableCell align="center">
                     {order.items?.length || 0}
@@ -249,6 +253,7 @@ const OrdersPage = () => {
                   </TableCell>
 
                   <TableCell>{order.paymentMethod || "—"}</TableCell>
+                  <TableCell>{order.paymentStatus || "—"}</TableCell>
 
                   <TableCell>
                     <Chip
@@ -279,7 +284,14 @@ const OrdersPage = () => {
                       <option value="completed">Completed</option>
                       <option value="cancelled">Cancelled</option>
                     </select>
-
+                    <button
+                      onClick={() => {
+                        setSelectedOrder(order);
+                        setShowOrderModal(true);
+                      }}
+                    >
+                      Edit Details
+                    </button>
                     <button
                       onClick={() => {
                         if (window.confirm("Delete order?"))
@@ -317,6 +329,13 @@ const OrdersPage = () => {
           }
         />
       </Paper>
+      {showOrderModal && (
+        <OrderFormModal
+          order={selectedOrder}
+          onClose={() => setShowOrderModal(false)}
+          onSuccess={fetchOrders} // Inherited wrapper from your loading function logic
+        />
+      )}
     </Box>
   );
 };

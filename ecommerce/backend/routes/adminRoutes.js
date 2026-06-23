@@ -23,12 +23,15 @@ import {
   getAllOrders,
   getOrderById,
   statusChange,
+  UpdateOrder,
 } from "../controllers/orderController.js";
 
 import {
+  createUser,
   deleteUser,
   getAllUsers,
   getUserById,
+  updateUser,
   userRoleChange,
 } from "../controllers/userController.js";
 import { uploadMultiple } from "../middleware/multer.js";
@@ -57,11 +60,16 @@ router.get("/products/categories", getCategoriesWithCount);
 // Orders
 router.get("/orders/all", getAllOrders);
 router.get("/orders/:id", getOrderById);
+router.put("/orders/:id", UpdateOrder);
+
 router.put("/orders/:id/status", statusChange);
 router.delete("/orders/:id", deleteOrder);
 
 // Users
 router.get("/users/all", getAllUsers);
+router.post("/users/add", createUser);
+router.put("/users/:id", updateUser);
+
 router.get("/users/:id", getUserById);
 router.put("/users/:id/role", userRoleChange);
 router.delete("/users/:id",deleteUser)

@@ -1,9 +1,8 @@
-//ecommerce/frontend/src/pages/AdminPages/CategoryComponents/SingleCategoryPage.jsx
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import API from "../../../../api/index.js";
-import "../../../../styles/pages/AdminPages/CategoryComponents/SingleCategoryPage.css";
 import { imageHelper } from "../../../utilis/imageHelper.js";
+import "./SingleCategoryPage.css";
 
 export default function SingleCategoryPage() {
   const { id } = useParams();
@@ -17,73 +16,71 @@ export default function SingleCategoryPage() {
     const fetchCategory = async () => {
       try {
         const res = await API.get(`/categories/${id}`);
-        setCategory(res.data.category || res.data);
+        setCategory(res.data?.category || res.data?.data || res.data);
       } catch (err) {
-        setError("Failed to load category details");
+        setError("Failed to resolve individual catalog profile configuration metadata.");
         console.error(err);
       } finally {
         setLoading(false);
       }
     };
-
     fetchCategory();
   }, [id]);
 
-  if (loading) return <div className="loading">Loading...</div>;
-  if (error) return <div className="error-message">{error}</div>;
-  if (!category) return <div className="not-found">Category not found</div>;
+  if (loading) {
+    return (
+      <div className="cat-single-loading">
+        <div className="single-spinner"></div>
+      </div>
+    );
+  }
+
+  if (error || !category) {
+    return <div className="cat-single-error-state">{error || "Category reference not resolved."}</div>;
+  }
 
   return (
-    <div className="single-category-page">
-      <header className="page-header">
-        <h1>{category.name}</h1>
-        <button
-          className="btn edit-btn"
-          onClick={() => navigate(`/admin/category/update/${id}`)}
-        >
-          Edit Category
-        </button>
-      </header>
+    <div className="cat-single-layout-container animate-fade-view">
+      <button className="cat-single-back-btn" onClick={() => navigate("/admin/category")}>
+        ← Return to Directory
+      </button>
 
-      <div className="category-details">
-        {category.image ? (
-          <div className="category-image">
-            <img
-              src={imageHelper(category.image)}
-              alt={category.name}
-              onError={(e) =>
-                (e.target.src = "https://placehold.co/400x300?text=Image+Error")
-              }
-            />
-          </div>
-        ) : (
-          <div className="no-image">No image available</div>
-        )}
+      <div className="cat-single-surface-card">
+        <div className="cat-single-hero">
+          <img
+            src={imageHelper(category.image)}
+            alt={category.name}
+            onError={(e) => {
+              e.target.src = "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=600&q=80";
+            }}
+          />
+        </div>
 
-        <div className="info-section">
-          <h2>Details</h2>
-          <div className="detail-item">
-            <span className="label">Name:</span>
-            <span>{category.name}</span>
-          </div>
-          <div className="detail-item">
-            <span className="label">Description:</span>
-            <span>{category.description || "—"}</span>
-          </div>
-          <div className="detail-item">
-            <span className="label">Created:</span>
-            <span>{new Date(category.createdAt).toLocaleDateString()}</span>
+        <div className="cat-single-body-details">
+          <h1>{category.name}</h1>
+          <p className="cat-single-desc">
+            {category.description || "No explicit descriptive records linked to this dynamic database element key."}
+          </p>
+
+          <div className="cat-single-meta-table">
+            <div className="cat-meta-row">
+              <span className="meta-label">Unique Identity Hash ID</span>
+              <span className="meta-value system-hash">{category._id}</span>
+            </div>
+            <div className="cat-meta-row">
+              <span className="meta-label">Created Time Index</span>
+              <span className="meta-value">
+                {category.createdAt ? new Date(category.createdAt).toLocaleString("en-US", { dateStyle: "medium" }) : "—"}
+              </span>
+            </div>
+            <div className="cat-meta-row">
+              <span className="meta-label">Last Synchronization Update</span>
+              <span className="meta-value">
+                {category.updatedAt ? new Date(category.updatedAt).toLocaleString("en-US", { dateStyle: "medium" }) : "—"}
+              </span>
+            </div>
           </div>
         </div>
-      </div>
-
-      <div className="actions">
-        <button
-          className="btn back-btn"
-          onClick={() => navigate("/admin/category")}
-        >
-          Back to List
-        </button>
       </div>
     </div>
   );
