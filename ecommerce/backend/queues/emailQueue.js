@@ -1,8 +1,8 @@
 import { Queue } from "bullmq";
-import {  redisConnection } from "../config/redis/redisClient.js";
+import {  redisClient } from "../config/redis/redisClient.js";
 
 export const emailQueue = new Queue("email-queue", {
-  connection: redisConnection,
+  connection: redisClient,
   defaultJobOptions: {
     attempts: 3,
 
