@@ -34,7 +34,7 @@ const ProductDetailPage = () => {
       try {
         setLoading(true);
         const res = await API.get(`/products/${id}`);
-        console.log("Fetched product data:", res);
+        //console.log("Fetched product data:", res);
         setProduct(res.data.data || res.data);
         setQuantity(1);
       } catch (err) {

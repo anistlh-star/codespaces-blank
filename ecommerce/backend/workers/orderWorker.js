@@ -10,7 +10,10 @@ import { redisConnection } from "../config/redis/redisClient.js";
 export const deadLetterQueue = new Queue("dead-letter-queue", { 
   connection: redisConnection,
 });
-const worker = new Worker(
+export const startOrderWorker =()=>{
+  console.log("Starting orders worker...");
+
+  const worker = new Worker(
   "orders",
 
   async (job) => {
@@ -56,12 +59,34 @@ const worker = new Worker(
   },
 );
 
+worker.on("active", (job) => {
+  console.log(`Order job ${job.id} is active`);
+});
+
 worker.on("completed", (job) => {
   console.log(`order ${job.id} completed`);
 });
+
+worker.on("error", (err) => {
+  console.error("Orders worker error:", err);
+});
+
 worker.on("failed", async (job, error) => {
-  if (job.attemptsMade >= 3) {
-    await deadLetterQueue.add("failed Order", job.data);
-    console.log(`Order ${job.id} moved to dead letter queue`);
+  const attempts = job?.attemptsMade ?? 0;
+  const maxAttempts = job?.opts?.attempts ?? 3;
+  if (attempts >= maxAttempts) {
+    try {
+      await deadLetterQueue.add("failed Order", job.data);
+      console.log(`Order ${job.id} moved to dead letter queue`);
+    } catch (dqErr) {
+      console.error("Failed to add to dead-letter queue:", dqErr);
+    }
   }
-console.log(`Job ${job.id} failed after ${job.attemptsMade} attempts`)});
+  console.log(`Job ${job.id} failed after ${attempts} attempts`);
+});
+
+console.log("orders worker started and connected to Redis (if Redis is ready)");
+
+return worker;
+
+}

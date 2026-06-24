@@ -1,0 +1,354 @@
+/* ==========================================================================
+   SingleProductPage.css - Admin Detail View
+   ========================================================================== */
+
+.single-product {
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  background-color: #f8fafc;
+  min-height: 100vh;
+  padding: 40px;
+  box-sizing: border-box;
+  color: #0f172a;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 48px;
+  max-width: 1400px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+/* --- Left Column: Images Panel --- */
+.product-images {
+  position: relative;
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.image-badges {
+  position: absolute;
+  top: 36px;
+  left: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 5;
+}
+
+.sale-badge, .featured-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 20px;
+  color: white;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.sale-badge { background-color: #ef4444; }
+.featured-badge { background-color: #3b82f6; }
+
+.main-image-wrapper {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f8fafc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-image {
+  width: 100%;
+  max-height: 500px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.main-image:hover {
+  transform: scale(1.015);
+}
+
+/* Thumbnails */
+.thumbnail-container {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.thumbnail {
+  width: 76px;
+  height: 76px;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #f1f5f9;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.thumbnail:hover {
+  border-color: #cbd5e1;
+}
+
+.thumbnail.active {
+  border-color: #4f46e5;
+  transform: scale(0.95);
+}
+
+/* --- Right Column: Product Core Info Panel --- */
+.product-info {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.product-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.product-meta .stock-status {
+  color: #10b981; /* Green In-stock flag */
+}
+
+.product-title {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0 0 20px 0;
+  letter-spacing: -0.02em;
+}
+
+/* Pricing System */
+.price-section {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.current-price {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.original-price {
+  font-size: 18px;
+  text-decoration: line-through;
+  color: #94a3b8;
+}
+
+/* Functional Action Buttons */
+.action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.action-buttons .wishlist {
+  grid-column: 1 / -1; /* spans full width underneath primary items */
+}
+
+.btn {
+  padding: 14px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid transparent;
+}
+
+.btn-primary {
+  background-color: #4f46e5;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #4338ca;
+}
+
+.btn-accent {
+  background-color: #0f172a;
+  color: white;
+}
+
+.btn-accent:hover {
+  background-color: #1e293b;
+}
+
+.btn-outline {
+  background-color: transparent;
+  border-color: #e2e8f0;
+  color: #475569;
+}
+
+.btn-outline:hover {
+  border-color: #4f46e5;
+  color: #4f46e5;
+  background-color: rgba(79, 70, 229, 0.02);
+}
+
+/* Descriptions */
+.description {
+  margin-bottom: 36px;
+}
+
+.description h3, .specifications-section h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+}
+
+.description p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #475569;
+  margin: 0;
+}
+
+/* --- Structural Admin Information Tables --- */
+.info-table, .specifications-section {
+  margin-top: 24px;
+  background: #f8fafc;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+.info-table table, .specs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.info-table tr, .specs-table tr {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.info-table tr:last-child, .specs-table tr:last-child {
+  border-bottom: none;
+}
+
+.info-table th, .spec-label {
+  text-align: left;
+  padding: 10px 0;
+  color: #64748b;
+  font-weight: 500;
+  width: 40%;
+}
+
+.info-table td, .spec-value {
+  padding: 10px 0;
+  color: #0f172a;
+  font-weight: 600;
+  text-align: right;
+}
+
+/* Custom specifications layout tweak */
+.specifications-section {
+  background: white;
+  padding: 0;
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  border-radius: 0;
+  margin-top: 32px;
+  padding-top: 24px;
+}
+
+.specs-table thead th {
+  text-align: left;
+  padding-bottom: 10px;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+.specs-table thead th:last-child {
+  text-align: right;
+}
+
+.no-specs {
+  margin-top: 32px;
+  padding: 16px;
+  font-size: 14px;
+  color: #94a3b8;
+  text-align: center;
+  border: 1px dashed #e2e8f0;
+  border-radius: 8px;
+}
+
+/* --- Global Utilities (Loading/Error states) --- */
+.single-product-loading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  gap: 16px;
+  color: #64748b;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #4f46e5;
+  border-radius: 50%;
+  animation: single-product-spin 0.8s linear infinite;
+}
+
+@keyframes single-product-spin {
+  to { transform: rotate(360deg); }
+}
+
+.product-not-found {
+  text-align: center;
+  padding: 80px 20px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+/* Responsive Structural Breakpoints */
+@media (max-width: 1024px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .single-product {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .action-buttons {
+    grid-template-columns: 1fr;
+  }
+}

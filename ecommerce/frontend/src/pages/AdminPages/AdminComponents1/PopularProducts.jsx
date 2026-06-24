@@ -6,6 +6,7 @@ import { Tag } from "primereact/tag";
 import { Tooltip } from "primereact/tooltip"; // Added for better UX on long names
 import API from "../../../../api";
 import './PopularProducts.css'
+import { getImageSrc } from "../../../components/imageHandler";
 // Updated component with modern styling:
 // - Added hover effects and transitions for rows
 // - Improved image rendering with rounded corners and shadow
@@ -29,7 +30,8 @@ export default function PopularProducts() {
   const imageTemplate = (row) => (
     <div className="popular-product-image-wrapper">
       <img
-        src={row.image || "https://via.placeholder.com/64"} // Use first image if array
+        src={getImageSrc(row.images?.[0])}
+
         alt={row.name}
         className="popular-product-image"
       />

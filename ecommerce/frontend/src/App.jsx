@@ -21,8 +21,6 @@ import DashboardPage from "./pages/AdminPages/DashboardPage.jsx";
 // Products (admin)
 import ProductList from "./pages/AdminPages/ProductComponents/ProductList.jsx";
 import SingleProductPage from "./pages/AdminPages/ProductComponents/SingleProductPage.jsx";
-import AddProduct from "./pages/AdminPages/ProductComponents/AddProduct.jsx";
-import EditProductPage from "./pages/AdminPages/ProductComponents/EditProductPage.jsx";
 
 // Categories (admin)
 import CategoryPage from "./pages/AdminPages/CategoryComponents/CategoryPage.jsx";
@@ -63,10 +61,16 @@ import ForgotPassword from "./pages/Misc/ForgotPassword.jsx";
 import AIToolsPage from "./pages/AI Tools/AIToolsPage.jsx";
 import SupportChat from "./components/SupportChat.jsx";
 import ChatBasic from "./pages/Practicepage/ChatBasic.jsx";
+import ProductFormModal from "./pages/AdminPages/ProductComponents/ProductFormModal.jsx";
+import { WishlistProvider } from "../context/WishlistContext.jsx";
 
 // ── Protected Route component ─────────────────────────────────
 const ProtectedRoute = ({ children, allowedRoles = [] }) => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return null;
+  }
 
   if (!user) {
     return <Navigate to="/login" replace />;
@@ -95,7 +99,7 @@ const PublicLayout = () => (
       <Outlet /> {/* ← this will render child routes */}
     </main>
     <Footer />
-              <SupportChat />
+    <SupportChat />
 
   </>
 );
@@ -105,88 +109,90 @@ function App() {
     <AuthProvider>
       <Router>
         <CartWrapper>
-          <Routes>
-            {/* ── Public routes ────────────────────────────────────── */}
-            <Route element={<PublicLayout />}>
-              <Route index element={<HomePage />} />
-              <Route path="login" element={<Login />} />
-              <Route path="register" element={<Register />} />
-              <Route path="shop" element={<ProductListPage />} />
-              <Route path="product/:id" element={<ProductDetailPage />} />
-              <Route path="cart" element={<CartPage />} />
-              <Route path="checkout" element={<CheckoutPage />} />
-              <Route path="newarrivals" element={<NewArrivalsPage />} />
-              <Route path="order-success" element={<OrderSuccess />} />
-              <Route path="my-orders" element={<MyOrders />} />
-              <Route path="my-orders/:id" element={<OrderDetails />} />
-              <Route path="/my-products" element={<MyProducts />} />
-              <Route path="/my-products/:id" element={<MyProductDetail />} />
-              <Route path="/edit-product/:id" element={<AddEditProduct />} />
-              <Route path="/add-product" element={<AddEditProduct />} />
-              <Route path="/wishlist" element={<Wishlist />} />
-              <Route path="/userprofile" element={<UserProfile />} />
+          <WishlistProvider>
+            <Routes>
+              {/* ── Public routes ────────────────────────────────────── */}
+              <Route element={<PublicLayout />}>
+                <Route index element={<HomePage />} />
+                <Route path="login" element={<Login />} />
+                <Route path="register" element={<Register />} />
+                <Route path="shop" element={<ProductListPage />} />
+                <Route path="product/:id" element={<ProductDetailPage />} />
+                <Route path="cart" element={<CartPage />} />
+                <Route path="checkout" element={<CheckoutPage />} />
+                <Route path="newarrivals" element={<NewArrivalsPage />} />
+                <Route path="order-success" element={<OrderSuccess />} />
+                <Route path="my-orders" element={<MyOrders />} />
+                <Route path="my-orders/:id" element={<OrderDetails />} />
+                <Route path="/my-products" element={<MyProducts />} />
+                <Route path="/my-products/:id" element={<MyProductDetail />} />
+                <Route path="/edit-product/:id" element={<AddEditProduct />} />
+                <Route path="/add-product" element={<AddEditProduct />} />
+                <Route path="/wishlist" element={<Wishlist />} />
+                <Route path="/userprofile" element={<UserProfile />} />
+                <Route
+                  path="/category/:categoryId"
+                  element={<CategoryProducts />}
+                />
+                <Route path="terms" element={<TermsConditions />} />
+                <Route path="shipping" element={<ShippingDelivery />} />
+                <Route path="returns" element={<ReturnsRefunds />} />
+                <Route path="privacy" element={<PrivacyPolicy />} />
+                <Route path="contact" element={<Contact />} />
+                <Route path="aboutus" element={<AboutUs />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/ai" element={<AIToolsPage />} />
+                <Route
+                  path="/reset/:token"
+                  element={<ResetPassword />}
+                />
+                <Route path="/practice" element={<ChatBasic />} />
+              </Route>
+
+              {/* ── Admin routes (protected) ─────────────────────────── */}
               <Route
-                path="/category/:categoryId"
-                element={<CategoryProducts />}
-              />
-              <Route path="terms" element={<TermsConditions />} />
-              <Route path="shipping" element={<ShippingDelivery />} />
-              <Route path="returns" element={<ReturnsRefunds />} />
-              <Route path="privacy" element={<PrivacyPolicy />} />
-              <Route path="contact" element={<Contact />} />
-              <Route path="aboutus" element={<AboutUs />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/ai" element={<AIToolsPage />} />
-              <Route
-                path="/reset/:token"
-                element={<ResetPassword />}
-              />
-              <Route path="/practice" element={<ChatBasic />} />
-            </Route>
+                path="/admin"
+                element={
+                  <ProtectedRoute allowedRoles={["admin", "Admin"]}>
+                    <AdminLayout />
+                  </ProtectedRoute>
+                }
+              >
+                <Route index element={<DashboardPage />} />
+                <Route path="userprofile" element={<UserProfile />} />
 
-            {/* ── Admin routes (protected) ─────────────────────────── */}
-            <Route
-              path="/admin"
-              element={
-                <ProtectedRoute allowedRoles={["admin", "Admin"]}>
-                  <AdminLayout />
-                </ProtectedRoute>
-              }
-            >
-              <Route index element={<DashboardPage />} />
-              <Route path="userprofile" element={<UserProfile />} />
+                {/* Products */}
+                <Route path="products">
+                  <Route index element={<ProductList />} />
+                  <Route path=":id" element={<SingleProductPage />} />
+                  <Route path="add" element={<ProductFormModal />} />
+                  <Route path="edit/:id" element={<ProductFormModal />} />
+                </Route>
 
-              {/* Products */}
-              <Route path="products">
-                <Route index element={<ProductList />} />
-                <Route path=":id" element={<SingleProductPage />} />
-                <Route path="add" element={<AddProduct />} />
-                <Route path="edit/:id" element={<EditProductPage />} />
+                {/* Categories */}
+                <Route path="category">
+                  <Route index element={<CategoryPage />} />
+                  <Route path=":id" element={<SingleCategoryPage />} />
+                </Route>
+
+                {/* Orders */}
+                <Route path="orders">
+                  <Route index element={<OrdersPage />} />
+                  <Route path="details/:id" element={<OrderDetailsPage />} />
+                </Route>
+
+                {/* Users */}
+                <Route path="users">
+                  <Route index path="all" element={<UserPage />} />
+                  <Route path="usermanagement" element={<UserManagement />} />
+                  <Route path=":id" element={<AdminUserProfile />} />
+                </Route>
               </Route>
 
-              {/* Categories */}
-              <Route path="category">
-                <Route index element={<CategoryPage />} />
-                <Route path=":id" element={<SingleCategoryPage />} />
-              </Route>
-
-              {/* Orders */}
-              <Route path="orders">
-                <Route index element={<OrdersPage />} />
-                <Route path="details/:id" element={<OrderDetailsPage />} />
-              </Route>
-
-              {/* Users */}
-              <Route path="users">
-                <Route index path="all" element={<UserPage />} />
-                <Route path="usermanagement" element={<UserManagement />} />
-                <Route path=":id" element={<AdminUserProfile />} />
-              </Route>
-            </Route>
-
-            {/* Fallback */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+              {/* Fallback */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </WishlistProvider>
         </CartWrapper>
       </Router>
     </AuthProvider>

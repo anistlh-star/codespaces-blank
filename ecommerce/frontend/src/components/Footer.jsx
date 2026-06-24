@@ -48,8 +48,8 @@ const Footer = () => {
             <h4 className="ecom-footer-subtitle">Explore</h4>
             <ul className="ecom-footer-links">
               <li><Link to="/shop">All Collections</Link></li>
-              <li><Link to="/featured">Featured Hardware</Link></li>
-              <li><Link to="/trending">Trending Releases</Link></li>
+              {/* <li><Link to="/featured">Featured Hardware</Link></li> */}
+              {/* <li><Link to="/trending">Trending Releases</Link></li> */}
             </ul>
           </div>
 

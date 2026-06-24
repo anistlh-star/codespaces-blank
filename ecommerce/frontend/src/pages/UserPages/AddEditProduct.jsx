@@ -46,7 +46,7 @@ const AddEditProduct = () => {
         try {
           setLoading(true);
           const res = await API.get(`/products/${productId}`);
-          console.log("Fetched product data:", res);
+          //console.log("Fetched product data:", res);
           const product = res.data.data || res.data;
 
           setFormData({

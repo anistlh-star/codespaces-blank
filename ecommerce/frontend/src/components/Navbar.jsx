@@ -6,23 +6,22 @@ import { MdAdminPanelSettings } from "react-icons/md";
 import "./Navbar.css";
 import { useAuth } from "../../context/AuthContext";
 import { useCart } from "../../context/CartContext";
+import { useWishlist } from "../hooks/useWishlist";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const { token, logout, user } = useAuth();
-  const { cart, clearCart } = useCart();
-
+  const { cart } = useCart();
+  const { wishlistIds } = useWishlist()
   const closeMenu = () => setIsMobileOpen(false);
   const toggleMenu = () => setIsMobileOpen(!isMobileOpen);
 
   const handleSignOut = () => {
     logout();
-    clearCart();
     navigate("/login");
     closeMenu();
   };
-
   const cartItemCount =
     cart?.items?.reduce((total, item) => total + (item.quantity || 1), 0) || 0;
 
@@ -54,9 +53,11 @@ const Navbar = () => {
                 <MdAdminPanelSettings size={22} />
               </Link>
             )}
-
-            <Link to="/wishlist" className="ecom-icon-btn" aria-label="View Wishlist">
+            <Link to="/wishlist" className="ecom-icon-btn ecom-wishlist-trigger" aria-label="View Wishlist">
               <Heart size={20} />
+              {wishlistIds.length > 0 && (
+                <span className="ecom-navbar-badge">{wishlistIds.length}</span>
+              )}
             </Link>
             <Link to="/my-orders" className="ecom-icon-btn" aria-label="View Wishlist">
               <ShoppingBag size={20} />
@@ -115,7 +116,7 @@ const Navbar = () => {
           <div className="ecom-drawer-links">
             <Link to="/" onClick={closeMenu}>Home</Link>
             <Link to="/shop" onClick={closeMenu}>Shop</Link>
-            <Link to="/wishlist" onClick={closeMenu}>Wishlist</Link>
+            <Link to="/wishlist" onClick={closeMenu}>Wishlist ({wishlistIds.length})</Link>
             <Link to="/cart" onClick={closeMenu}>Cart ({cartItemCount})</Link>
             {token && <Link to="/profile" onClick={closeMenu}>My Account</Link>}
             {isAdmin && (

@@ -36,7 +36,7 @@ router.get("/my-products", getProductsByUser);
 
 // Add new product (seller/admin)
 router.post("/add", uploadMultiple, AddProduct);
-router.put("/:id", uploadMultiple, UpdateProduct);
+// router.put("/:id", uploadMultiple, UpdateProduct);
 
 // ── ADMIN ONLY ROUTES ───────────────────────────────────────────────────
 router.use(admin);

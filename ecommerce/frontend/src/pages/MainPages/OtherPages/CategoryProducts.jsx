@@ -7,13 +7,20 @@ import { useCategories } from "../../../hooks/useCategories";
 import ProductImageSlider from "../../../components/ProductImageSlider";
 import { useProducts } from "../../../hooks/useProducts";
 import { useCart } from "../../../../context/CartContext";
-
+import HeroBanner from "../../../components/HeroBanner/HeroBanner";
+import backgroundImage from "../../../assets/images/Category-Banner.jpg";
+import smartPhoneImage from "../../../assets/images/Smartphones.jpg";
+import mobileAccessoriesImage from "../../../assets/images/mobile-accessories.jpg";
+import consoleImage from "../../../assets/images/consoles.jpg";
+import videoGamesImage from "../../../assets/images/videogames.png";
+import watchesImage from "../../../assets/images/watches.jpg";
+import headphonesImage from "../../../assets/images/headphones.jpg";
 const sortOptions = [
-  { value: "newest",     label: "Newest first" },
-  { value: "oldest",     label: "Oldest first" },
-  { value: "price-asc",  label: "Price: Low to High" },
+  { value: "newest", label: "Newest first" },
+  { value: "oldest", label: "Oldest first" },
+  { value: "price-asc", label: "Price: Low to High" },
   { value: "price-desc", label: "Price: High to Low" },
-  { value: "rating-desc",label: "Rating: High to Low" },
+  { value: "rating-desc", label: "Rating: High to Low" },
   { value: "rating-asc", label: "Rating: Low to High" },
 ];
 
@@ -60,7 +67,28 @@ const CategoryProducts = () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
-
+  // select the background image according to category name
+  // Place matching banner files in the public/images folder (e.g. public/images/smartphones-banner.jpg)
+  const getBackgroundImageForCategory = (name) => {
+    if (!name) return backgroundImage;
+    const key = name.toLowerCase().trim();
+    switch (key) {
+      case "smartphones":
+        return smartPhoneImage;
+      case "mobile accessories":
+        return mobileAccessoriesImage;
+      case "consoles":
+        return consoleImage;
+      case "video games":
+        return videoGamesImage;
+      case "watches":
+        return watchesImage;
+      case "headphones":
+        return headphonesImage;
+      default:
+        return backgroundImage; // Default banner imported above
+    }
+  };
   const handleBuyNow = (product) => {
     navigate("/checkout", {
       state: {
@@ -89,8 +117,14 @@ const CategoryProducts = () => {
     );
   }
 
+  const bannerImage = getBackgroundImageForCategory(categoryName);
+
   return (
     <div className="category-products-page">
+      <HeroBanner
+        badge="New Launch"
+        highlightText={`Explore our curated selection of ${categoryName || "products"}.`}
+        backgroundImage={bannerImage} />
       <div className="category-products-container">
 
         {/* Top Breadcrumb & Back Link Navigation */}
@@ -107,8 +141,8 @@ const CategoryProducts = () => {
             {isLoading
               ? "Updating catalog..."
               : totalProducts === 0
-              ? "No items found"
-              : `Showing ${startItem}–${endItem} of ${totalProducts} products`}
+                ? "No items found"
+                : `Showing ${startItem}–${endItem} of ${totalProducts} products`}
           </div>
         </div>
 

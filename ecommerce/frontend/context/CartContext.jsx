@@ -48,9 +48,10 @@ export const CartProvider = ({ children }) => {
     setLoading(true);
     try {
       const headers = getCartHeaders();
-      // console.log("🧑‍💼 Fetching cart for logged-in user");
+      //console.log("🧑‍💼 Fetching cart for logged-in user");
 
       const res = await API.get("/cart/get", { headers });
+      //console.log("✅ Cart fetched successfully:", res);
       const fetchedCart = res.data.cart || {
         items: [],
         totalAmount: 0,
@@ -94,7 +95,7 @@ export const CartProvider = ({ children }) => {
 
     try {
       const headers = getCartHeaders();
-      console.log("Adding to cart:", { productId, quantity });
+      //console.log("Adding to cart:", { productId, quantity });
       const res = await API.post(
         "/cart/add",
         { productId, quantity },
@@ -110,7 +111,7 @@ export const CartProvider = ({ children }) => {
   // Update Cart Item Quantity
   const updateCartItem = async (productId, quantity) => {
     if (!isAuthenticated || !token || quantity < 1) return;
-    // console.log("Updating cart item:", { productId, quantity });
+    //console.log("Updating cart item:", { productId, quantity });
     try {
       const headers = getCartHeaders();
       const res = await API.put(
@@ -118,7 +119,7 @@ export const CartProvider = ({ children }) => {
         { quantity },
         { headers }
       );
-      console.log("Cart item updated successfully:", res);
+      //console.log("Cart item updated successfully:", res);
       setCart(res.data.cart);
     } catch (err) {
       console.error("Update cart failed:", err);

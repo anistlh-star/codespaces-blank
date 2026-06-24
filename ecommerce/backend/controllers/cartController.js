@@ -52,13 +52,12 @@ export const getCart = asyncHandler(async (req, res) => {
   }
 
   const cartCacheKey = `cart:${query.userId}`;
-
   let cart = await cacheOrchestrator({
     key: cartCacheKey,
     ttl: TTL.cart,
     fetch: async () => {
       const dbCart = await getUserCart(query.userId);
-      // console.log("Fetched cart from DB:", dbCart);
+      console.log("Fetched cart from DB:", dbCart);
       return dbCart || emptyCartStructure;
     },
   });
@@ -66,7 +65,7 @@ export const getCart = asyncHandler(async (req, res) => {
   if (!cart) {
     cart = emptyCartStructure;
   }
-
+  console.log('Cart Fetched : ', cart)
   return res.status(200).json({
     success: true,
     cart: cart,
@@ -119,9 +118,9 @@ export const updateCartItem = asyncHandler(async (req, res) => {
       query.userId,
       productId,
       quantity,
-    
+
     );
-console.log("Updated cart from service:", populated);
+    console.log("Updated cart from service:", populated);
     // Wipe cache second to block out read race conditions completely
     const cartCacheKey = `cart:${query.userId}`;
     await delCache(cartCacheKey);
@@ -147,7 +146,7 @@ export const removeCartItem = asyncHandler(async (req, res) => {
       userId: query.userId,
       productId,
     });
-    
+
     // FIX 4: Delete the cache key after data mutation completes
     const cartCacheKey = `cart:${query.userId}`;
     await delCache(cartCacheKey);

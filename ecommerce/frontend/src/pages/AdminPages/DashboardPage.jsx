@@ -1,4 +1,5 @@
-//ecommerce/frontend/src/pages/AdminPages/DashboardPage.jsx
+//ecommerce/frontend/src/pages/AdminPages/+
+// .jsx
 import { useEffect } from "react";
 import Dashboard from "./AdminComponents1/Dashboard";
 import PopularProducts from "./AdminComponents1/PopularProducts";

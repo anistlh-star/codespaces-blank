@@ -16,7 +16,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../../../../context/CartContext";
 import ProductImageSlider from "../../../components/ProductImageSlider";
 import { useWishlist } from "../../../hooks/useWishlist";
-
+import HeroBanner from '../../../components/HeroBanner/HeroBanner';
+import shopBgImage from '../../../assets/images/stockfresh_7725590_business-desktop-with-credit-card_sizeXL-1-1536x1025.jpg'
+ 
 const sortOptions = [
   { value: "newest", label: "Newest first" },
   { value: "oldest", label: "Oldest first" },
@@ -85,6 +87,12 @@ const ProductListPage = () => {
 
   return (
     <div className="prod-list-page">
+      <HeroBanner
+        badge="Global Marketplace"
+        title="Browse the Complete"
+        highlightText="Product Catalog"
+        backgroundImage={shopBgImage}
+      />
       <div className="prod-list-container">
         {/* Sidebar Filters */}
         <aside className="prod-list-sidebar" aria-label="Product filters">

@@ -1,53 +1,25 @@
 // src/pages/UserPages/Wishlist.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../../../context/AuthContext";
-import API from "../../../api";
 import { Link } from "react-router-dom";
 import { imageHelper } from "../../utilis/imageHelper";
+import { useWishlist } from "../../hooks/useWishlist"; // 👈 Hook imported
 
 import "./Wishlist.css";
 
 const Wishlist = () => {
   const { user } = useAuth();
+  
+  // Consume your global reactive state engine
+  const { 
+    wishlistData, 
+    wishListloading, 
+    toggleWishlist, 
+    error: actionError 
+  } = useWishlist();
 
-  const [wishlist, setWishlist] = useState({ products: [] });
-  const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState("grid"); // "grid" | "list"
-  const [actionError, setActionError] = useState("");
-
-  useEffect(() => {
-    if (!user) return;
-
-    const fetchWishlist = async () => {
-      try {
-        setLoading(true);
-        const res = await API.get("/wishlist");
-        setWishlist(res.data.wishlist || { products: [] });
-      } catch (err) {
-        console.error("Failed to load wishlist:", err);
-        setWishlist({ products: [] });
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchWishlist();
-  }, [user]);
-
-  const removeItem = async (productId) => {
-    if (!productId) return;
-    setActionError("");
-
-    try {
-      const res = await API.delete(`/wishlist/${productId}`);
-      setWishlist(res.data.wishlist || { products: [] });
-    } catch (err) {
-      console.error("Failed to remove item:", err);
-      setActionError("Could not remove item. Please try again.");
-      setTimeout(() => setActionError(""), 3000);
-    }
-  };
 
   if (!user) {
     return (
@@ -63,7 +35,8 @@ const Wishlist = () => {
     );
   }
 
-  const products = wishlist.products || [];
+  // Derive products array safely from the global hook's populated data wrapper
+  const products = wishlistData?.products || [];
 
   return (
     <div className="wl-page">
@@ -96,10 +69,11 @@ const Wishlist = () => {
         </div>
       </div>
 
+      {/* Renders global hook errors if a network operation fails */}
       {actionError && <div className="wl-toast-error">{actionError}</div>}
 
       {/* Main Structural Display Logic */}
-      {loading ? (
+      {wishListloading && products.length === 0 ? (
         <div className="wl-loader">
           <div className="wl-loader__spinner"></div>
           <p>Retrieving your saved items...</p>
@@ -111,7 +85,7 @@ const Wishlist = () => {
           </div>
           <h2 className="wl-empty__title">Your wishlist is empty</h2>
           <p className="wl-empty__text">Save items you love here to monitor stock availability and price adjustments.</p>
-          <Link to="/products" className="wl-btn wl-btn--primary">
+          <Link to="/shop" className="wl-btn wl-btn--primary">
             Explore Collections
           </Link>
         </div>
@@ -157,9 +131,11 @@ const Wishlist = () => {
                     ) : (
                       <div className="wl-card__no-img">No Image Available</div>
                     )}
+                    
+                    {/* Maps to global toggle function to ensure instant counter synchronization */}
                     <button
                       className="wl-card__quick-remove"
-                      onClick={() => removeItem(product._id)}
+                      onClick={() => toggleWishlist(product._id)}
                       title="Remove Item"
                       aria-label="Remove from wishlist"
                     >
@@ -185,7 +161,7 @@ const Wishlist = () => {
                       </Link>
                       <button
                         className="wl-btn wl-btn--text"
-                        onClick={() => removeItem(product._id)}
+                        onClick={() => toggleWishlist(product._id)}
                       >
                         Remove
                       </button>

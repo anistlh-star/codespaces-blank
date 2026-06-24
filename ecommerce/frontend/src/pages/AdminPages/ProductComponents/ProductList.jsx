@@ -5,12 +5,16 @@ import API from "../../../../api/index.js";
 import { Link } from "react-router-dom";
 import { getImageSrc, placeholder } from "../../../components/imageHandler.js";
 import { useCategories } from "../../../hooks/useCategories.js";
+import ProductFormModal from "./ProductFormModal.jsx";
 
 export default function ProductListingPage() {
   const [viewMode, setViewMode] = useState("grid");
   const [products, setProducts] = useState([]);
   const [totalProducts, setTotalProducts] = useState(0);
   const [loading, setLoading] = useState(false);
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState(null);
 
   // Filters
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,13 +23,23 @@ export default function ProductListingPage() {
 
   // Categories for sidebar
   // const [categories, setCategories] = useState([]);
-  const { categories,productsPerCategory,loadingCategories } = useCategories();
+  const { categories, productsPerCategory, loadingCategories } = useCategories();
 
   // Pagination & Sorting
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(12);
   const [sortBy, setSortBy] = useState("createdAt");
   const [sortOrder, setSortOrder] = useState("desc");
+
+  const openAddModal = () => {
+    setSelectedProductId(null);
+    setModalOpen(true);
+  };
+
+  const openEditModal = (id) => {
+    setSelectedProductId(id);
+    setModalOpen(true);
+  };
 
   // Fetch products
   const fetchProducts = useCallback(async () => {
@@ -83,17 +97,18 @@ export default function ProductListingPage() {
     }
   };
 
-  // Pagination
-  const handlePageChange = (newPage) => setCurrentPage(newPage);
-  const totalPages = Math.ceil(totalProducts / pageSize);
-  const handleAddToWishlist = async () => {
+  const handleAddToWishlist = async (productId) => {
     try {
-   await API.post("/wishlist", { productId: product._id });
+      await API.post("/wishlist", { productId });
       alert("Added to wishlist!");
     } catch (err) {
       alert(err.response?.data?.message || "Failed to add to wishlist");
     }
   };
+
+  // Pagination
+  const handlePageChange = (newPage) => setCurrentPage(newPage);
+  const totalPages = Math.ceil(totalProducts / pageSize);
 
   return (
     <div className="product-listing-page">
@@ -102,9 +117,7 @@ export default function ProductListingPage() {
       {/* Header */}
       <header className="product-listing-page__header">
         <div className="product-listing-page__filters-top">
-          <button>
-            <Link to={`/admin/products/add`}>+ Add New Product</Link>
-          </button>
+          <button onClick={openAddModal}>+ Add New Product</button>
         </div>
 
         <div className="product-listing-page__actions">
@@ -215,9 +228,8 @@ export default function ProductListingPage() {
 
         {/* Products */}
         <section
-          className={`product-listing-page__products ${
-            viewMode === "list" ? "list-view" : ""
-          }`}
+          className={`product-listing-page__products ${viewMode === "list" ? "list-view" : ""
+            }`}
         >
           {loading ? (
             <div className="product-listing-page__loading">
@@ -262,7 +274,10 @@ export default function ProductListingPage() {
                   <button className="product-listing-page__details-btn">
                     Details
                   </button>
-                  <button className="product-listing-page__wishlist-btn" onClick={handleAddToWishlist}>
+                  <button
+                    className="product-listing-page__wishlist-btn"
+                    onClick={() => handleAddToWishlist(product._id)}
+                  >
                     ♡ Add to wishlist
                   </button>
                   <button
@@ -271,17 +286,26 @@ export default function ProductListingPage() {
                   >
                     Delete product
                   </button>
-                  <button className="product-listing-page__wishlist-btn">
-                    <Link to={`/admin/products/edit/${product._id}`}>
-                      Edit product
-                    </Link>
+                  <button
+                    className="product-listing-page__wishlist-btn"
+                    onClick={() => openEditModal(product._id)}
+                  >
+                    Edit product
                   </button>
+
                 </article>
               </div>
             ))
           )}
         </section>
       </div>
+
+      <ProductFormModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        productId={selectedProductId}
+        onRefresh={fetchProducts}
+      />
 
       {/* Pagination */}
       {!loading && totalPages > 1 && (

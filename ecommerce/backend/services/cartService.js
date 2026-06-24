@@ -31,9 +31,9 @@ export const addItemToCart = async (userId, productId, quantity) => {
   const cart = await Cart.findOne({ userId });
   let existingQty = 0;
   if (cart) {
-    // console.log("Current cart items:", cart);
+    console.log("Current cart items:", cart);
     const existingCart = cart.items.find(i => i.productId.toString() === pIdString)
-    // console.log("Existing cart item found:", existingCart);
+    console.log("Existing cart item found:", existingCart);
     existingQty = existingCart ? existingCart.quantity : 0
   }
 
@@ -77,7 +77,7 @@ export const addItemToCart = async (userId, productId, quantity) => {
     },
     { new: true, upsert: true }
   );
-
+console.log('final Added Cart : ' , updatedNewCart)
   return await updatedNewCart.populate(...POPULATE_FIELDS);
 };
 

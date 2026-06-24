@@ -32,7 +32,7 @@ const debugSearch = async () => {
 
     // Bonus: See similarity score (if you want more control)
     // const resultsWithScore = await vectorStore.similaritySearchWithScore(query, 3);
-    // console.log("With Scores:", resultsWithScore);
+    console.log("With Scores:", resultsWithScore);
 
   } catch (error) {
     console.error("Debug Error:", error.message);

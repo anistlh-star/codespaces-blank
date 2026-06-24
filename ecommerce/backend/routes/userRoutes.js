@@ -13,7 +13,6 @@ import { getProductsByUser } from "../controllers/productController.js";
 
 const router = express.Router();
 
-router.put("/:id", updateUser);
 
 router.use(protect);
 router.get("/my-products", getProductsByUser);
