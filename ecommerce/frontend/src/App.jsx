@@ -59,7 +59,7 @@ import AboutUs from "./pages/Misc/AboutUs.jsx";
 import ResetPassword from "./pages/Misc/ResetPassword.jsx";
 import ForgotPassword from "./pages/Misc/ForgotPassword.jsx";
 import AIToolsPage from "./pages/AI Tools/AIToolsPage.jsx";
-import SupportChat from "./components/SupportChat.jsx";
+// import SupportChat from "./components/SupportChat.jsx";
 import ChatBasic from "./pages/Practicepage/ChatBasic.jsx";
 import ProductFormModal from "./pages/AdminPages/ProductComponents/ProductFormModal.jsx";
 import { WishlistProvider } from "../context/WishlistContext.jsx";
@@ -99,7 +99,7 @@ const PublicLayout = () => (
       <Outlet /> {/* ← this will render child routes */}
     </main>
     <Footer />
-    <SupportChat />
+    {/* <SupportChat /> */}
 
   </>
 );
