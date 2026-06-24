@@ -1,12 +1,9 @@
-//ecommerce/backend/workers/cacheWorker.js
-//worker or consumer job is to process the data which is added in the queue
-
+// ecommerce/backend/workers/cacheWorker.js
 import { Worker } from "bullmq";
 import Order from "../models/Order.js";
-import { redisClient, redisConnection } from "../config/redis/redisClient.js";
+import { redisClient, createWorkerConnection } from "../config/redis/redisClient.js";
 import { deadLetterQueue } from "./orderWorker.js";
 
-// Export a starter so the worker is created when explicitly started (like other workers)
 export const startCacheWorker = () => {
   console.log("Starting cache-warming worker...");
 
@@ -20,13 +17,13 @@ export const startCacheWorker = () => {
           $group: {
             _id: "$items.productId",
             totalSold: { $sum: "$items.quantity" },
-            productName: { $first: "$items.name" }, // from order (snapshot)
+            productName: { $first: "$items.name" },
             productImage: { $first: "$items.image" },
             productPrice: { $first: "$items.price" },
           },
         },
         { $sort: { totalSold: -1 } },
-        { $limit: 10 }, // Top 10 popular products
+        { $limit: 10 },
         {
           $lookup: {
             from: "products",
@@ -70,7 +67,6 @@ export const startCacheWorker = () => {
         { $sort: { totalSold: -1 } },
       ]);
 
-      // store in redis as JSON string
       try {
         await redisClient.set("popular-products", JSON.stringify(popularProducts), "EX", 3600);
         console.log("✅ Popular products cache refreshed");
@@ -79,20 +75,12 @@ export const startCacheWorker = () => {
         throw err;
       }
     },
-    { connection: redisConnection }
+    { connection: createWorkerConnection() }
   );
 
-  worker.on("completed", (job) => {
-    console.log(`Job with id ${job.id} has been completed`);
-  });
-
-  worker.on("active", (job) => {
-    console.log(`Job ${job.id} is now active`);
-  });
-
-  worker.on("error", (err) => {
-    console.error("Cache worker error:", err);
-  });
+  worker.on("completed", (job) => console.log(`Job with id ${job.id} has been completed`));
+  worker.on("active", (job) => console.log(`Job ${job.id} is now active`));
+  worker.on("error", (err) => console.error("Cache worker error:", err));
 
   worker.on("failed", async (job) => {
     const attempts = job?.attemptsMade ?? 0;
@@ -108,6 +96,6 @@ export const startCacheWorker = () => {
     console.log(`Job ${job.id} failed after ${attempts} attempts`);
   });
 
-  console.log("cache-warming worker started and connected to Redis (if Redis is ready)");
+  console.log("cache-warming worker started and connected to Redis");
   return worker;
 };

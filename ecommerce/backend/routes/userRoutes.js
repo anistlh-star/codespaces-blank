@@ -15,9 +15,10 @@ const router = express.Router();
 
 
 router.use(protect);
+router.get("/:id", getUserById);
+
 router.get("/my-products", getProductsByUser);
 
-router.get("/:id", getUserById);
 
 router.use(admin);
 
