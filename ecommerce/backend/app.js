@@ -33,6 +33,7 @@ app.use(cookieParser());
 // app.use(limiter)
 const allowedOrigins = [
   process.env.FRONTEND_URL,
+  "https://ecommerce092.netlify.app",
   "https://cautious-umbrella-q75gpxgxpgxw365ww-5173.app.github.dev",
   "http://localhost:5173",
 ].filter(Boolean);
