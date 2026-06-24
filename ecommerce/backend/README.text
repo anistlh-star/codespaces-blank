@@ -4,7 +4,9 @@ chromadb
 docker (redis)
 if queues then run workers (queueworker ,orderworker....)
 
-
+git add .
+git commit -m "chore: cloud-proof redis connection layers and secure route pipelines"
+git push origin codespace-cautious-umbrella-q75gpxgxpgxw365ww:main2 --force
 
 
 CHROMA DB : 
