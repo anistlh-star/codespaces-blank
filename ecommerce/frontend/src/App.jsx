@@ -95,7 +95,7 @@ const PublicLayout = () => (
   <>
     <Navbar />
 
-    <main>
+  <main style={{ backgroundColor: 'white' }}>
       <Outlet /> {/* ← this will render child routes */}
     </main>
     <Footer />
