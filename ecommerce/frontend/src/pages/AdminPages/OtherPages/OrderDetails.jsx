@@ -15,6 +15,7 @@ import {
   Disc
 } from "lucide-react";
 import "./OrderDetails.css";
+import { imageHelper } from "../../../utilis/imageHelper";
 
 const OrderDetails = () => {
   const { id } = useParams();
@@ -110,7 +111,7 @@ const OrderDetails = () => {
             <ArrowLeft size={16} />
             <span>Back to Orders List</span>
           </button>
-          <h1>Metrics Panel</h1>
+          <h1>ORDER DETAILS</h1>
         </div>
 
         {/* Master Details Metadata Layout Card */}
@@ -151,7 +152,7 @@ const OrderDetails = () => {
                   <div key={item._id || item.product} className="eh-details-item-row">
                     <div className="eh-details-item-thumb">
                       <img
-                        src={item.image}
+                       src={imageHelper(item.images)}
                         alt={item.name}
                         onError={(e) => (e.target.src = "/images/placeholder.jpg")}
                       />
@@ -180,10 +181,10 @@ const OrderDetails = () => {
             
             {/* Financial Invoice Breakdown mapping block */}
             <div className="eh-details-card eh-details-invoice-card">
-              <h2>Invoice Ledger</h2>
+              <h2>Pricing</h2>
               <div className="eh-details-invoice-metrics">
                 <div className="eh-details-invoice-line">
-                  <span>Subtotal Pool</span>
+                  <span>Calculated Cost</span>
                   <span>${order.subTotal?.toFixed(2) || order.totalAmount.toFixed(2)}</span>
                 </div>
                 <div className="eh-details-invoice-line">
@@ -191,7 +192,7 @@ const OrderDetails = () => {
                   <span>${order.tax?.toFixed(2) || "0.00"}</span>
                 </div>
                 <div className="eh-details-invoice-line eh-details-invoice-grand">
-                  <span>Aggregate Capital Total</span>
+                  <span>Total price</span>
                   <span>${order.calculatedTotal?.toFixed(2) || order.totalAmount.toFixed(2)}</span>
                 </div>
               </div>
@@ -201,7 +202,7 @@ const OrderDetails = () => {
             <div className="eh-details-card">
               <div className="eh-details-card-title">
                 <MapPin size={16} />
-                <h2>Logistics Pipeline Destination</h2>
+                <h2>Shipping address</h2>
               </div>
               <div className="eh-details-address-block">
                 <p className="eh-details-recipient">{order.shippingAddress.fullName || user.name}</p>
@@ -218,7 +219,7 @@ const OrderDetails = () => {
             <div className="eh-details-card">
               <div className="eh-details-card-title">
                 <CreditCard size={16} />
-                <h2>Payment Core Infrastructure</h2>
+                <h2>Payment Method</h2>
               </div>
               <div className="eh-details-payment-block">
                 <div className="eh-details-payment-line">

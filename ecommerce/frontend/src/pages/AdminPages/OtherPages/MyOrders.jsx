@@ -188,7 +188,7 @@ const MyOrders = () => {
                     className="eh-orders-btn eh-orders-btn-primary"
                     onClick={() => navigate(`/my-orders/${order._id}`)}
                   >
-                    <span>View Node Metrics</span>
+                    <span>View Order Details</span>
                     <ArrowRight size={14} />
                   </button>
                 </div>

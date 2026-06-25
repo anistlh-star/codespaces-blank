@@ -17,6 +17,7 @@ const router = express.Router();
 router.use(protect);
 router.get("/my-products", getProductsByUser);
 router.get("/:id", getUserById);
+router.put("/:id", updateUser);
 
 
 
