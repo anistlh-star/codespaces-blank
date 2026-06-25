@@ -6,7 +6,7 @@ import { Tag } from "primereact/tag";
 import { Tooltip } from "primereact/tooltip"; // Added for better UX on long names
 import API from "../../../../api";
 import './PopularProducts.css'
-import { getImageSrc } from "../../../components/imageHandler";
+import { getImageSrc } from "../../../components/imageHandler.js";
 // Updated component with modern styling:
 // - Added hover effects and transitions for rows
 // - Improved image rendering with rounded corners and shadow

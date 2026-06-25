@@ -1,4 +1,6 @@
 //ecommerce/backend/controllers/adminController.js
+import { delCache } from "../cache/cacheService.js";
+import { KEYS } from "../cache/keys.js";
 import Order from "../models/Order.js";
 import User from "../models/User.js";
 import asyncHandler from "../utils/asyncHandler.js";
@@ -169,7 +171,6 @@ export const RecentOrders = asyncHandler(async (req, res) => {
     .limit(10)
     .populate("user", "name email phone address")
     .lean();
-
   res.json({
     success: true,
     orders

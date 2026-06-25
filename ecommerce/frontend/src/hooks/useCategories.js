@@ -10,7 +10,7 @@ export const useCategories = () => {
     const fetchCategories = async () => {
       try {
         const res = await API.get("/categories/all");
-        console.log('res categories : ' , res)
+    
         setCategories(res.data.data.categories || []);
         setProductsPerCategory(res.data.data.productsPerCategory || []);
       } catch (error) {
