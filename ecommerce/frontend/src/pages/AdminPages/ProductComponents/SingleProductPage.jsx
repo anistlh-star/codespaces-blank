@@ -15,7 +15,8 @@ export default function SingleProductPage() {
     const fetchProduct = async () => {
       try {
         const res = await API.get(`/admin/products/${id}`);
-        const prod = res.data.product || res.data;
+        console.log('admin PRoducts ' , res)
+        const prod = res.data.data || res.data;
 
         setProduct(prod);
       } catch (err) {

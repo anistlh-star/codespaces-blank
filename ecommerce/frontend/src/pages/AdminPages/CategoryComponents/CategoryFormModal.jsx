@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import API from "../../../../api/index.js";
 import "./CategoryFormModal.css";
+import { getImageSrc } from "../../../components/imageHandler.js";
 
 const CategoryFormModal = ({ category, onClose, onSuccess }) => {
   const [name, setName] = useState("");
@@ -107,7 +108,7 @@ const CategoryFormModal = ({ category, onClose, onSuccess }) => {
             <div className="cat-uploader-container">
               {preview && (
                 <div className="cat-uploader-preview">
-                  <img src={preview} alt="Visual preview node" />
+                  <img src={getImageSrc(preview)} alt="Visual preview node" />
                 </div>
               )}
               <input
@@ -118,7 +119,7 @@ const CategoryFormModal = ({ category, onClose, onSuccess }) => {
                 disabled={loading}
               />
               <label htmlFor="cat-modal-file-input" className="cat-file-trigger">
-                {preview ? "Swap Media File" : "Upload Banner Matrix"}
+                {getImageSrc(preview) ? "Swap Media File" : "Upload Banner Matrix"}
               </label>
             </div>
           </div>
