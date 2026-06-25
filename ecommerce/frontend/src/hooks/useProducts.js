@@ -73,6 +73,7 @@ export const useProducts = (filters = {}) => {
         const ProductRes = await API.get("/products/all", { params });
         //console.log('ProductRes:', ProductRes);
         const featuredRes = await API.get("/products/featured");
+        console.log('featuredRes : ' ,featuredRes)
         const BrandRes = await API.get("/products/brands");
         const trendingRes = await API.get("/products/trending");
         //console.log('trendingRes:', trendingRes);
