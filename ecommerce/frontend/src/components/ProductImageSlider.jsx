@@ -9,7 +9,7 @@ import "swiper/css/pagination";
 import "swiper/css/thumbs";
 import "swiper/css/free-mode";
 
-import { imageHelper } from "../utilis/imageHelper";
+import { getImageSrc } from "./imageHandler";
 
 const ProductImageSlider = ({
   images = [],
@@ -54,7 +54,7 @@ const ProductImageSlider = ({
           {validImages.map((img, idx) => (
             <SwiperSlide key={idx}>
               <img
-                src={imageHelper(img)}
+                src={getImageSrc(img)}
                 alt={`${productName || "Product"} — image ${idx + 1}`}
                 className="main-product-image"
                 loading="lazy"
@@ -89,7 +89,7 @@ const ProductImageSlider = ({
           {validImages.map((img, idx) => (
             <SwiperSlide key={idx} className="thumb-slide">
               <img
-                src={imageHelper(img)}
+                src={getImageSrc(img)}
                 alt={`${productName || "Product"} thumbnail ${idx + 1}`}
                 loading="lazy"
                 decoding="async"

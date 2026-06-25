@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import API from "../../../../api/index.js";
-import { imageHelper } from "../../../utilis/imageHelper.js";
 import "./SingleCategoryPage.css";
+import { getImageSrc } from "../../../components/imageHandler.js";
 
 export default function SingleCategoryPage() {
   const { id } = useParams();
@@ -48,7 +48,7 @@ export default function SingleCategoryPage() {
       <div className="cat-single-surface-card">
         <div className="cat-single-hero">
           <img
-            src={imageHelper(category.image)}
+            src={getImageSrc(category.image)}
             alt={category.name}
             onError={(e) => {
               e.target.src = "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=600&q=80";

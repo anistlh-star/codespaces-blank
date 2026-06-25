@@ -3,10 +3,10 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../../../context/AuthContext";
 import { Link } from "react-router-dom";
-import { imageHelper } from "../../utilis/imageHelper";
 import { useWishlist } from "../../hooks/useWishlist"; // 👈 Hook imported
 
 import "./Wishlist.css";
+import { getImageSrc } from "../../components/imageHandler";
 
 const Wishlist = () => {
   const { user } = useAuth();
@@ -119,7 +119,7 @@ const Wishlist = () => {
                   <div className="wl-card__media">
                     {Array.isArray(product.images) && product.images.length > 0 ? (
                       <img
-                        src={imageHelper(product.images[0])}
+                        src={getImageSrc(product.images[0])}
                         alt={product.name}
                         className="wl-card__img"
                         loading="lazy"

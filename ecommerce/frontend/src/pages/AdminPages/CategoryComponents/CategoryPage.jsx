@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import API from "../../../../api/index.js";
-import { imageHelper } from "../../../utilis/imageHelper.js";
+import { getImageSrc } from "../../../components/imageHandler.js"
+
 import CategoryFormModal from "./CategoryFormModal.jsx";
 import "./CategoryPage.css";
 
@@ -81,7 +82,7 @@ export default function CategoryPage() {
             >
               <div className="cat-card-media">
                 <img
-                  src={imageHelper(cat.image)}
+                  src={getImageSrc(cat.image)}
                   alt={cat.name}
                   onError={(e) => {
                     e.target.src = "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=600&q=80";

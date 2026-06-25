@@ -15,7 +15,7 @@ import {
   Disc
 } from "lucide-react";
 import "./OrderDetails.css";
-import { imageHelper } from "../../../utilis/imageHelper";
+import { getImageSrc } from "../../../components/imageHandler";
 
 const OrderDetails = () => {
   const { id } = useParams();
@@ -152,7 +152,7 @@ const OrderDetails = () => {
                   <div key={item._id || item.product} className="eh-details-item-row">
                     <div className="eh-details-item-thumb">
                       <img
-                       src={imageHelper(item.images)}
+                       src={getImageSrc(item.images)}
                         alt={item.name}
                         onError={(e) => (e.target.src = "/images/placeholder.jpg")}
                       />

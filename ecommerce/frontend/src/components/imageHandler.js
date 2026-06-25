@@ -1,24 +1,33 @@
-//ecommerce/frontend/src/components/imageHandler.js
-export const API_BASE = import.meta.env.VITE_API_URL || "";
+// ecommerce/frontend/src/components/imageHandler.js
+
+// Dynamically extract the backend root URL by stripping out any trailing "/api"
+const rawBase = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_API_URL || "";
+export const API_BASE = rawBase.replace(/\/api\/?$/, "");
+
 export const placeholder =
   "https://png.pngtree.com/png-vector/20210604/ourmid/pngtree-gray-network-placeholder-png-image_3416659.jpg";
+
 export const getImageSrc = (imgInput) => {
   if (!imgInput) return placeholder;
 
   let imgPath = imgInput;
 
-  // If it's an array, take first element
-  if (Array.isArray(imgInput) && imgInput.length > 0) {
-    imgPath = imgInput[0];
+  // 1. Handle image arrays seamlessly (e.g., product.images)
+  if (Array.isArray(imgInput)) {
+    if (imgInput.length === 0) return placeholder;
+    imgPath = imgInput[0]; 
   }
 
-  const isExternal =
-    imgPath.startsWith("http://") || imgPath.startsWith("https://");
-  if (isExternal) return imgPath;
+  // 2. Handle external absolute URLs if any exist in the database
+  if (typeof imgPath === "string" && (imgPath.startsWith("http://") || imgPath.startsWith("https://"))) {
+    return imgPath;
+  }
 
-  const cleanFilename = imgPath
-    .replace(/^\/?uploads\/images\//i, "")
-    .replace(/^\/?images\//i, "");
+  if (typeof imgPath !== "string") return placeholder;
 
-  return `${API_BASE}/images/${cleanFilename}`;
+  // 3. Extract just the pure filename (e.g., "uploads/images/file.png" -> "file.png")
+  const filename = imgPath.split("/").pop();
+  
+  // 4. Construct the precise Option B format that successfully loaded
+  return `${API_BASE}/images/${filename}`;
 };

@@ -5,7 +5,7 @@ import { useAuth } from "../../../context/AuthContext";
 import API from "../../../api";
 import { Link } from "react-router-dom";
 import "./MyProducts.css";
-import { imageHelper } from "../../utilis/imageHelper";
+import { getImageSrc } from "../../components/imageHandler";
 
 const ITEMS_PER_PAGE_OPTIONS = [8, 12, 20];
 
@@ -157,7 +157,7 @@ const MyProducts = () => {
                   <div className="ecom-card-media-frame">
                     {Array.isArray(product.images) && product.images.length > 0 ? (
                       <img
-                        src={imageHelper(product.images[0])}
+                        src={getImageSrc(product.images[0])}
                         alt={product.name}
                         className="ecom-card-img"
                         onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/400x400?text=No+Preview"; }}

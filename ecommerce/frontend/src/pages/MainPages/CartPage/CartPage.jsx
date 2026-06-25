@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "../../../../context/CartContext";
 import { Trash2, Minus, Plus, ShoppingBag, ArrowRight, CreditCard } from "lucide-react";
 import "./CartPage.css";
-import { imageHelper } from "../../../utilis/imageHelper";
+import { getImageSrc } from "../../../components/imageHandler";
 
 const CartPage = () => {
   const { cart, removeFromCart, updateCartItem } = useCart();
@@ -73,7 +73,7 @@ const CartPage = () => {
                   >
                     <div className="eh-cart-item-image">
                       <img
-                        src={imageHelper(productInfo.images?.[0])}
+                        src={getImageSrc(productInfo.images?.[0])}
                         alt={productInfo.name || "Product"}
                         onError={(e) => { e.target.src = "https://placehold.co/90x90?text=No+Image"; e.target.onerror = null; }}
                       />

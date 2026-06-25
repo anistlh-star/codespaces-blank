@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import "./MyProductDetail.css";
 import API from "../../../api";
-import { imageHelper } from "../../utilis/imageHelper";
+import { getImageSrc } from "../../components/imageHandler";
 
 export default function MyProductDetail() {
   const { id } = useParams();
@@ -46,13 +46,13 @@ export default function MyProductDetail() {
       <div className="ecom-detail-split-grid">
         <div className="ecom-detail-media-gallery">
           <div className="ecom-detail-hero-frame">
-            <img src={imageHelper(mainImageSrc) || "https://placehold.co/600x600?text=No+Preview"} alt={product.name} />
+            <img src={getImageSrc(mainImageSrc) || "https://placehold.co/600x600?text=No+Preview"} alt={product.name} />
           </div>
 
           {Array.isArray(product.images) && product.images.length > 1 && (
             <div className="ecom-detail-thumb-strip">
               {product.images.slice(1).map((img, index) => (
-                <img key={index} src={imageHelper(img)} alt={`Aspect ${index + 2}`} className="ecom-thumb-node" />
+                <img key={index} src={getImageSrc(img)} alt={`Aspect ${index + 2}`} className="ecom-thumb-node" />
               ))}
             </div>
           )}

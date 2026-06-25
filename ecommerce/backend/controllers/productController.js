@@ -349,7 +349,7 @@ export const UpdateProduct = asyncHandler(async (req, res) => {
   }
   await invalidateProductCache(`product:${id}`); // this is cache invalidation
 
-  await reIngestProduct(updated._id);
+  // await reIngestProduct(updated._id);
   res.json({
     success: true,
     product: updated,

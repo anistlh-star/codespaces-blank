@@ -8,7 +8,7 @@ import { useCountries } from "../../../hooks/useCountries";
 import { useAuth } from "../../../../context/AuthContext";
 import { ArrowLeft, MapPin, CreditCard, ShieldCheck, Truck, ShoppingCart } from "lucide-react";
 import "./Checkout.css";
-import { imageHelper } from "../../../utilis/imageHelper";
+import { getImageSrc } from "../../../components/imageHandler";
 
 const CheckoutPage = () => {
   const { cart, clearCart } = useCart();
@@ -48,7 +48,6 @@ const CheckoutPage = () => {
         ? item.productId
         : null;
       const name = prod?.name || item.name || "Unknown Product";
-      // Raw relative path — imageHelper will prepend VITE_BACKEND_URL
       const rawImage = prod?.images?.[0] || item.images?.[0] || item.image || "";
       const price = prod?.price ?? item.price ?? 0;
       const quantity = item.quantity || 1;
@@ -327,7 +326,7 @@ const CheckoutPage = () => {
                 <div key={i} className="eh-summary-item-row">
                   <div className="eh-summary-item-thumb">
                     <img
-                      src={imageHelper(item.image)}
+                      src={getImageSrc(item.image)}
                       alt={item.name}
                       onError={(e) => { e.target.src = "https://placehold.co/50x50?text=?"; e.target.onerror = null; }}
                     />

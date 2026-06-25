@@ -15,7 +15,6 @@ const UserProfile = () => {
   // Define data fetch handler inside a hook-safe context
   const refreshStats = async () => {
     if (!user?._id) return;
-console.log("Refreshing stats for user:", user);
     try {
       setStats((prev) => ({ ...prev, loading: true }));
 
@@ -29,7 +28,6 @@ console.log("Refreshing stats for user:", user);
         products: productsRes.data?.data?.products?.length || 0,
         loading: false,
       });
-      console.log("Stats refreshed:", { orders: ordersRes, products: productsRes });  
     } catch (err) {
       console.error("Failed to refresh stats:", err);
       setStats({

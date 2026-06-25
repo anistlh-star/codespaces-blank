@@ -54,7 +54,7 @@ export const getAllCategories = asyncHandler(async (req, res) => {
 
 export const createCategory = asyncHandler(async (req, res) => {
   const { name, description } = req.body;
-
+console.log('Creating Category:', { name, description, file: req.file });
   const existing = await Category.findOne({ name: name.trim() });
   if (existing) {
     return res
@@ -62,13 +62,16 @@ export const createCategory = asyncHandler(async (req, res) => {
       .json({ success: false, message: "Category already exists" });
   }
 
-  const image = req.file ? `/images/${req.file.filename}` : null;
+const image = req.file ? `/uploads/images/${req.file.filename}` : null;
+console.log('Image path for new category:', image);
   const category = await Category.create({
     name: name.trim(),
     description: description?.trim() || "",
     image,
   });
-
+  console.log('Created Category:', category);
+await delCache(KEYS.categoryList); // Invalidate category list cache
+  await invalidateCategoryCache(category._id); // Invalidate specific category cache
   res.status(201).json({
     success: true,
     message: "Category created successfully",
@@ -79,12 +82,11 @@ export const createCategory = asyncHandler(async (req, res) => {
 export const editCategory = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { name, description } = req.body;
-
+console.log('editing Category:', { id, name, description, file: req.file });
   const updateData = {};
   if (name) updateData.name = name.trim();
   if (description !== undefined) updateData.description = description.trim();
-  if (req.file) updateData.image = `/uploads/images/${req.file.filename}`;
-
+if (req.file) updateData.image = `/uploads/images/${req.file.filename}`; // Keeps this format
   const updated = await Category.findByIdAndUpdate(
     id,
     { $set: updateData },
