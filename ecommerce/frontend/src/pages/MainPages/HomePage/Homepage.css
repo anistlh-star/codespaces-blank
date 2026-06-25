@@ -43,7 +43,7 @@
 .ecom-home-section-title {
   font-size: 2rem;
   font-weight: 600;
-  color: #0f172a;
+  color: #0a0a0a;
   letter-spacing: -0.02em;
   margin: 0 0 0.5rem 0;
 }
@@ -310,20 +310,25 @@
    3. CATEGORIES CLASSIFICATION SYSTEM LAYOUT
    -------------------------------------------------------------------------- */
 .ecom-home-categories-section {
-  background: #f8fafc;
+  background-image: url('../../../assets/images/categoryheader.webp');
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: cover;
+  background-color: #f8fafc;
 }
 
 .ecom-home-category-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  text-decoration: none;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 2rem 1rem;
-  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+     display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    text-decoration: none;
+    background: #ffffff36;
+    border: 1px solid #e2e8f0db;
+    border-radius: 8px;
+    padding: 2rem 1rem;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+
 }
 
 .ecom-home-category-card:hover {
@@ -336,7 +341,7 @@
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  background: #f1f5f9;
+  background: #f1f5f952;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -357,7 +362,7 @@
 .ecom-home-category-name {
   font-size: 0.9rem;
   font-weight: 500;
-  color: #334155;
+  color: #ffffff;
   margin: 0;
   transition: color 0.15s ease;
 }
@@ -370,7 +375,7 @@
    4. FULL-SCREEN INTERACTIVE CTA OVERLAY MODULE
    -------------------------------------------------------------------------- */
 .ecom-home-cta-section {
-  background: #ffffff;
+      background-image: url(https://themewagon.github.io/agency-2/assets/img/header-bg.jpg);
   padding: 6rem 1.5rem;
   border-top: 1px solid #e2e8f0;
 }
@@ -379,7 +384,7 @@
   max-width: 700px;
   margin: 0 auto;
   text-align: center;
-  background: #0f172a;
+    background: #0f172a54;
   border-radius: 12px;
   padding: 4rem 2rem;
   color: #ffffff;
@@ -452,7 +457,7 @@
   display: inline-block;
   padding: 0.65rem 1.75rem;
   background: transparent;
-  color: #475569;
+  color: #000000;
   border: 1px solid #cbd5e1;
   border-radius: 4px;
   font-weight: 500;

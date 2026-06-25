@@ -33,7 +33,7 @@ const PopularCategories = () => {
     <section className="ecom-home-categories-section">
       <div className="ecom-home-section-container">
         <div className="ecom-home-section-header">
-          <h2 className="ecom-home-section-title">Popular Categories</h2>
+          <h2 className="ecom-home-section-title" style={{color : 'white'}}>Popular Categories</h2>
           <p className="ecom-home-section-subtitle">Navigate through precision hardware classifications.</p>
         </div>
 
@@ -69,7 +69,7 @@ const PopularCategories = () => {
         <div className="categories-custom-pagination swiper-pagination-custom" />
 
         <div className="ecom-home-section-footer">
-          <Link to="/shop" className="ecom-home-secondary-btn">
+          <Link to="/shop" className="ecom-home-secondary-btn" style={{color : 'white'}}>
             Browse All Categories
           </Link>
         </div>
