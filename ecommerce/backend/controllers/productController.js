@@ -484,6 +484,7 @@ export const getTrendingProducts = asyncHandler(async (req, res) => {
 export const featuredProducts = asyncHandler(async (req, res) => {
   try {
     const key = KEYS.featured;
+    delCache(key)
     const result = await cacheOrchestrator({
       key: key,
       ttl: TTL.featured,
