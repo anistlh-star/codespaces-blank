@@ -271,8 +271,10 @@ export default function ProductListingPage() {
                       </span>
                     )}
                   </div>
-                  <button className="product-listing-page__details-btn">
-                    Details
+                  <button className="product-listing-page__details-btn"  style={{ background: 'white', color: 'black' }}>
+                    <Link to={`/admin/products/${product._id}`}>
+                      Details</Link>
+
                   </button>
                   <button
                     className="product-listing-page__wishlist-btn"
