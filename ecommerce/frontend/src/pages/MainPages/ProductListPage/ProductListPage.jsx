@@ -57,7 +57,7 @@ const ProductListPage = () => {
     sortBy,
   });
 
-  const { productsPerCategory, loadingCategories } = useCategories();
+  const {categories, productsPerCategory, loadingCategories } = useCategories();
 
   const goToPage = (page) => {
     if (page >= 1 && page <= totalPages) {

@@ -8,9 +8,11 @@ import { KEYS } from "../cache/keys.js";
 import { cacheOrchestrator } from "../cache/cacheOrchestrator.js";
 import { TTL } from "../cache/ttl.js";
 import { invalidateCategoryCache } from "../cache/cacheInvalidation.js";
+import { delCache } from "../cache/cacheService.js";
 
 export const getAllCategories = asyncHandler(async (req, res) => {
   const cacheKey = KEYS.categoryList;
+    await delCache(cacheKey)
   const result = await cacheOrchestrator({
     key: cacheKey,
     ttl: TTL.category,

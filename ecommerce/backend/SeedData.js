@@ -8,7 +8,13 @@ import Category from "./models/Category.js"; // Adjust path if needed
 import Product from "./models/Product.js"; // Adjust path if needed
 import Order from "./models/Order.js"; // Adjust path if needed
 import dotenv from "dotenv";
-
+import smartphonesImg from "../frontend/src/assets/images/categoryimages/smartphones.jpg";
+import accessoriesImg from "../frontend/src/assets/images/categoryimages/accessories.jpg";
+import consolesImg from "../frontend/src/assets/images/categoryimages/console.jpg";
+import gamesImg from "../frontend/src/assets/images/categoryimages/games.jpg";
+import watchesImg from "../frontend/src/assets/images/categoryimages/watches.jpg";
+import headphonesImg from "../frontend/src/assets/images/categoryimages/headphones.jpg";
+// import image from '../frontend/src/assets/images/categoryimages/'
 dotenv.config();
 
 // Connect to MongoDB
@@ -37,36 +43,34 @@ const categories = [
     name: "Smartphones",
     description:
       "Latest smartphones from top brands with cutting-edge features.",
-    image: "https://example.com/images/categories/smartphones.jpg",
+    image: smartphonesImg,
   },
   {
     name: "Mobile Accessories",
     description: "Cases, chargers, earphones, screen protectors, and more.",
-    image: "https://example.com/images/categories/accessories.jpg",
+    image: accessoriesImg,
   },
   {
     name: "Consoles",
     description: "PlayStation, Xbox, Nintendo consoles and bundles.",
-    image: "https://example.com/images/categories/consoles.jpg",
+    image: consolesImg,
   },
   {
     name: "Video Games",
     description: "Popular video games for all major platforms.",
-    image: "https://example.com/images/categories/games.jpg",
+    image: gamesImg,
   },
   {
     name: "Watches",
     description:
       "Premium smartwatches with health tracking, notifications, and stylish designs.",
-    image:
-      "https://static.vecteezy.com/system/resources/thumbnails/028/895/422/small_2x/smart-watch-banner-social-media-post-design-ads-banner-template-free-vector.jpg",
+    image: watchesImg,
   },
   {
     name: "Headphones",
     description:
       "High-quality over-ear wireless headphones with noise cancellation and superior sound.",
-    image:
-      "https://img.pikbest.com/templates/20250813/wireless-headphone-website-hero-banner-and-landing-page-ui-design_11827161.jpg!bw700",
+    image: headphonesImg,
   },
 ];
 
