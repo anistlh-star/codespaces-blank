@@ -75,8 +75,6 @@ export const getCart = asyncHandler(async (req, res) => {
 // ─── ADD TO CART ────────────────────────────────────────────────────────────
 export const addToCart = asyncHandler(async (req, res) => {
   const { productId, quantity = 1 } = req.body;
-
-  console.log("Received addToCart request:", { productId, quantity });
   const query = getCartQuery(req);
 
   if (!query?.userId) {
@@ -88,8 +86,6 @@ export const addToCart = asyncHandler(async (req, res) => {
 
   try {
     const populatedCart = await addItemToCart(query.userId, productId, quantity);
-
-    // FIX 1: Cache invalidation happens safely AFTER the write operation completes
     await delCache(`cart:${query.userId}`);
 
     return res.status(200).json({
@@ -105,7 +101,6 @@ export const addToCart = asyncHandler(async (req, res) => {
 export const updateCartItem = asyncHandler(async (req, res) => {
   const { productId } = req.params;
   const { quantity } = req.body;
-  console.log("Received updateCartItem request:", { productId, quantity });
   const query = getCartQuery(req);
 
   if (!query || !query.userId) {

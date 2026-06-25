@@ -35,7 +35,6 @@ export const getAllProducts = asyncHandler(async (req, res) => {
   const queryHash = getQueryHash(JSON.stringify(req.query));
 
   const cacheKey = KEYS.productList(queryHash);
-
   const sort = {
     [sortField]: sortOrder === "desc" ? -1 : 1,
   };
@@ -114,7 +113,6 @@ export const getProductsByUser = asyncHandler(async (req, res) => {
   const sortDir = sortOrder === "asc" ? 1 : -1;
   const queryHash = getQueryHash(JSON.stringify({ userId, sortField, sortOrder }));
   const cacheKey = KEYS.userProducts(userId, queryHash);
-
   const result = await cacheOrchestrator({
     key: cacheKey,
     ttl: TTL.list,
@@ -140,7 +138,6 @@ export const getProductsByUser = asyncHandler(async (req, res) => {
 });
 export const getPopularProducts = asyncHandler(async (req, res) => {
   const cacheKey = KEYS.popularProducts;
-
   const result = await cacheOrchestrator({
     key: cacheKey,
     ttl: TTL.list,
@@ -218,7 +215,6 @@ export const getSingleProductById = asyncHandler(async (req, res) => {
   }
 
   const cacheKey = KEYS.product(id);
-
   const result = await cacheOrchestrator({
     key: cacheKey,
     ttl: TTL.single,
@@ -347,7 +343,7 @@ export const UpdateProduct = asyncHandler(async (req, res) => {
       message: "Product not found",
     });
   }
-  await invalidateProductCache(`product:${id}`); // this is cache invalidation
+  await invalidateProductCache({ productId: id });
 
   // await reIngestProduct(updated._id);
   res.json({
@@ -366,7 +362,7 @@ export const DeleteProduct = asyncHandler(async (req, res) => {
       message: "Product not found",
     });
   }
-  await delCache(`product:${id}`); // this is cache invalidation
+  await invalidateProductCache({ productId: id });
 
   await deleteImage(product); // should handle array of images
 

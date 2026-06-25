@@ -4,6 +4,8 @@ import Order from "../models/Order.js";
 import Cart from "../models/Cart.js";
 import Product from "../models/Product.js";
 import mongoose from "mongoose";
+import { KEYS } from "../cache/keys.js";
+import { delCache } from "../cache/cacheService.js";
 
 
 export const getAllOrders = asyncHandler(async (req, res) => {
@@ -51,8 +53,8 @@ export const statusChange = asyncHandler(async (req, res) => {
     });
   }
   order.status = status;
-
   await order.save();
+  await delCache(KEYS.orderList(order.user.toString()));
 
   res.json({ success: true, message: "Order status updated", order });
 });
@@ -88,7 +90,6 @@ export const UpdateOrder = asyncHandler(async (req, res) => {
     if (!Array.isArray(items)) {
       return res.status(400).json({ success: false, message: "Items must be an array" });
     }
-
     order.items = items.map((item) => ({
       product: item.product,
       name: item.name,
@@ -114,6 +115,7 @@ export const UpdateOrder = asyncHandler(async (req, res) => {
   if (totalAmount !== undefined) order.totalAmount = totalAmount;
 
   await order.save();
+  await delCache(KEYS.orderList(order.user._id.toString()));
 
   res.json({ success: true, message: "Order updated", order });
 });
@@ -122,7 +124,7 @@ export const deleteOrder = asyncHandler(async (req, res) => {
   const order = await Order.findByIdAndDelete(req.params.id);
   if (!order)
     return res.status(404).json({ success: false, message: "Order not found" });
-
+  await delCache(KEYS.orderList(order.user.toString()));
   res.json({ success: true, message: "Order deleted", order });
 });
 export const getOrderById = asyncHandler(async (req, res) => {
@@ -283,6 +285,7 @@ export const createOrder = asyncHandler(async (req, res) => {
     }
 
     await session.commitTransaction();
+    await delCache(KEYS.orderList(user));
 
     res.status(201).json({
       success: true,
@@ -413,6 +416,7 @@ for (const item of items) {
     );
 
     await session.commitTransaction();
+    await delCache(KEYS.orderList(userId));
 
     res.status(201).json({
       success: true,

@@ -2,7 +2,6 @@
 import mongoose from "mongoose";
 import { invalidateUserCache } from "../cache/cacheInvalidation.js";
 import { cacheOrchestrator } from "../cache/cacheOrchestrator.js";
-import { delCache } from "../cache/cacheService.js";
 import { KEYS } from "../cache/keys.js";
 import { TTL } from "../cache/ttl.js";
 import User from "../models/User.js";
@@ -25,7 +24,6 @@ export const getAllUsers = asyncHandler(async (req, res) => {
 });
 export const createUser = asyncHandler(async (req, res) => {
   const { name, email, password, role = "user", phone, address } = req.body;
-
   if (!password) {
     return res
       .status(400)
@@ -47,8 +45,7 @@ export const createUser = asyncHandler(async (req, res) => {
     phone,
     address,
   });
-  await invalidateUserCache(KEYS.userList);
-  await delCache(KEYS.userList);
+  await invalidateUserCache(user._id);
 
   res.status(201).json({
     success: true,
@@ -60,7 +57,6 @@ export const updateUser = asyncHandler(async (req, res) => {
   const { name, email, phone, address, role } = req.body;
   const user = await User.findById(req.params.id);
   console.log("getting user details : ", user);
-
   if (!user)
     return res.status(404).json({ success: false, message: "User not found" });
 
@@ -69,7 +65,7 @@ export const updateUser = asyncHandler(async (req, res) => {
   if (phone) user.phone = phone;
   if (address) user.address = address;
   if (role) user.role = role.toLowerCase();
-  await invalidateUserCache(`user:${user._id}`);
+  await invalidateUserCache(user._id);
   //await reingestUser => will integrate it later
   await user.save();
   res.json({
@@ -110,7 +106,6 @@ export const userRoleChange = asyncHandler(async (req, res) => {
   }
 
   await invalidateUserCache(user._id);
-  await delCache(KEYS.userList);
 
   res.json({ success: true, message: "Role updated", user });
 });
@@ -130,7 +125,6 @@ export const deleteUser = asyncHandler(async (req, res) => {
   }
 
   await invalidateUserCache(user._id);
-  await delCache(`user:${user._id}`);
   await user.deleteOne();
   res.json({ success: true, message: "User deleted successfully" });
 });

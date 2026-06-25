@@ -1,3 +1,5 @@
+import { delCache } from "../cache/cacheService.js";
+import { KEYS } from "../cache/keys.js";
 import Wishlist from "../models/Wishlist.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import mongoose from "mongoose";
@@ -25,7 +27,7 @@ export const addToWishlist = asyncHandler(async (req, res) => {
     }
     wishlist.products.push({ product: productId });
   }
-
+  delCache(KEYS.wishlist(userId)); // Clear cache to ensure fresh data
   await wishlist.save();
   await wishlist.populate("products.product", "name price images");
 
@@ -52,7 +54,7 @@ export const removeFromWishlist = asyncHandler(async (req, res) => {
 
   await wishlist.save();
   await wishlist.populate("products.product", "name price images");
-
+  delCache(KEYS.wishlist(userId)); // Clear cache to ensure fresh data
   res.status(200).json({
     success: true,
     message: "Removed from wishlist",
@@ -70,6 +72,6 @@ export const getWishlist = asyncHandler(async (req, res) => {
   if (!wishlist) {
     return res.status(200).json({ success: true, wishlist: { products: [] } });
   }
-
+  delCache(KEYS.wishlist(userId)); // Clear cache to ensure fresh data
   res.status(200).json({ success: true, wishlist });
 });

@@ -8,11 +8,9 @@ import { KEYS } from "../cache/keys.js";
 import { cacheOrchestrator } from "../cache/cacheOrchestrator.js";
 import { TTL } from "../cache/ttl.js";
 import { invalidateCategoryCache } from "../cache/cacheInvalidation.js";
-import { delCache } from "../cache/cacheService.js";
 
 export const getAllCategories = asyncHandler(async (req, res) => {
   const cacheKey = KEYS.categoryList;
-
   const result = await cacheOrchestrator({
     key: cacheKey,
     ttl: TTL.category,
@@ -54,7 +52,9 @@ export const getAllCategories = asyncHandler(async (req, res) => {
 
 export const createCategory = asyncHandler(async (req, res) => {
   const { name, description } = req.body;
-console.log('Creating Category:', { name, description, file: req.file });
+  if (!name?.trim()) {
+    return res.status(400).json({ success: false, message: "Name is required" });
+  }
   const existing = await Category.findOne({ name: name.trim() });
   if (existing) {
     return res
@@ -63,15 +63,14 @@ console.log('Creating Category:', { name, description, file: req.file });
   }
 
 const image = req.file ? `/uploads/images/${req.file.filename}` : null;
-console.log('Image path for new category:', image);
   const category = await Category.create({
     name: name.trim(),
     description: description?.trim() || "",
     image,
   });
-  console.log('Created Category:', category);
-await delCache(KEYS.categoryList); // Invalidate category list cache
-  await invalidateCategoryCache(category._id); // Invalidate specific category cache
+
+  await invalidateCategoryCache(category._id);
+
   res.status(201).json({
     success: true,
     message: "Category created successfully",
@@ -82,7 +81,7 @@ await delCache(KEYS.categoryList); // Invalidate category list cache
 export const editCategory = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { name, description } = req.body;
-console.log('editing Category:', { id, name, description, file: req.file });
+
   const updateData = {};
   if (name) updateData.name = name.trim();
   if (description !== undefined) updateData.description = description.trim();
@@ -98,8 +97,7 @@ if (req.file) updateData.image = `/uploads/images/${req.file.filename}`; // Keep
       .status(404)
       .json({ success: false, message: "Category not found" });
   }
-  await delCache(KEYS.categoryList); // Invalidate category list cache
-  await invalidateCategoryCache(updated._id); // Invalidate specific category cache
+  await invalidateCategoryCache(updated._id);
   res.json({ success: true, category: updated });
 });
 
@@ -171,8 +169,6 @@ export const deleteCategory = asyncHandler(async (req, res) => {
       console.warn(`Image not found or already deleted: ${imagePath}`);
     }
   }
-  const cacheKey = KEYS.categoryList;
-  await delCache(cacheKey); // Invalidate category list cache
-  await invalidateCategoryCache(category._id); // Invalidate specific category cache
+  await invalidateCategoryCache(category._id);
   res.json({ success: true, message: "Category deleted successfully" });
 });

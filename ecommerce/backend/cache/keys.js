@@ -16,6 +16,9 @@ export const KEYS = {
   userList: "users:list",
   singleUser : (id)=>`user:${id}`,
   cart: (userId) => `cart:${userId}`,
+  order: (userId) => `order:${userId}`,
+  orderList: (userId) => `orders:list:${userId}`,
+  wishlist: (userId) => `wishlist:${userId}`,
   
 
 };
